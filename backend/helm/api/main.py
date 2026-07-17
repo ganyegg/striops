@@ -30,6 +30,10 @@ from helm.core.models import (
     SimulationResult,
 )
 from helm.actions import Action, ActionRegister, build_action_register, get_action
+from helm.ask import AskRequest, AskResponse, ask_helm
+from helm.comparatives import ComparativesReport, build_comparatives
+from helm.demographics import attach_affected
+from helm.sectors import SectorsReport, build_sectors_report
 from helm.decisions import DecisionRegister, build_decision_register
 from helm.domains import (
     domain_catalog,
@@ -40,11 +44,13 @@ from helm.domains import (
 )
 from helm.executive_brief import build_executive_brief
 from helm.feeds import FeedsReport, build_feeds_report
+from helm.health_score import HealthBreakdown, build_health_breakdown
 from helm.knowledge_graph import get_graph_store
 from helm.opportunity_engine import find_opportunities
 from helm.persistence import get_repository
 from helm.pulse import CityPulse, build_city_pulse
 from helm.reasoning import get_llm
+from helm.refresh import RefreshResult, run_refresh
 from helm.reports import build_indicator_report, build_metric_report, build_risk_report
 from helm.risk_engine import assess_risks
 from helm.simulation import list_scenarios, simulate
@@ -97,7 +103,7 @@ def risks() -> list[Risk]:
     repo = get_repository(settings)
     assessed = assess_risks(repo.service_areas(), repo.metric_series(), repo.budget_lines())
     enriched, _ = attach_valuations(assessed, [], repo.metric_series(), settings.helm_municipality)
-    return enriched
+    return attach_affected(enriched, settings.helm_municipality)
 
 
 @app.get("/risks/{risk_id}", response_model=RiskReport, tags=["reports"])
@@ -131,6 +137,33 @@ def indicator_report(code: str, domain_id: str, indicator_key: str) -> Indicator
 @app.get("/snapshot", response_model=CitySnapshot, tags=["intelligence"])
 def snapshot() -> CitySnapshot:
     return build_city_snapshot(settings.helm_municipality)
+
+
+@app.get("/health-breakdown", response_model=HealthBreakdown, tags=["intelligence"])
+def health_breakdown() -> HealthBreakdown:
+    return build_health_breakdown(settings.helm_municipality)
+
+
+@app.get("/comparatives", response_model=ComparativesReport, tags=["intelligence"])
+def comparatives() -> ComparativesReport:
+    return build_comparatives(municipality=settings.helm_municipality)
+
+
+@app.get("/sectors", response_model=SectorsReport, tags=["intelligence"])
+def sectors() -> SectorsReport:
+    """Critical sector spine with readiness and demographic denominators."""
+    return build_sectors_report(settings.helm_municipality)
+
+
+@app.post("/ask", response_model=AskResponse, tags=["intelligence"])
+def ask(req: AskRequest) -> AskResponse:
+    return ask_helm(req, settings=settings)
+
+
+@app.post("/refresh", response_model=RefreshResult, tags=["system"])
+def refresh(run_ingest: bool = True) -> RefreshResult:
+    """Clear caches and re-pull public feeds so new data surfaces immediately."""
+    return run_refresh(settings=settings, run_ingest=run_ingest)
 
 
 @app.get("/wins", response_model=list[Initiative], tags=["wins"])

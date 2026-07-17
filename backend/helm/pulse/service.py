@@ -23,6 +23,9 @@ _HIGHER_IS_WORSE: dict[str, bool] = {
     "road_maintenance_backlog_km": True,
     "public_lighting_outages": True,
     "library_visits": False,
+    "dam_storage": False,
+    "clinic_waiting_days": True,
+    "ems_response_minutes": True,
 }
 
 _LABELS: dict[str, str] = {
@@ -31,6 +34,9 @@ _LABELS: dict[str, str] = {
     "road_maintenance_backlog_km": "Road maintenance backlog",
     "public_lighting_outages": "Public lighting outages",
     "library_visits": "Library visits",
+    "dam_storage": "Dam storage",
+    "clinic_waiting_days": "Clinic waiting days",
+    "ems_response_minutes": "EMS response time",
 }
 
 
@@ -129,8 +135,25 @@ def build_city_pulse(
             )
         )
 
+    # Critical sectors first; libraries / secondary citizen signals last.
+    _SECTOR_RANK = {
+        "clinic_waiting_days": 0,
+        "ems_response_minutes": 1,
+        "dam_storage": 2,
+        "non_revenue_water_pct": 3,
+        "road_maintenance_backlog_km": 4,
+        "refuse_service_requests": 5,
+        "public_lighting_outages": 6,
+        "library_visits": 90,
+    }
     order = {"worsening": 0, "improving": 1, "flat": 2}
-    items.sort(key=lambda i: (order[i.direction], -abs(i.change_pct)))
+    items.sort(
+        key=lambda i: (
+            _SECTOR_RANK.get(i.metric, 50),
+            order[i.direction],
+            -abs(i.change_pct),
+        )
+    )
 
     data_through = format_month(latest_date)
     previous_period = format_month(previous_date)

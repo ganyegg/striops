@@ -12,7 +12,13 @@ function colorFor(score: number): string {
   return "#f87171";
 }
 
-export default function HealthGauge({ score }: { score: number }) {
+export default function HealthGauge({
+  score,
+  compact = false,
+}: {
+  score: number;
+  compact?: boolean;
+}) {
   const color = colorFor(score);
   const option: EChartsOption = {
     series: [
@@ -22,9 +28,12 @@ export default function HealthGauge({ score }: { score: number }) {
         endAngle: -30,
         min: 0,
         max: 100,
-        radius: "100%",
-        progress: { show: true, width: 14, roundCap: true, itemStyle: { color } },
-        axisLine: { lineStyle: { width: 14, color: [[1, "rgba(255,255,255,0.08)"]] } },
+        radius: compact ? "95%" : "100%",
+        center: compact ? ["50%", "55%"] : ["50%", "50%"],
+        progress: { show: true, width: compact ? 12 : 14, roundCap: true, itemStyle: { color } },
+        axisLine: {
+          lineStyle: { width: compact ? 12 : 14, color: [[1, "rgba(255,255,255,0.08)"]] },
+        },
         pointer: { show: false },
         axisTick: { show: false },
         splitLine: { show: false },
@@ -33,8 +42,8 @@ export default function HealthGauge({ score }: { score: number }) {
         title: { show: false },
         detail: {
           valueAnimation: true,
-          offsetCenter: [0, 0],
-          fontSize: 48,
+          offsetCenter: [0, "5%"],
+          fontSize: compact ? 42 : 48,
           fontWeight: 700,
           color: "#f8fafc",
           formatter: "{value}",
@@ -46,11 +55,13 @@ export default function HealthGauge({ score }: { score: number }) {
   };
 
   return (
-    <div className="relative h-56 w-full">
+    <div className={`relative w-full ${compact ? "h-44" : "h-56"}`}>
       <ReactECharts option={option} style={{ height: "100%", width: "100%" }} />
-      <div className="pointer-events-none absolute inset-x-0 bottom-6 text-center text-xs uppercase tracking-[0.2em] text-helm-sand/70">
-        Strategic Health
-      </div>
+      {!compact ? (
+        <div className="pointer-events-none absolute inset-x-0 bottom-6 text-center text-xs uppercase tracking-[0.2em] text-helm-sand/70">
+          Strategic Health
+        </div>
+      ) : null}
     </div>
   );
 }

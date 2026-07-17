@@ -111,6 +111,54 @@
           "source_url": null
         }
       ]
+    },
+    "dam_storage": {
+      "label": "Dam storage",
+      "unit": "percentage point of storage",
+      "rand_per_unit_per_year": 0,
+      "method": "scarcity signal; priced via NRW and capital programme, not a direct ZAR/pp here",
+      "confidence": 0.4,
+      "assumptions": [
+        {
+          "key": "monetisation",
+          "value": 0,
+          "unit": "ZAR",
+          "note": "Read alongside NRW and water capital; scarcity premium left for City-approved method.",
+          "source_url": "https://www.dws.gov.za/Hydrology/Weekly/ProvinceWeek.aspx?region=WC"
+        }
+      ]
+    },
+    "clinic_waiting_days": {
+      "label": "Clinic waiting days",
+      "unit": "day of median wait",
+      "rand_per_unit_per_year": 4200000,
+      "method": "extra median wait-day × estimated productivity / diversion cost across PHC catchment",
+      "confidence": 0.45,
+      "assumptions": [
+        {
+          "key": "illustrative_access_cost_per_wait_day",
+          "value": 4200000,
+          "unit": "ZAR/year",
+          "note": "Order-of-magnitude for delayed primary care access city-wide. Replace with City Health approved valuation.",
+          "source_url": null
+        }
+      ]
+    },
+    "ems_response_minutes": {
+      "label": "EMS response minutes",
+      "unit": "minute of average response",
+      "rand_per_unit_per_year": 9500000,
+      "method": "extra average response-minute × peak-unit overtime / outcome risk proxy",
+      "confidence": 0.4,
+      "assumptions": [
+        {
+          "key": "illustrative_minute_cost",
+          "value": 9500000,
+          "unit": "ZAR/year",
+          "note": "Illustrative; confirm against EMS costing before using in Council papers.",
+          "source_url": null
+        }
+      ]
     }
   },
   "opportunity_defaults": {

@@ -45,6 +45,24 @@ _METRIC_PROFILE: dict[str, dict] = {
         "mitigation": "Refresh programming and digital services to reverse footfall decline.",
         "unit_label": "visits/month",
     },
+    "dam_storage": {
+        "title": "Falling dam storage buffer",
+        "impact": 0.8,
+        "mitigation": "Tighten demand management and keep reuse/groundwater online before summer peak.",
+        "unit_label": "% storage",
+    },
+    "clinic_waiting_days": {
+        "title": "Lengthening clinic waiting times",
+        "impact": 0.75,
+        "mitigation": "Protect PHC staffing and appointment capacity in the worst-queue facilities.",
+        "unit_label": "days",
+    },
+    "ems_response_minutes": {
+        "title": "Slower EMS response times",
+        "impact": 0.8,
+        "mitigation": "Add peak-hour EMS units and clear hospital handover delays in hotspot districts.",
+        "unit_label": "minutes",
+    },
 }
 
 

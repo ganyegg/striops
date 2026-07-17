@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="brand/coct-logo.svg" alt="City of Cape Town" width="280" />
+</p>
+
 # Helm — Architecture (v0.1 slice)
 
 Helm is intelligence-first: the reasoning core (graph + engines + agents) is

@@ -58,6 +58,22 @@ GLOSSARY: dict[str, dict[str, str]] = {
         ),
         "in_one_line": "How full Cape Town’s major dams are.",
     },
+    "clinic_waiting_days": {
+        "term": "Clinic waiting days",
+        "definition": (
+            "Median days residents wait for a City primary-health clinic appointment or "
+            "service. Rising waits mean access is eroding before people reach a clinician."
+        ),
+        "in_one_line": "How long people wait for a City clinic.",
+    },
+    "ems_response_minutes": {
+        "term": "EMS response time",
+        "definition": (
+            "Average minutes for emergency medical services to reach a Priority-1 call. "
+            "Minutes above an urban benchmark mean lives are waiting on the road."
+        ),
+        "in_one_line": "How fast ambulances reach life-threatening calls.",
+    },
     "leap": {
         "term": "LEAP",
         "definition": (

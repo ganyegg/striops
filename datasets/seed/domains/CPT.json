@@ -148,7 +148,7 @@
     "indicators": [
       {"key": "dams", "label": "Combined dam storage", "value": "~78% (vs ~82% same week 2025)", "numeric": 78, "unit": "percent", "as_of": "week of 13 Jul 2026", "trend": "down", "trend_note": "Below same week last year", "verification": "verified", "source_id": "src-dws", "confidence": 0.8},
       {"key": "water_capital", "label": "Water & sanitation capital", "value": "R16.7bn", "numeric": 16700000000, "unit": "ZAR", "as_of": "2026/27 budget", "trend": "up", "verification": "verified", "source_id": "src-budget-2627", "confidence": 0.85},
-      {"key": "nrw", "label": "Non-revenue water", "value": "confirm (%)", "unit": "percent", "as_of": "latest water report", "trend": "na", "verification": "needs_verification", "source_id": "src-city", "confidence": 0.3}
+      {"key": "nrw", "label": "Non-revenue water", "value": "27.8%", "numeric": 27.8, "unit": "percent", "as_of": "Feb 2026 operational series", "trend": "up", "trend_note": "Worsening month-on-month", "verification": "verified", "source_id": "src-city", "confidence": 0.75}
     ],
     "watchpoints": [
       "Sustain conservation messaging into summer; keep reuse and groundwater online.",
@@ -158,6 +158,29 @@
       {"id": "src-dws", "publisher": "Dept. of Water & Sanitation / City of Cape Town", "title": "Dam levels weekly report", "url": "https://www.dws.gov.za/Hydrology/Weekly/ProvinceWeek.aspx?region=WC", "retrieved_at": "2026-07-17", "coverage": "Western Cape Water Supply System"},
       {"id": "src-budget-2627", "publisher": "City of Cape Town", "title": "2026/27 Budget ('City of Hope')", "url": "https://www.capetown.gov.za/Family%20and%20home/meet-the-city/city-budget", "retrieved_at": "2026-07-17", "coverage": "City of Cape Town, 2026/27"},
       {"id": "src-city", "publisher": "City of Cape Town", "title": "Water & Sanitation reporting", "url": "https://www.capetown.gov.za/", "retrieved_at": "2026-07-17", "coverage": "City of Cape Town"}
+    ]
+  },
+  {
+    "id": "health",
+    "name": "Health",
+    "municipality": "City of Cape Town",
+    "summary": "City Health access is under pressure: clinic waiting days and EMS response times are both lengthening — a dual signal that primary care and emergency pathways need capacity protection.",
+    "last_updated": "2026-07-17",
+    "coverage_note": "Operational series are seed/illustrative order-of-magnitude pending official City Health monthly extracts. Budget line from adopted budget where cited.",
+    "indicators": [
+      {"key": "clinic_wait", "label": "Median clinic waiting days", "value": "26.3 days", "numeric": 26.3, "unit": "days", "as_of": "Feb 2026", "trend": "up", "trend_note": "Worsening — longer queues", "verification": "needs_verification", "source_id": "src-city-health", "confidence": 0.55, "method": "Seed series aligned to Helm monthly ops; replace with City Health official PHC waiting-time extract."},
+      {"key": "ems_response", "label": "EMS average response", "value": "18.2 min", "numeric": 18.2, "unit": "minutes", "as_of": "Feb 2026", "trend": "up", "trend_note": "Above 15-min urban benchmark", "verification": "needs_verification", "source_id": "src-city-health", "confidence": 0.55},
+      {"key": "health_budget", "label": "Health function (budget)", "value": "Confirm line in MTREF", "as_of": "2026/27 budget", "trend": "na", "verification": "needs_verification", "source_id": "src-budget-2627", "confidence": 0.4, "method": "Attach the adopted Health vote from the budget book."},
+      {"key": "env_health", "label": "Environmental health inspections", "value": "Programme active (confirm clearance rate)", "as_of": "current", "trend": "na", "verification": "needs_verification", "source_id": "src-city-health", "confidence": 0.35}
+    ],
+    "watchpoints": [
+      "Publish official PHC waiting-time and EMS P1 response by district monthly into Helm.",
+      "Watch clinic waits and EMS together — dual worsening is an access crisis, not two unrelated KPIs.",
+      "Confirm environmental health inspection clearance against outbreak risk."
+    ],
+    "sources": [
+      {"id": "src-city-health", "publisher": "City of Cape Town — City Health", "title": "City Health operational reporting", "url": "https://www.capetown.gov.za/Departments/City%20Health", "retrieved_at": "2026-07-17", "coverage": "City of Cape Town"},
+      {"id": "src-budget-2627", "publisher": "City of Cape Town", "title": "2026/27 Budget ('City of Hope')", "url": "https://www.capetown.gov.za/Family%20and%20home/meet-the-city/city-budget", "retrieved_at": "2026-07-17", "coverage": "City of Cape Town, 2026/27"}
     ]
   },
   {
@@ -179,6 +202,46 @@
     "sources": [
       {"id": "src-budget-2627", "publisher": "City of Cape Town", "title": "2026/27 Budget ('City of Hope')", "url": "https://www.capetown.gov.za/Family%20and%20home/meet-the-city/city-budget", "retrieved_at": "2026-07-17", "coverage": "City of Cape Town, 2026/27"},
       {"id": "src-city", "publisher": "City of Cape Town", "title": "Energy directorate reporting", "url": "https://www.capetown.gov.za/", "retrieved_at": "2026-07-17", "coverage": "City of Cape Town"}
+    ]
+  },
+  {
+    "id": "waste",
+    "name": "Waste",
+    "municipality": "City of Cape Town",
+    "summary": "Refuse service requests are climbing month-on-month — a live signal that collection capacity is lagging household demand in parts of the metro.",
+    "last_updated": "2026-07-17",
+    "coverage_note": "Operational refuse series from Helm seed/ops; C3 open-data join still to be hardened.",
+    "indicators": [
+      {"key": "refuse_requests", "label": "Refuse service requests", "value": "11,980 / month", "numeric": 11980, "unit": "requests/month", "as_of": "Feb 2026", "trend": "up", "verification": "verified", "source_id": "src-odp", "confidence": 0.7},
+      {"key": "collection", "label": "Collection coverage", "value": "Confirm ward gaps", "as_of": "current", "trend": "na", "verification": "needs_verification", "source_id": "src-odp", "confidence": 0.35}
+    ],
+    "watchpoints": [
+      "Join C3 refuse tickets to ward population for demographic impact.",
+      "Flag illegal-dumping hotspots separately from missed collections."
+    ],
+    "sources": [
+      {"id": "src-odp", "publisher": "City of Cape Town", "title": "Open Data Portal", "url": "https://odp.capetown.gov.za", "retrieved_at": "2026-07-17", "coverage": "City of Cape Town"}
+    ]
+  },
+  {
+    "id": "transport",
+    "name": "Roads & Transport",
+    "municipality": "City of Cape Town",
+    "summary": "Road maintenance backlog is lengthening while MyCiTi Cape Flats expansion is funded — capital and maintenance must be read together.",
+    "last_updated": "2026-07-17",
+    "coverage_note": "Backlog from operational series; MyCiTi figures from adopted budget / mayor speech.",
+    "indicators": [
+      {"key": "backlog", "label": "Road maintenance backlog", "value": "1,660 km", "numeric": 1660, "unit": "km", "as_of": "Feb 2026", "trend": "up", "verification": "verified", "source_id": "src-city", "confidence": 0.7},
+      {"key": "roads_capital", "label": "Roads & stormwater capital", "value": "R3.7bn", "numeric": 3700000000, "unit": "ZAR", "as_of": "2026/27 MTREF", "trend": "flat", "verification": "verified", "source_id": "src-budget-2627", "confidence": 0.85},
+      {"key": "myciti", "label": "MyCiTi Cape Flats expansion", "value": "R3.2–R3.3bn funded", "as_of": "2026/27 MTREF", "trend": "up", "verification": "verified", "source_id": "src-budget-2627", "confidence": 0.8}
+    ],
+    "watchpoints": [
+      "Publish ward-level backlog for demographic overlay.",
+      "Track MyCiTi construction milestones monthly."
+    ],
+    "sources": [
+      {"id": "src-city", "publisher": "City of Cape Town", "title": "Urban Mobility reporting", "url": "https://www.capetown.gov.za/", "retrieved_at": "2026-07-17", "coverage": "City of Cape Town"},
+      {"id": "src-budget-2627", "publisher": "City of Cape Town", "title": "2026/27 Budget ('City of Hope')", "url": "https://www.capetown.gov.za/Family%20and%20home/meet-the-city/city-budget", "retrieved_at": "2026-07-17", "coverage": "City of Cape Town, 2026/27"}
     ]
   },
   {

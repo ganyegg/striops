@@ -1,32 +1,40 @@
 import ActionTracker from "@/components/ActionTracker";
+import AskPanel from "@/components/AskPanel";
+import BriefingBento from "@/components/BriefingBento";
+import CriticalSectors from "@/components/CriticalSectors";
 import DecisionLog from "@/components/DecisionLog";
 import DomainGrid from "@/components/DomainGrid";
 import FeedStatusPanel from "@/components/FeedStatusPanel";
-import HeroKPIStrip from "@/components/HeroKPIStrip";
 import OpportunityCard from "@/components/OpportunityCard";
 import PulseStrip from "@/components/PulseStrip";
 import RecommendationCard from "@/components/RecommendationCard";
 import RiskCard from "@/components/RiskCard";
-import Section from "@/components/Section";
 import SimulationPanel from "@/components/SimulationPanel";
+import SiteHeader from "@/components/SiteHeader";
+import StorySection from "@/components/StorySection";
 import ValueLedgerPanel from "@/components/ValueLedgerPanel";
 import WinCard from "@/components/WinCard";
+import Link from "next/link";
 import {
   formatRefreshSAST,
+  formatZAR,
   getActions,
   getBrief,
+  getComparatives,
   getDecisions,
   getFeeds,
   getGlossary,
   getMunicipalityDomains,
   getPulse,
   getScenarios,
+  getSectors,
   getSnapshot,
   getValueLedger,
   getWins,
   glossaryForRisk,
   type ActionRegister,
   type CityPulse,
+  type ComparativesReport,
   type DecisionRegister,
   type DomainSummary,
   type ExecutiveBrief,
@@ -34,6 +42,7 @@ import {
   type GlossaryEntry,
   type Initiative,
   type ScenarioOption,
+  type SectorsReport,
   type CitySnapshot,
   type ValueLedger,
 } from "@/lib/api";
@@ -66,6 +75,8 @@ export default async function Home() {
   let feeds: FeedsReport;
   let actions: ActionRegister;
   let ledger: ValueLedger;
+  let comparatives: ComparativesReport;
+  let sectors: SectorsReport;
   try {
     [
       brief,
@@ -79,6 +90,8 @@ export default async function Home() {
       feeds,
       actions,
       ledger,
+      comparatives,
+      sectors,
     ] = await Promise.all([
       getBrief(),
       getScenarios(),
@@ -91,6 +104,8 @@ export default async function Home() {
       getFeeds(),
       getActions(),
       getValueLedger(),
+      getComparatives(),
+      getSectors(),
     ]);
   } catch (e) {
     return <BackendDown message={e instanceof Error ? e.message : String(e)} />;
@@ -100,159 +115,261 @@ export default async function Home() {
   const briefRefreshed = formatRefreshSAST(snapshot.brief_refreshed_at || snapshot.generated_at);
 
   return (
-    <main className="pb-16">
+    <main className="pb-20">
+      {/* ── Hero ── */}
       <div className="hero-band">
-        <div className="hero-band-overlay px-6 pb-12 pt-8">
+        <div className="hero-band-overlay px-6 pb-14 pt-6">
           <div className="mx-auto max-w-6xl">
-            <header className="flex flex-wrap items-center justify-between gap-3">
-              <div className="flex items-center gap-2.5">
-                <div className="h-3 w-3 rounded-full bg-helm-accent shadow-[0_0_12px_rgba(20,184,166,0.8)]" />
-                <span className="font-display text-lg font-semibold tracking-wide text-white">
-                  Helm
-                </span>
-                <span className="hidden text-sm text-white/45 sm:inline">· Think Ahead</span>
-              </div>
-              <div className="flex flex-wrap items-center gap-2">
-                <span className="rounded-full border border-white/15 bg-white/5 px-3 py-1 text-xs text-white/60">
-                  City of Cape Town · live briefing
-                </span>
-                <span className="rounded-full border border-helm-accent/30 bg-helm-accent/10 px-3 py-1 text-xs text-helm-accent">
-                  Data through {dataThrough}
-                </span>
-                <span className="rounded-full border border-white/15 bg-white/5 px-3 py-1 text-xs text-white/50">
-                  Brief refreshed {briefRefreshed}
-                </span>
-              </div>
-            </header>
+            <SiteHeader dataThrough={dataThrough} briefRefreshed={briefRefreshed} />
 
-            <div className="mt-12 max-w-3xl">
-              <p className="text-xs font-medium uppercase tracking-[0.28em] text-helm-sand/80">
-                Executive briefing
-              </p>
-              <h1 className="mt-2 font-display text-4xl font-semibold tracking-tight text-white md:text-5xl lg:text-6xl">
-                {snapshot.greeting}
-              </h1>
-              <p className="mt-3 max-w-xl text-lg text-helm-sand/90">{snapshot.tagline}</p>
-              <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-white/75">
-                {brief.strategic_summary}
-              </p>
+            <div className="mt-10 grid gap-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-end">
+              <div>
+                <p className="text-xs font-medium uppercase tracking-[0.28em] text-helm-sand/80">
+                  {snapshot.greeting}
+                </p>
+                <h1 className="mt-2 font-display text-4xl font-semibold tracking-tight text-white md:text-5xl lg:text-[3.25rem] lg:leading-[1.08]">
+                  Steer before the storm.
+                </h1>
+                <p className="hero-summary mt-4 max-w-xl text-lg leading-relaxed text-helm-sand/90">
+                  {snapshot.tagline}
+                </p>
+              </div>
+              <div className="card border-helm-accent/20 bg-ink-950/50 p-5">
+                <p className="text-[11px] uppercase tracking-[0.18em] text-helm-accent/80">
+                  Today&apos;s strategic read
+                </p>
+                <p className="mt-3 text-[15px] leading-relaxed text-white/78">{brief.strategic_summary}</p>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="mx-auto max-w-6xl px-6">
-        <section className="-mt-6">
-          <p className="mb-3 text-xs font-medium uppercase tracking-[0.22em] text-white/40">
-            City health at a glance
-          </p>
-          <HeroKPIStrip
+      <div className="mx-auto max-w-6xl space-y-14 px-6">
+        {/* ── Command centre ── */}
+        <StorySection
+          step="01"
+          eyebrow="Start here"
+          title="Command centre"
+          lead="Strategic health and headline KPIs — each tile opens evidence or a breakdown."
+        >
+          <BriefingBento
             kpis={snapshot.kpis}
             healthScore={brief.health_score}
             healthNarrative={snapshot.health_narrative || brief.health_narrative}
           />
-          <p className="mt-4 text-xs leading-relaxed text-white/40">{snapshot.confidence_note}</p>
-        </section>
+          <p className="mt-4 text-xs leading-relaxed text-white/38">{snapshot.confidence_note}</p>
+        </StorySection>
 
-        <section className="mt-10">
+        {/* ── Critical sectors ── */}
+        <StorySection
+          id="sectors"
+          step="02"
+          eyebrow="Mayor spine"
+          title="Critical sectors"
+          lead="Health, water, safety, housing, energy first — libraries stay secondary. Empty means the data request, not silence."
+        >
+          <CriticalSectors report={sectors} />
+        </StorySection>
+
+        {/* ── City pulse ── */}
+        <StorySection
+          id="pulse"
+          step="03"
+          eyebrow="What moved"
+          title="City pulse"
+          lead={`${pulse.data_through} vs ${pulse.previous_period} — every line opens a metric report.`}
+        >
           <PulseStrip pulse={pulse} />
-        </section>
+        </StorySection>
 
-        <Section eyebrow="What is working" title="Today's Wins & Initiatives">
-          <p className="-mt-2 mb-5 max-w-2xl text-sm text-white/55">
-            Delivery the City can stand on — with plain language, source links, and open reports.
-            Celebrate these before the room only hears problems.
+        {/* ── Compare ── */}
+        <StorySection
+          id="compare"
+          step="04"
+          eyebrow="Contrast to decide"
+          title="Headline contrasts"
+          lead="Dams vs NRW, clinics vs EMS, and other packs with strategic ratios — not chart spam."
+        >
+          <div className="grid gap-4 md:grid-cols-2">
+            {comparatives.packs.filter((p) => p.id !== "citizen_services").slice(0, 3).map((pack) => (
+              <Link
+                key={pack.id}
+                href={`/compare#${pack.id}`}
+                className="card block p-5 transition hover:border-helm-accent/40 hover:shadow-glow"
+              >
+                <p className="text-[11px] uppercase tracking-[0.16em] text-helm-accent/80">
+                  {pack.eyebrow}
+                </p>
+                <h3 className="mt-1 font-display text-lg font-semibold text-white">{pack.title}</h3>
+                <p className="mt-2 line-clamp-2 text-sm text-white/55">{pack.why_it_matters}</p>
+                {pack.ratio ? (
+                  <p className="mt-3 font-display text-2xl font-semibold text-helm-sand">
+                    {pack.ratio.value}
+                    <span className="ml-2 font-sans text-xs font-normal text-white/40">
+                      {pack.ratio.label}
+                    </span>
+                  </p>
+                ) : (
+                  <p className="mt-3 text-xs text-white/40">{pack.series.map((s) => s.label).join(" · ")}</p>
+                )}
+                <p className="mt-2 text-[11px] text-helm-accent">Open chart →</p>
+              </Link>
+            ))}
+          </div>
+          <p className="mt-3 text-xs text-white/35">
+            Helm is dynamic — new metrics show up after ingest. Use <strong className="text-white/50">Refresh now</strong>{" "}
+            in the header when you need data immediately.
           </p>
-          <div id="wins" className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+        </StorySection>
+
+        {/* ── Ask ── */}
+        <StorySection
+          id="ask"
+          step="05"
+          eyebrow="Interrogate the twin"
+          title="Ask Helm"
+          lead="Natural language over retrieved facts. Engines own the numbers; AI writes the answer."
+        >
+          <AskPanel />
+        </StorySection>
+
+        {/* ── Wins ── */}
+        <StorySection
+          id="wins"
+          step="06"
+          eyebrow="Momentum first"
+          title="What's working"
+          lead="Lead with delivery the City can stand on — before the room only hears problems."
+          variant="accent"
+        >
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {wins.map((w) => (
               <WinCard key={w.id} win={w} />
             ))}
           </div>
-        </Section>
+        </StorySection>
 
-        <Section eyebrow="Act before it happens" title="Today's Top Risks">
-          <p className="-mt-2 mb-5 max-w-2xl text-sm text-white/55">
-            Each risk opens a full report: trend chart, score breakdown, estimated annual cost, and
-            references you can defend in the room.
-          </p>
-          <div id="risks" className="grid gap-4 md:grid-cols-2">
+        {/* ── Risks ── */}
+        <StorySection
+          id="risks"
+          step="07"
+          eyebrow="Act before it happens"
+          title="Top risks"
+          lead="Ranked by score, priced where we can, each with a full drill-down report."
+        >
+          <div className="grid gap-4 md:grid-cols-2">
             {brief.top_risks.map((r) => (
               <RiskCard key={r.id} risk={r} glossary={glossaryForRisk(r.id, glossary)} />
             ))}
           </div>
-        </Section>
+        </StorySection>
 
-        <Section eyebrow="Value hiding in plain sight" title="Today's Top Opportunities">
+        {/* ── Opportunities ── */}
+        <StorySection
+          id="opportunities"
+          step="08"
+          eyebrow="Value in plain sight"
+          title="Opportunities"
+          lead="Underspend and efficiency gains you can redeploy this cycle."
+        >
           <div className="grid gap-4 md:grid-cols-2">
             {brief.top_opportunities.map((o) => (
               <OpportunityCard key={o.id} opp={o} />
             ))}
           </div>
-        </Section>
+        </StorySection>
 
-        <Section eyebrow="Who does what, by when" title="Action Tracker">
-          <ActionTracker register={actions} />
-        </Section>
+        {/* ── Accountability ── */}
+        <div id="act" className="grid scroll-mt-24 gap-14 lg:grid-cols-2 lg:gap-8">
+          <StorySection
+            step="08"
+            eyebrow="Assign & track"
+            title="Action tracker"
+            lead={`${actions.open_count} open · ${actions.overdue_count} overdue · ${formatZAR(actions.total_expected_impact_zar)} expected on open actions`}
+          >
+            <ActionTracker register={actions} />
+          </StorySection>
 
-        <Section eyebrow="The highest-leverage moves" title="Recommended Decisions">
+          <StorySection
+            step="09"
+            eyebrow="Prove the ROI"
+            title="Value delivered"
+            lead="What Helm surfaced → what happened → what it was worth."
+          >
+            <ValueLedgerPanel ledger={ledger} />
+          </StorySection>
+        </div>
+
+        {/* ── Decisions ── */}
+        <StorySection
+          step="10"
+          eyebrow="Highest-leverage moves"
+          title="Recommended decisions"
+          lead="The engine's synthesis — each links to the underlying risk or opportunity."
+        >
           <div className="grid gap-4">
             {brief.recommended_decisions.map((rec, i) => (
               <RecommendationCard key={rec.id} rec={rec} index={i} />
             ))}
           </div>
-        </Section>
+        </StorySection>
 
-        <Section eyebrow="What Helm surfaced → what ensued" title="Value Delivered">
-          <p className="-mt-2 mb-5 max-w-2xl text-sm text-white/55">
-            The renewal artifact: every insight Helm raised, the action that followed, and the rand
-            value — labelled projected, realised, or avoided cost so the claim survives scrutiny.
-          </p>
-          <ValueLedgerPanel ledger={ledger} />
-        </Section>
-
-        <Section eyebrow="Institutional memory" title="Decision Register">
-          <p className="-mt-2 mb-5 max-w-2xl text-sm text-white/55">
-            What was decided, by whom, and when it comes up for review — linked to the risk or win
-            it addresses. This is the memory that survives elections and staff turnover.
-          </p>
+        <StorySection
+          step="11"
+          eyebrow="Institutional memory"
+          title="Decision register"
+          lead="What was decided, by whom, and when it comes up for review."
+          variant="muted"
+        >
           <DecisionLog register={decisionRegister} />
-        </Section>
+        </StorySection>
 
-        <Section eyebrow="Verifiable, source-linked intelligence" title="Deep Dive by Domain">
-          <DomainGrid code={MUNICIPALITY} domains={domains} />
-        </Section>
+        {/* ── Explore ── */}
+        <div id="explore" className="scroll-mt-24">
+          <StorySection
+            step="12"
+            eyebrow="Go deeper"
+            title="Domains & simulation"
+            lead="Source-linked intelligence by directorate, plus what-if on budget lines."
+          >
+            <div className="grid gap-8 lg:grid-cols-5">
+              <div className="lg:col-span-3">
+                <DomainGrid code={MUNICIPALITY} domains={domains} />
+              </div>
+              <div className="lg:col-span-2">
+                <SimulationPanel scenarios={scenarios} />
+              </div>
+            </div>
+          </StorySection>
+        </div>
 
-        <Section eyebrow="What happens if…" title="Decision Simulator">
-          <SimulationPanel scenarios={scenarios} />
-        </Section>
-
-        <Section eyebrow="Independent reasoning, merged" title="Agent Briefing">
-          <div className="grid gap-3 md:grid-cols-2">
+        {/* ── Trust layer ── */}
+        <StorySection
+          step="13"
+          eyebrow="Nothing to hide"
+          title="Sources & reasoning"
+          lead="Where every feed stands today — and the agents that merged today's brief. New feeds appear after ingest; Refresh now pulls on demand."
+        >
+          <FeedStatusPanel report={feeds} />
+          <div className="mt-6 grid gap-3 md:grid-cols-2">
             {brief.agent_contributions
               .filter((c) => c.confidence > 0)
               .map((c) => (
                 <div key={c.agent} className="card p-4">
                   <div className="flex items-center justify-between">
                     <span className="text-sm font-semibold text-white/85">{c.agent}</span>
-                    <span className="text-xs text-white/40">
-                      {Math.round(c.confidence * 100)}%
-                    </span>
+                    <span className="text-xs text-white/40">{Math.round(c.confidence * 100)}%</span>
                   </div>
                   <p className="mt-1.5 text-sm text-white/60">{c.summary}</p>
                 </div>
               ))}
           </div>
-        </Section>
+        </StorySection>
 
-        <Section eyebrow="Nothing to hide" title="Where the Numbers Come From">
-          <FeedStatusPanel report={feeds} />
-        </Section>
-
-        <footer className="mt-16 border-t border-white/10 pt-6 text-xs text-white/35">
-          Helm · Strategic Intelligence Operating System · Serving {brief.generated_for}. Data
-          through {dataThrough}. Brief refreshed {briefRefreshed}. Images on win cards are
-          illustrative (Unsplash); every number links to a public City / Treasury / SAPS / DWS
-          source in its report.
+        <footer className="border-t border-white/10 pt-8 text-xs text-white/35">
+          Helm · Strategic Intelligence Operating System · {brief.generated_for} · Data through{" "}
+          {dataThrough} · Brief {briefRefreshed}
         </footer>
       </div>
     </main>

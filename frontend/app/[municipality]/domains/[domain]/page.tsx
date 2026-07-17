@@ -1,6 +1,7 @@
 import Link from "next/link";
 import DomainTabs from "@/components/DomainTabs";
 import IndicatorRow from "@/components/IndicatorRow";
+import PageChrome from "@/components/PageChrome";
 import PolicyList from "@/components/PolicyList";
 import SourcesPanel from "@/components/SourcesPanel";
 import {
@@ -53,20 +54,19 @@ export default async function DomainPage({
 
   return (
     <main className="mx-auto max-w-5xl px-6 py-10">
-      <header className="flex items-center justify-between">
-        <div className="flex items-center gap-2 text-sm">
-          <Link href="/" className="font-semibold tracking-wide text-white/80 hover:text-white">
-            Helm
-          </Link>
-          <span className="text-white/25">/</span>
-          <span className="text-white/50">{muni.name}</span>
-          <span className="text-white/25">/</span>
-          <span className="text-white/80">{profile.name}</span>
-        </div>
-        <Link href="/" className="text-xs text-helm-accent hover:underline">
-          ← Briefing
-        </Link>
-      </header>
+      <PageChrome
+        crumbs={
+          <>
+            <Link href="/" className="font-semibold text-white/80 hover:text-white">
+              Helm
+            </Link>
+            <span className="text-white/25">/</span>
+            <span className="text-white/50">{muni.name}</span>
+            <span className="text-white/25">/</span>
+            <span className="text-white/80">{profile.name}</span>
+          </>
+        }
+      />
 
       <div className="mt-8">
         <p className="text-xs uppercase tracking-[0.25em] text-white/35">Deep Dive</p>

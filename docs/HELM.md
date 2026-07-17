@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="brand/coct-logo.svg" alt="City of Cape Town" width="280" />
+</p>
+
 # Helm — Knowledge Base
 
 **Strategic Intelligence Operating System for cities**  
@@ -53,6 +57,58 @@ Helm is a **Strategic Intelligence Operating System**: a continuously updated, s
 - **Feed transparency** — live / cached / curated / seed, with last-refreshed timestamps.
 
 ---
+
+## 1.4 Critical sector spine (mayor-ready)
+
+Helm does **not** treat every domain as equal in the briefing. A **critical sector spine** (`GET /sectors`, homepage `#sectors`) orders what the mayor asks about first:
+
+| Priority | Sector | Notes |
+|----------|--------|--------|
+| **P0** | Health, Water, Safety, Housing, Energy | Must survive the room |
+| **P1** | Roads & transport, Waste, Fiscal | Strong operational / money signals |
+| **P3** | Libraries & community | Useful citizen signal — **never** briefed above P0 |
+
+**Hospitals:** City Health = clinics + EMS. Acute hospitals are **Western Cape DoH** — Helm states that gap; it will not invent hospital occupancy.
+
+**Empty ≠ failure.** If a P0 sector has no monthly series, the card shows the **data request** (blocker). Ask Helm returns the same gap instead of guessing.
+
+### Demographics / “who is affected”
+
+Every risk and critical sector can carry an `AffectedPopulation` block (seed: `datasets/seed/affected/CPT.json`):
+
+- `population_estimate`, `unit` (residents | households | …)
+- `geography`, `method`, `confidence`, `source_*`, `as_of`
+- `gaps[]` — what we still need
+- `vulnerability_notes[]` — qualitative, sourced where possible
+
+Tiers: **A** metro/district denominators → **B** service catchments → **C** vulnerability overlays. Never invent finer numbers than the source supports.
+
+### Health sector (City Health)
+
+Domain `/CPT/domains/health` with clinic waiting days + EMS response series, **Health access** comparative pack, risk scoring, and demographic denominators on those risks. Strategic Health (0–100 composite) is separate — see `/health`.
+
+## 1.5 Is the system dynamic?
+
+**Yes, within the facts store.** Risk, pulse, comparatives, and Ask all read whatever metrics/domains/feeds are currently loaded. When ingestion pulls a new series or a domain profile is added, the next brief/pulse surfaces it automatically.
+
+- **Nightly / scheduled ingest** keeps the twin current from public feeds.  
+- **Refresh now** (header button → `POST /refresh`) clears the brief cache, re-runs ingestion, and rebuilds — use when someone needs data immediately.
+
+## 1.6 Ask Helm & how AI is used
+
+| Layer | Who | Role |
+|-------|-----|------|
+| Scores, forecasts, risk ranks, valuation, health formula | Engines | Deterministic numbers you can audit (`/health-breakdown`) |
+| Morning brief prose | Gemini | Narrates over engine outputs |
+| **Ask Helm** (`/ask`, `POST /ask`) | Gemini + retrieved facts | Natural-language answer or short report with citations |
+
+**Places:** Ask detects area names (e.g. Khayelitsha) via `datasets/seed/places/CPT.json`, pulls related wins/domains/sectors, and summarises what is *place-named* vs *metro-wide*. It will not invent ward KPIs — place gaps are returned explicitly. Expand the places seed as more area dossiers are curated.
+
+AI does **not** invent metrics. Ask retrieves brief, health breakdown, pulse, comparatives, and latest metric values first.
+
+## 1.7 Comparatives
+
+`GET /comparatives` and `/compare` pack related series (e.g. **dams vs NRW**, **clinics vs EMS**) and only emit ratios that support a real decision (loss–storage gap, access pressure index).
 
 ## 2. How the reasoning works
 

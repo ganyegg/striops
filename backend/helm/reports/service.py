@@ -29,7 +29,11 @@ from helm.valuation import attach_valuations
 # Domain indicator key → optional live metric series for charting.
 _INDICATOR_METRIC: dict[str, tuple[str, str]] = {
     "nrw": ("svc-water", "non_revenue_water_pct"),
-    "dams": ("svc-water", "non_revenue_water_pct"),  # related water pressure series
+    "dams": ("svc-water", "dam_storage"),
+    "clinic_wait": ("svc-health", "clinic_waiting_days"),
+    "ems_response": ("svc-health", "ems_response_minutes"),
+    "refuse_requests": ("svc-solid-waste", "refuse_service_requests"),
+    "backlog": ("svc-roads", "road_maintenance_backlog_km"),
     "c3": ("svc-solid-waste", "refuse_service_requests"),
 }
 
@@ -293,6 +297,9 @@ def build_risk_report(risk_id: str, repo: Repository | None = None) -> RiskRepor
     repo = repo or get_repository()
     risks = assess_risks(repo.service_areas(), repo.metric_series(), repo.budget_lines())
     risks, _ = attach_valuations(risks, [], repo.metric_series())
+    from helm.demographics import attach_affected
+
+    risks = attach_affected(risks)
     risk = next((r for r in risks if r.id == risk_id), None)
 
     # Also allow looking up via opportunity id that maps to a metric.

@@ -45,6 +45,23 @@ export default function RiskCard({
           </p>
         </div>
       ) : null}
+      {risk.affected ? (
+        <div className="mt-3 rounded-lg border border-helm-sky/20 bg-helm-sky/5 px-3 py-2">
+          <p className="text-[11px] font-medium uppercase tracking-wide text-helm-sky">Who is affected</p>
+          {risk.affected.population_estimate != null ? (
+            <p className="mt-0.5 font-display text-lg font-semibold text-white">
+              ~{risk.affected.population_estimate.toLocaleString("en-ZA")}{" "}
+              <span className="font-sans text-xs font-normal text-white/45">{risk.affected.unit}</span>
+            </p>
+          ) : (
+            <p className="mt-0.5 text-xs text-white/50">Denominator pending — see gaps</p>
+          )}
+          <p className="mt-0.5 text-[11px] text-white/45">{risk.affected.geography}</p>
+          {risk.affected.gaps?.[0] ? (
+            <p className="mt-1 text-[10px] text-white/35">Gap: {risk.affected.gaps[0]}</p>
+          ) : null}
+        </div>
+      ) : null}
       <div className="mt-3 rounded-lg bg-helm-accent/10 p-3 text-sm text-white/75">
         <span className="text-[11px] font-medium uppercase tracking-wide text-helm-accent">
           Mitigation

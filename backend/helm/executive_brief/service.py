@@ -46,9 +46,9 @@ def _dedupe_opportunities(opps: list[Opportunity]) -> list[Opportunity]:
 
 
 def _health_score(risks: list[Risk], opportunities: list[Opportunity]) -> int:
-    penalty = min(55.0, sum(r.score for r in risks[:5]) * 0.16)
-    bonus = min(8.0, len([o for o in opportunities if o.value_estimate > 0]) * 2.5)
-    return int(max(0, min(100, round(100 - penalty + bonus))))
+    from helm.health_score import compute_health_breakdown
+
+    return compute_health_breakdown(risks, opportunities).health_score
 
 
 def build_executive_brief(
@@ -90,6 +90,9 @@ def build_executive_brief(
     risks, opportunities = attach_valuations(
         risks, opportunities, ctx.metric_series, settings.helm_municipality
     )
+    from helm.demographics import attach_affected
+
+    risks = attach_affected(risks, settings.helm_municipality)
     recommendations = recommend(risks, opportunities)
     health = _health_score(risks, opportunities)
 

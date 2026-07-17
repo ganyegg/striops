@@ -88,7 +88,7 @@
     "priority": "high",
     "confidence": 0.7,
     "owner": "Safety and Security",
-    "image_url": "https://images.unsplash.com/photo-1453873535-8aedfdf99245?auto=format&fit=crop&w=1400&q=80",
+    "image_url": "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=1400&q=80",
     "image_credit": "Unsplash — city street night (illustrative)",
     "metrics": [
       {"label": "Safety budget 2026/27", "value": "R6.8bn", "as_of": "adopted budget", "source_id": "src-budget-2627"},
@@ -113,7 +113,7 @@
     "priority": "medium",
     "confidence": 0.8,
     "owner": "Urban Mobility",
-    "image_url": "https://images.unsplash.com/photo-1544620341-11a8d17463bd?auto=format&fit=crop&w=1400&q=80",
+    "image_url": "https://images.unsplash.com/photo-1519501025264-65ba15a82390?auto=format&fit=crop&w=1400&q=80",
     "image_credit": "Unsplash — bus transit (illustrative)",
     "metrics": [
       {"label": "Cape Flats expansion", "value": "R3.2bn–R3.3bn", "as_of": "2026/27 MTREF", "source_id": "src-budget-2627"},

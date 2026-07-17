@@ -1,5 +1,6 @@
 import Link from "next/link";
 import MetricTrendChart from "@/components/MetricTrendChart";
+import PageChrome from "@/components/PageChrome";
 import ReferencesPanel from "@/components/ReferencesPanel";
 import ScoreBreakdownPanel from "@/components/ScoreBreakdown";
 import { getRiskReport, priorityColor, type RiskReport } from "@/lib/api";
@@ -33,20 +34,19 @@ export default async function RiskReportPage({
 
   return (
     <main className="mx-auto max-w-5xl px-6 py-10">
-      <header className="flex items-center justify-between text-sm">
-        <div className="flex items-center gap-2">
-          <Link href="/" className="font-display font-semibold tracking-wide text-white/80 hover:text-white">
-            Helm
-          </Link>
-          <span className="text-white/25">/</span>
-          <span className="text-white/50">Risk report</span>
-          <span className="text-white/25">/</span>
-          <span className="text-white/80">{risk.title}</span>
-        </div>
-        <Link href="/" className="text-xs text-helm-accent hover:underline">
-          ← Briefing
-        </Link>
-      </header>
+      <PageChrome
+        crumbs={
+          <>
+            <Link href="/" className="font-display font-semibold text-white/80 hover:text-white">
+              Helm
+            </Link>
+            <span className="text-white/25">/</span>
+            <span className="text-white/50">Risk report</span>
+            <span className="text-white/25">/</span>
+            <span className="text-white/80">{risk.title}</span>
+          </>
+        }
+      />
 
       <div className="mt-8">
         <p className="text-xs uppercase tracking-[0.25em] text-white/35">Risk report</p>

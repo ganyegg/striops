@@ -12,6 +12,8 @@ _HIGHER_IS_WORSE = {
     "road_maintenance_backlog_km",
     "public_lighting_outages",
     "complaints",
+    "clinic_waiting_days",
+    "ems_response_minutes",
 }
 
 

@@ -27,6 +27,19 @@ export interface CostEstimate {
   unit_note?: string | null;
 }
 
+export interface AffectedPopulation {
+  population_estimate?: number | null;
+  unit: string;
+  geography: string;
+  method: string;
+  confidence: number;
+  source_label?: string | null;
+  source_url?: string | null;
+  as_of?: string | null;
+  gaps: string[];
+  vulnerability_notes: string[];
+}
+
 export interface Risk {
   id: string;
   title: string;
@@ -42,6 +55,7 @@ export interface Risk {
   forecast?: Forecast | null;
   score: number;
   cost_estimate?: CostEstimate | null;
+  affected?: AffectedPopulation | null;
 }
 
 export interface Opportunity {
@@ -719,4 +733,192 @@ export function toneClass(tone: string): string {
     default:
       return "text-helm-sky";
   }
+}
+
+// -------------------------------------------------------------------------
+// Health breakdown, comparatives, ask, refresh
+// -------------------------------------------------------------------------
+
+export interface RiskContribution {
+  risk_id: string;
+  title: string;
+  score: number;
+  weight: number;
+  contribution: number;
+  href: string;
+  rank: number;
+}
+
+export interface OpportunityContribution {
+  opportunity_id: string;
+  title: string;
+  value_estimate: number;
+  qualifies: boolean;
+  contribution: number;
+  href: string;
+}
+
+export interface HealthBreakdown {
+  base: number;
+  risk_weight: number;
+  risk_cap: number;
+  opportunity_unit_bonus: number;
+  opportunity_cap: number;
+  risk_lines: RiskContribution[];
+  risk_penalty_raw: number;
+  risk_penalty_capped: number;
+  risk_cap_applied: boolean;
+  opportunity_lines: OpportunityContribution[];
+  opportunity_bonus_raw: number;
+  opportunity_bonus_capped: number;
+  opportunity_cap_applied: boolean;
+  pre_round: number;
+  health_score: number;
+  health_narrative?: string | null;
+  formula_plain_language: string;
+  engines_note: string;
+}
+
+export interface ComparativeSeries {
+  entity_id: string;
+  metric: string;
+  label: string;
+  unit?: string | null;
+  higher_is_worse: boolean;
+  points: { period: string; value: number }[];
+  latest?: number | null;
+  previous?: number | null;
+  change_pct?: number | null;
+  href: string;
+  plain_language?: string | null;
+}
+
+export interface StrategicRatio {
+  key: string;
+  label: string;
+  value: number;
+  unit: string;
+  interpretation: string;
+  why_it_matters: string;
+}
+
+export interface ComparativePack {
+  id: string;
+  title: string;
+  eyebrow: string;
+  why_it_matters: string;
+  decision_anchor: string;
+  series: ComparativeSeries[];
+  ratio?: StrategicRatio | null;
+}
+
+export interface ComparativesReport {
+  municipality: string;
+  data_through?: string | null;
+  packs: ComparativePack[];
+  note: string;
+}
+
+export interface AskCitation {
+  label: string;
+  href: string;
+}
+
+export interface DataGap {
+  sector_id: string;
+  sector_name: string;
+  blocker: string;
+  ask_prompt: string;
+}
+
+export interface AskResponse {
+  question: string;
+  mode: string;
+  answer: string;
+  report_markdown?: string | null;
+  citations: AskCitation[];
+  used_facts: string[];
+  data_gaps?: DataGap[];
+  ai_role: string;
+  model: string;
+  dynamic_note: string;
+}
+
+export interface CriticalSector {
+  id: string;
+  name: string;
+  priority: string;
+  domain_id?: string | null;
+  href: string;
+  mayor_question: string;
+  ownership_note?: string | null;
+  status: string;
+  domain_available: boolean;
+  ops_series_count: number;
+  has_affected: boolean;
+  headline?: string | null;
+  blocker?: string | null;
+  ask_prompt: string;
+  affected?: AffectedPopulation | null;
+  top_risk_id?: string | null;
+  top_risk_title?: string | null;
+}
+
+export interface SectorsReport {
+  municipality: string;
+  note: string;
+  sectors: CriticalSector[];
+  p0_ready_count: number;
+  p0_total: number;
+}
+
+export async function getSectors(): Promise<SectorsReport> {
+  const res = await fetch(`${SERVER_BASE}/sectors`, { cache: "no-store" });
+  if (!res.ok) throw new Error(`sectors failed: ${res.status}`);
+  return res.json();
+}
+
+export interface RefreshResult {
+  ok: boolean;
+  refreshed_at: string;
+  brief_cache_cleared: boolean;
+  domain_cache_cleared: boolean;
+  ingestion: Record<string, number>;
+  ingestion_error?: string | null;
+  feeds_live_count?: number | null;
+  feeds_total_count?: number | null;
+  note: string;
+}
+
+export async function getHealthBreakdown(): Promise<HealthBreakdown> {
+  const res = await fetch(`${SERVER_BASE}/health-breakdown`, { cache: "no-store" });
+  if (!res.ok) throw new Error(`health-breakdown failed: ${res.status}`);
+  return res.json();
+}
+
+export async function getComparatives(): Promise<ComparativesReport> {
+  const res = await fetch(`${SERVER_BASE}/comparatives`, { cache: "no-store" });
+  if (!res.ok) throw new Error(`comparatives failed: ${res.status}`);
+  return res.json();
+}
+
+export async function askHelm(
+  question: string,
+  mode: "answer" | "report" = "answer",
+): Promise<AskResponse> {
+  const res = await fetch(`${CLIENT_BASE}/ask`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ question, mode }),
+  });
+  if (!res.ok) throw new Error(`ask failed: ${res.status}`);
+  return res.json();
+}
+
+export async function refreshHelm(runIngest = true): Promise<RefreshResult> {
+  const res = await fetch(`${CLIENT_BASE}/refresh?run_ingest=${runIngest}`, {
+    method: "POST",
+  });
+  if (!res.ok) throw new Error(`refresh failed: ${res.status}`);
+  return res.json();
 }

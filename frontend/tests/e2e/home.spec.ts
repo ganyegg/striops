@@ -8,10 +8,10 @@ test("executive homepage shows an intelligence-first briefing", async ({ page })
   await expect(page.getByText("Think Ahead")).toBeVisible();
 
   // Intelligence-first: wins + risks, not a chart-first dashboard.
-  await expect(page.getByRole("heading", { name: /Today's Wins/i })).toBeVisible();
-  await expect(page.getByRole("heading", { name: /Today's Top Risks/i })).toBeVisible();
-  await expect(page.getByRole("heading", { name: /Recommended Decisions/i })).toBeVisible();
-  await expect(page.getByText(/City health at a glance/i)).toBeVisible();
+  await expect(page.getByRole("heading", { name: /What's working/i })).toBeVisible();
+  await expect(page.getByRole("heading", { name: /Top risks/i })).toBeVisible();
+  await expect(page.getByRole("heading", { name: /Recommended decisions/i })).toBeVisible();
+  await expect(page.getByRole("heading", { name: /Command centre/i })).toBeVisible();
 
   // Run a simulation and see a recommendation.
   await page.getByRole("button", { name: /Run Simulation/i }).click();

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import MetricTrendChart from "@/components/MetricTrendChart";
+import PageChrome from "@/components/PageChrome";
 import ReferencesPanel from "@/components/ReferencesPanel";
 import VerificationBadge from "@/components/VerificationBadge";
 import {
@@ -51,22 +52,23 @@ export default async function IndicatorReportPage({
 
   return (
     <main className="mx-auto max-w-5xl px-6 py-10">
-      <header className="flex items-center justify-between text-sm">
-        <div className="flex flex-wrap items-center gap-2">
-          <Link href="/" className="font-semibold tracking-wide text-white/80 hover:text-white">
-            Helm
-          </Link>
-          <span className="text-white/25">/</span>
-          <Link href={`/${code}/domains/${domainId}`} className="text-white/50 hover:text-white/80">
-            {report.domain_name}
-          </Link>
-          <span className="text-white/25">/</span>
-          <span className="text-white/80">{ind.label}</span>
-        </div>
-        <Link href={`/${code}/domains/${domainId}`} className="text-xs text-helm-accent hover:underline">
-          ← Domain
-        </Link>
-      </header>
+      <PageChrome
+        backHref={`/${code}/domains/${domainId}`}
+        backLabel="← Domain"
+        crumbs={
+          <>
+            <Link href="/" className="font-semibold text-white/80 hover:text-white">
+              Helm
+            </Link>
+            <span className="text-white/25">/</span>
+            <Link href={`/${code}/domains/${domainId}`} className="text-white/50 hover:text-white/80">
+              {report.domain_name}
+            </Link>
+            <span className="text-white/25">/</span>
+            <span className="text-white/80">{ind.label}</span>
+          </>
+        }
+      />
 
       <div className="mt-8">
         <p className="text-xs uppercase tracking-[0.25em] text-white/35">Indicator report</p>

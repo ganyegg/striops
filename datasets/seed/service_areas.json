@@ -3,5 +3,6 @@
   {"id": "svc-water", "name": "Water and Sanitation", "department": "Water and Sanitation", "budget_function": "Water and Sanitation", "owner": "Director: Water and Sanitation"},
   {"id": "svc-roads", "name": "Roads and Transport", "department": "Urban Mobility", "budget_function": "Roads and Transport", "owner": "Director: Urban Mobility"},
   {"id": "svc-lighting", "name": "Public Lighting", "department": "Energy", "budget_function": "Electricity", "owner": "Director: Energy"},
-  {"id": "svc-libraries", "name": "Libraries and Community", "department": "Community Services", "budget_function": "Community and Libraries", "owner": "Director: Community Services"}
+  {"id": "svc-libraries", "name": "Libraries and Community", "department": "Community Services", "budget_function": "Community and Libraries", "owner": "Director: Community Services"},
+  {"id": "svc-health", "name": "City Health", "department": "City Health", "budget_function": "Health", "owner": "Director: City Health"}
 ]

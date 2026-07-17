@@ -15,7 +15,8 @@
     },
     "domains_available": [
       "fiscal", "budget", "staffing", "housing_population",
-      "safety_policing", "governance_policies", "water", "energy", "service_delivery"
+      "safety_policing", "governance_policies", "water", "energy", "health",
+      "waste", "transport", "service_delivery"
     ]
   },
   {

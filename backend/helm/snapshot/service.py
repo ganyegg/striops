@@ -81,6 +81,17 @@ def build_city_snapshot(code: str = "CPT") -> CitySnapshot:
 
     critical = sum(1 for r in brief.top_risks if r.priority.value in ("critical", "high"))
 
+    clinic_wait = "—"
+    try:
+        for series in get_repository().metric_series():
+            if series.entity_id == "svc-health" and series.metric == "clinic_waiting_days":
+                vals = series.values()
+                if vals:
+                    clinic_wait = f"{vals[-1]:.1f}d"
+                break
+    except Exception:
+        pass
+
     # Health is rendered as the centred hero tile — not duplicated in the strip.
     kpis = [
         HeroKPI(
@@ -145,6 +156,15 @@ def build_city_snapshot(code: str = "CPT") -> CitySnapshot:
             tone="bad",
             href="/#risks",
             plain_language="Risks ranked high or critical that need a decision this cycle.",
+        ),
+        HeroKPI(
+            key="health_sector",
+            label="Clinic wait (median)",
+            value=clinic_wait,
+            hint="City Health",
+            tone="bad",
+            href=f"/{code}/domains/health",
+            plain_language="Primary-care access pressure — open the Health domain.",
         ),
     ]
 

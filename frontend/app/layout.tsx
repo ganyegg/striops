@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { DM_Sans, Fraunces } from "next/font/google";
+import ScrollToTop from "@/components/ScrollToTop";
 import "./globals.css";
 
 const sans = DM_Sans({
@@ -22,7 +23,10 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${sans.variable} ${display.variable}`}>
-      <body className="font-sans text-white/90 antialiased">{children}</body>
+      <body className="font-sans text-white/90 antialiased">
+        {children}
+        <ScrollToTop />
+      </body>
     </html>
   );
 }

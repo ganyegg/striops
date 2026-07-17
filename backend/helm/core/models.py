@@ -104,6 +104,21 @@ class CostEstimate(BaseModel):
     unit_note: str | None = None
 
 
+class AffectedPopulation(BaseModel):
+    """Who is touched by a risk/issue — coarse, sourced, never invented."""
+
+    population_estimate: float | None = None
+    unit: str = "residents"  # residents | households | patients/month | …
+    geography: str
+    method: str
+    confidence: float = Field(ge=0.0, le=1.0)
+    source_label: str | None = None
+    source_url: str | None = None
+    as_of: str | None = None
+    gaps: list[str] = Field(default_factory=list)
+    vulnerability_notes: list[str] = Field(default_factory=list)
+
+
 class Risk(BaseModel):
     id: str
     title: str
@@ -118,6 +133,7 @@ class Risk(BaseModel):
     evidence: list[Evidence] = Field(default_factory=list)
     forecast: Forecast | None = None
     cost_estimate: CostEstimate | None = None
+    affected: AffectedPopulation | None = None
 
     @computed_field  # type: ignore[prop-decorator]
     @property

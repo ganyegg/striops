@@ -1,0 +1,156 @@
+{
+  "municipality": "CPT",
+  "note": "Coarse denominators for mayor-ready 'who is affected' — Census/IDP/operational order-of-magnitude. Never invent finer numbers than the source supports.",
+  "by_risk_id": {},
+  "by_metric": {
+    "clinic_waiting_days": {
+      "population_estimate": 3200000,
+      "unit": "residents",
+      "geography": "City Health PHC catchment (metro-wide estimate)",
+      "method": "Illustrative share of metro population reliant on public PHC; replace with City Health facility catchment rollup.",
+      "confidence": 0.4,
+      "source_label": "Census 2022 metro pop × public-sector PHC dependence (illustrative)",
+      "source_url": "https://www.statssa.gov.za/",
+      "as_of": "2022 Census + illustrative share",
+      "gaps": [
+        "Official City Health waiting-time extract by facility not yet wired",
+        "Provincial hospital occupancy is Western Cape DoH — not City-owned"
+      ],
+      "vulnerability_notes": [
+        "Longer waits hit uninsured households hardest",
+        "Chronic-care and maternal clients absorb queue risk disproportionately"
+      ]
+    },
+    "ems_response_minutes": {
+      "population_estimate": 5000000,
+      "unit": "residents",
+      "geography": "City of Cape Town metro (EMS coverage area)",
+      "method": "Full metro population as EMS service footprint; refine with P1 call volumes by district when available.",
+      "confidence": 0.55,
+      "source_label": "City of Cape Town population estimate",
+      "source_url": "https://www.capetown.gov.za/",
+      "as_of": "Census 2022 + City estimate",
+      "gaps": ["P1 call volumes by district not yet in Helm facts store"],
+      "vulnerability_notes": ["Minutes above urban benchmark raise outcome risk on life-threatening calls"]
+    },
+    "non_revenue_water_pct": {
+      "population_estimate": 5000000,
+      "unit": "residents",
+      "geography": "Western Cape Water Supply System / City reticulation customers",
+      "method": "Metro population as water-service denominator; losses raise scarcity and cost for all billed households.",
+      "confidence": 0.6,
+      "source_label": "City / DWS water system reporting",
+      "source_url": "https://www.dws.gov.za/",
+      "as_of": "2026 operational series",
+      "gaps": ["Zone-level NRW not yet attached — city-wide % only"],
+      "vulnerability_notes": ["Informal and high-loss zones feel scarcity and interruptions first"]
+    },
+    "dam_storage": {
+      "population_estimate": 5000000,
+      "unit": "residents",
+      "geography": "Western Cape Water Supply System users (City of Cape Town share)",
+      "method": "Metro population dependent on WCWSS bulk storage.",
+      "confidence": 0.65,
+      "source_label": "DWS weekly dam levels + City water services",
+      "source_url": "https://www.dws.gov.za/Hydrology/Weekly/ProvinceWeek.aspx?region=WC",
+      "as_of": "2026 weekly / monthly series",
+      "gaps": [],
+      "vulnerability_notes": ["Low storage raises restriction risk for all households before summer peak"]
+    },
+    "road_maintenance_backlog_km": {
+      "population_estimate": 5000000,
+      "unit": "residents",
+      "geography": "City road network users (metro-wide)",
+      "method": "Metro population as mobility denominator; backlog concentrates vehicle damage and stormwater failure risk.",
+      "confidence": 0.5,
+      "source_label": "Urban Mobility backlog series",
+      "source_url": "https://www.capetown.gov.za/",
+      "as_of": "2026 operational series",
+      "gaps": ["Ward-level backlog km not yet published into Helm"],
+      "vulnerability_notes": ["Public-transport dependent residents absorb delays and safety risk on degraded corridors"]
+    },
+    "refuse_service_requests": {
+      "population_estimate": 5000000,
+      "unit": "residents",
+      "geography": "Solid waste collection areas (metro)",
+      "method": "Metro population under municipal collection mandate.",
+      "confidence": 0.55,
+      "source_label": "Urban Waste Management / C3 proxies",
+      "source_url": "https://odp.capetown.gov.za",
+      "as_of": "2026 operational series",
+      "gaps": ["Precinct-level illegal dumping hotspots not yet linked"],
+      "vulnerability_notes": ["Missed collections and dumping concentrate in dense lower-income areas"]
+    },
+    "public_lighting_outages": {
+      "population_estimate": 1800000,
+      "unit": "residents",
+      "geography": "Estimate of residents in high night-time pedestrian / PT-wait zones (illustrative)",
+      "method": "Subset of metro pop weighted to areas where lighting failure most affects perceived safety; refine with outage GIS.",
+      "confidence": 0.35,
+      "source_label": "Illustrative night-time exposure share",
+      "source_url": null,
+      "as_of": "illustrative",
+      "gaps": ["Need outage tickets joined to ward population"],
+      "vulnerability_notes": ["Women and evening PT users feel dark streets first"]
+    },
+    "library_visits": {
+      "population_estimate": null,
+      "unit": "residents",
+      "geography": "Library catchment communities",
+      "method": "Social outcome metric — no city-wide affected count until facility catchments are attached.",
+      "confidence": 0.2,
+      "source_label": null,
+      "source_url": null,
+      "as_of": null,
+      "gaps": ["Facility-level catchments not in facts store — secondary to Health/Safety/Housing"],
+      "vulnerability_notes": ["Useful citizen-experience signal; not a mayor P0 sector"]
+    }
+  },
+  "by_domain": {
+    "housing_population": {
+      "population_estimate": 300000,
+      "unit": "households",
+      "geography": "Housing database backlog (City-wide)",
+      "method": "IDP / housing database backlog order-of-magnitude pending official refresh.",
+      "confidence": 0.4,
+      "source_label": "IDP 2022–2027 housing database (confirm)",
+      "source_url": "https://www.capetown.gov.za/",
+      "as_of": "IDP cycle — needs verification",
+      "gaps": ["Monthly delivery vs budgeted units not yet a time series in Helm"],
+      "vulnerability_notes": ["Backlog households are the clearest housing demographic denominator"]
+    },
+    "safety_policing": {
+      "population_estimate": null,
+      "unit": "residents",
+      "geography": "LEAP / high-crime precincts (to be attached)",
+      "method": "Await SAPS quarter + precinct population join before publishing a count.",
+      "confidence": 0.25,
+      "source_label": "SAPS / LEAP (pending verified quarter)",
+      "source_url": "https://www.saps.gov.za/",
+      "as_of": null,
+      "gaps": [
+        "Exact SAPS quarter and precinct list required before crime claims",
+        "Precinct population denominators not yet joined"
+      ],
+      "vulnerability_notes": ["Contact crime concentrates in a minority of precincts — attach before briefing"]
+    },
+    "health": {
+      "population_estimate": 3200000,
+      "unit": "residents",
+      "geography": "Public PHC users (illustrative metro share)",
+      "method": "See clinic_waiting_days. Hospitals: Western Cape Department of Health — linked externally, not City-owned.",
+      "confidence": 0.4,
+      "source_label": "City Health + Stats SA (illustrative)",
+      "source_url": "https://www.capetown.gov.za/Departments/City%20Health",
+      "as_of": "2026",
+      "gaps": [
+        "Provincial hospital beds/occupancy not in City facts store",
+        "Facility-level waiting times pending official extract"
+      ],
+      "vulnerability_notes": [
+        "City owns clinics & EMS pathways; acute hospitals are provincial",
+        "Always say so in the room — do not invent hospital stats"
+      ]
+    }
+  }
+}
