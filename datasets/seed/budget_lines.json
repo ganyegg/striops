@@ -1,0 +1,17 @@
+[
+  {"function_name": "Solid Waste Management", "financial_year": 2023, "budget": 4100000000, "actual": 3980000000, "source": "seed"},
+  {"function_name": "Solid Waste Management", "financial_year": 2024, "budget": 4350000000, "actual": 4310000000, "source": "seed"},
+  {"function_name": "Solid Waste Management", "financial_year": 2025, "budget": 4600000000, "actual": 4585000000, "source": "seed"},
+  {"function_name": "Water and Sanitation", "financial_year": 2023, "budget": 8900000000, "actual": 8210000000, "source": "seed"},
+  {"function_name": "Water and Sanitation", "financial_year": 2024, "budget": 9600000000, "actual": 8750000000, "source": "seed"},
+  {"function_name": "Water and Sanitation", "financial_year": 2025, "budget": 10200000000, "actual": 8990000000, "source": "seed"},
+  {"function_name": "Roads and Transport", "financial_year": 2023, "budget": 5200000000, "actual": 4980000000, "source": "seed"},
+  {"function_name": "Roads and Transport", "financial_year": 2024, "budget": 5450000000, "actual": 5010000000, "source": "seed"},
+  {"function_name": "Roads and Transport", "financial_year": 2025, "budget": 5700000000, "actual": 4820000000, "source": "seed"},
+  {"function_name": "Electricity", "financial_year": 2023, "budget": 12500000000, "actual": 12380000000, "source": "seed"},
+  {"function_name": "Electricity", "financial_year": 2024, "budget": 13100000000, "actual": 13050000000, "source": "seed"},
+  {"function_name": "Electricity", "financial_year": 2025, "budget": 13800000000, "actual": 13720000000, "source": "seed"},
+  {"function_name": "Community and Libraries", "financial_year": 2023, "budget": 1400000000, "actual": 1290000000, "source": "seed"},
+  {"function_name": "Community and Libraries", "financial_year": 2024, "budget": 1480000000, "actual": 1330000000, "source": "seed"},
+  {"function_name": "Community and Libraries", "financial_year": 2025, "budget": 1560000000, "actual": 1360000000, "source": "seed"}
+]

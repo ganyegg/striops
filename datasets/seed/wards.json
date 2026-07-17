@@ -1,0 +1,7 @@
+[
+  {"id": "ward-001", "ward_name": "Ward 1", "sub_council": 1, "population": 42500, "year": 2016},
+  {"id": "ward-023", "ward_name": "Ward 23", "sub_council": 6, "population": 51800, "year": 2016},
+  {"id": "ward-054", "ward_name": "Ward 54", "sub_council": 12, "population": 38900, "year": 2016},
+  {"id": "ward-077", "ward_name": "Ward 77", "sub_council": 16, "population": 61200, "year": 2016},
+  {"id": "ward-115", "ward_name": "Ward 115", "sub_council": 23, "population": 47300, "year": 2016}
+]

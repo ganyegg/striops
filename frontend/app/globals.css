@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+body {
+  background:
+    radial-gradient(1200px 600px at 15% -10%, rgba(91, 140, 255, 0.12), transparent 55%),
+    radial-gradient(900px 500px at 100% 0%, rgba(232, 195, 122, 0.08), transparent 50%),
+    #070a12;
+  min-height: 100vh;
+}
+
+.card {
+  @apply rounded-2xl border border-white/5 bg-white/[0.03] backdrop-blur-sm;
+}
+
+.pill {
+  @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium;
+}

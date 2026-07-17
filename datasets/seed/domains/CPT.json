@@ -1,0 +1,203 @@
+[
+  {
+    "id": "fiscal",
+    "name": "Fiscal Health",
+    "municipality": "City of Cape Town",
+    "summary": "Cape Town enters 2026/27 with a strong liquidity position and a sizeable solvency buffer, giving it room for proactive rather than purely reactive spending.",
+    "last_updated": "2026-07-17",
+    "coverage_note": "Figures from the adopted 2026/27 budget and National Treasury Municipal Money. Audit and collection metrics require confirmation against the latest AGSA and Section 71 releases.",
+    "indicators": [
+      {"key": "cash", "label": "Cash & investments", "value": "R15.6bn", "numeric": 15600000000, "unit": "ZAR", "as_of": "2026/27 budget", "trend": "up", "verification": "verified", "source_id": "src-budget-2627", "confidence": 0.85},
+      {"key": "solvency_buffer", "label": "Solvency buffer", "value": "R7.6bn", "numeric": 7600000000, "unit": "ZAR", "as_of": "2026/27 budget", "trend": "flat", "verification": "verified", "source_id": "src-budget-2627", "confidence": 0.85},
+      {"key": "audit", "label": "Latest audit outcome", "value": "Unqualified (confirm latest)", "as_of": "most recent MFMA cycle", "trend": "flat", "verification": "needs_verification", "source_id": "src-agsa", "confidence": 0.5, "method": "Confirm against latest AGSA MFMA general report."},
+      {"key": "collection", "label": "Revenue collection rate", "value": "~97% (confirm)", "numeric": 97, "unit": "percent", "as_of": "latest S71 report", "trend": "flat", "verification": "needs_verification", "source_id": "src-municipal-money", "confidence": 0.45}
+    ],
+    "watchpoints": [
+      "Confirm the latest audit outcome and any AGSA findings before publishing.",
+      "Track collection rate monthly via Section 71 in-year reports."
+    ],
+    "sources": [
+      {"id": "src-budget-2627", "publisher": "City of Cape Town", "title": "2026/27 Budget ('City of Hope')", "url": "https://www.capetown.gov.za/Family%20and%20home/meet-the-city/city-budget", "retrieved_at": "2026-07-17", "coverage": "City of Cape Town, 2026/27"},
+      {"id": "src-municipal-money", "publisher": "National Treasury", "title": "Municipal Money — Cape Town (CPT)", "url": "https://municipaldata.treasury.gov.za/profiles/municipality-CPT-city-of-cape-town/", "retrieved_at": "2026-07-17", "coverage": "CPT"},
+      {"id": "src-agsa", "publisher": "Auditor-General of South Africa", "title": "MFMA audit outcomes (consolidated general report)", "url": "https://www.agsa.co.za/Reporting/MFMAReports.aspx", "retrieved_at": "2026-07-17", "coverage": "Local government"}
+    ]
+  },
+  {
+    "id": "budget",
+    "name": "Budget",
+    "municipality": "City of Cape Town",
+    "summary": "The R87.79bn 2026/27 'City of Hope' budget is anchored by a record R40bn three-year infrastructure programme weighted heavily toward water and sanitation.",
+    "last_updated": "2026-07-17",
+    "coverage_note": "All figures from the adopted 2026/27 budget, tabled and adopted 29 June 2026. Cross-checkable line-by-line against Municipal Money.",
+    "indicators": [
+      {"key": "total", "label": "Total budget 2026/27", "value": "R87.79bn", "numeric": 87790000000, "unit": "ZAR", "as_of": "adopted 29 Jun 2026", "trend": "up", "verification": "verified", "source_id": "src-budget-2627", "confidence": 0.9},
+      {"key": "infra_3yr", "label": "3-year infrastructure capital", "value": "R40bn (2026/27–2028/29)", "numeric": 40000000000, "unit": "ZAR", "as_of": "2026/27 MTREF", "trend": "up", "verification": "verified", "source_id": "src-budget-2627", "confidence": 0.88},
+      {"key": "water_capital", "label": "— Water & sanitation", "value": "R16.7bn", "numeric": 16700000000, "unit": "ZAR", "as_of": "2026/27 budget", "trend": "up", "verification": "verified", "source_id": "src-budget-2627", "confidence": 0.85},
+      {"key": "electricity_capital", "label": "— Electricity grid", "value": "R6bn", "numeric": 6000000000, "unit": "ZAR", "as_of": "2026/27 budget", "trend": "up", "verification": "verified", "source_id": "src-budget-2627", "confidence": 0.85},
+      {"key": "roads_capital", "label": "— Roads & stormwater", "value": "R3.7bn", "numeric": 3700000000, "unit": "ZAR", "as_of": "2026/27 budget", "trend": "flat", "verification": "verified", "source_id": "src-budget-2627", "confidence": 0.85},
+      {"key": "tariffs", "label": "Tariff increases", "value": "Water +4.5%, refuse +3.75%, electricity +6.64%", "as_of": "2026/27 budget", "trend": "up", "verification": "verified", "source_id": "src-budget-2627", "confidence": 0.85},
+      {"key": "rates_threshold", "label": "Rates-free threshold", "value": "R450k → R620k", "as_of": "2026/27 budget", "trend": "up", "verification": "verified", "source_id": "src-budget-2627", "confidence": 0.85}
+    ],
+    "watchpoints": [
+      "Roads & stormwater capital (R3.7bn) is small relative to water (R16.7bn) against a visible backlog.",
+      "Monitor capital spend run-rate against budget through the mid-year review."
+    ],
+    "sources": [
+      {"id": "src-budget-2627", "publisher": "City of Cape Town", "title": "2026/27 Budget ('City of Hope')", "url": "https://www.capetown.gov.za/Family%20and%20home/meet-the-city/city-budget", "retrieved_at": "2026-07-17", "coverage": "City of Cape Town, 2026/27"}
+    ]
+  },
+  {
+    "id": "staffing",
+    "name": "Staffing",
+    "municipality": "City of Cape Town",
+    "summary": "Workforce scale and vacancy levels shape delivery capacity. These figures must be confirmed against the latest Annual Report organogram before publication.",
+    "last_updated": "2026-07-17",
+    "coverage_note": "Staffing indicators are sourced but flagged for verification against the City's Annual Report and Municipal Money employee-cost data.",
+    "indicators": [
+      {"key": "headcount", "label": "Total employees", "value": "~28,000 (confirm)", "numeric": 28000, "unit": "people", "as_of": "latest Annual Report", "trend": "flat", "verification": "needs_verification", "source_id": "src-annual-report", "confidence": 0.4},
+      {"key": "vacancy", "label": "Vacancy rate", "value": "confirm (%)", "unit": "percent", "as_of": "latest Annual Report", "trend": "na", "verification": "needs_verification", "source_id": "src-annual-report", "confidence": 0.3},
+      {"key": "employee_cost_ratio", "label": "Employee cost ratio", "value": "~30% of opex (confirm)", "numeric": 30, "unit": "percent", "as_of": "latest S71", "trend": "flat", "verification": "needs_verification", "source_id": "src-municipal-money", "confidence": 0.4, "method": "Employee costs ÷ total operating expenditure (Municipal Money)."}
+    ],
+    "watchpoints": [
+      "Pull exact headcount, funded vacancies and overtime from the latest Annual Report.",
+      "Benchmark employee-cost ratio against the National Treasury norm (circa 25–40%)."
+    ],
+    "sources": [
+      {"id": "src-annual-report", "publisher": "City of Cape Town", "title": "Integrated Annual Report", "url": "https://www.capetown.gov.za/Family%20and%20home/meet-the-city/our-vision-for-the-city/integrated-annual-report", "retrieved_at": "2026-07-17", "coverage": "City of Cape Town"},
+      {"id": "src-municipal-money", "publisher": "National Treasury", "title": "Municipal Money — Cape Town (CPT)", "url": "https://municipaldata.treasury.gov.za/profiles/municipality-CPT-city-of-cape-town/", "retrieved_at": "2026-07-17", "coverage": "CPT"}
+    ]
+  },
+  {
+    "id": "housing_population",
+    "name": "Housing & Population",
+    "municipality": "City of Cape Town",
+    "summary": "A metro of roughly 5 million people faces sustained in-migration and a large housing backlog; delivery has historically lagged the budget line rather than the budget itself.",
+    "last_updated": "2026-07-17",
+    "coverage_note": "Population from Census 2022 plus growth estimate. Housing backlog and delivery figures require confirmation against the IDP and Human Settlements reporting.",
+    "indicators": [
+      {"key": "population", "label": "Metro population", "value": "~5.0 million", "numeric": 5000000, "unit": "people", "as_of": "Census 2022 + estimate", "trend": "up", "verification": "verified", "source_id": "src-statssa-census", "confidence": 0.8},
+      {"key": "housing_backlog", "label": "Housing database backlog", "value": "~300,000 households (confirm)", "numeric": 300000, "unit": "households", "as_of": "IDP 2022–2027", "trend": "up", "verification": "needs_verification", "source_id": "src-idp", "confidence": 0.4},
+      {"key": "delivery_lag", "label": "Human settlements delivery", "value": "Recurring underspend flagged", "as_of": "recent budget oversight", "trend": "flat", "verification": "needs_verification", "source_id": "src-idp", "confidence": 0.5, "method": "Delivery vs budgeted units; confirm from oversight reports."}
+    ],
+    "watchpoints": [
+      "Fix delivery-side bottlenecks, not just the housing budget line.",
+      "Confirm informal-settlement counts and backlog from the latest IDP."
+    ],
+    "sources": [
+      {"id": "src-statssa-census", "publisher": "Statistics South Africa", "title": "Census 2022", "url": "https://census.statssa.gov.za/", "retrieved_at": "2026-07-17", "coverage": "South Africa (municipal breakdowns)"},
+      {"id": "src-idp", "publisher": "City of Cape Town", "title": "Integrated Development Plan (IDP) 2022–2027", "url": "https://www.capetown.gov.za/Family%20and%20home/meet-the-city/our-vision-for-the-city/cape-towns-integrated-development-plan", "retrieved_at": "2026-07-17", "coverage": "City of Cape Town"}
+    ]
+  },
+  {
+    "id": "safety_policing",
+    "name": "Safety & Policing",
+    "municipality": "City of Cape Town",
+    "summary": "Safety commands a record R6.8bn in 2026/27. Crime remains concentrated in specific precincts; precinct-level figures must be read from the SAPS quarterly release.",
+    "last_updated": "2026-07-17",
+    "coverage_note": "The safety budget is from the adopted budget (verified). Crime statistics are national SAPS data by precinct and must be cited per quarter.",
+    "indicators": [
+      {"key": "safety_budget", "label": "Safety & security budget", "value": "R6.8bn (record)", "numeric": 6800000000, "unit": "ZAR", "as_of": "2026/27 budget", "trend": "up", "verification": "verified", "source_id": "src-budget-2627", "confidence": 0.85},
+      {"key": "leap", "label": "LEAP officers deployed", "value": "~1,300 (confirm)", "numeric": 1300, "unit": "officers", "as_of": "Law Enforcement Advancement Plan", "trend": "up", "verification": "needs_verification", "source_id": "src-wc-safety", "confidence": 0.4},
+      {"key": "crime_hotspots", "label": "Crime concentration", "value": "See SAPS quarterly release (precinct-level)", "as_of": "latest SAPS quarter", "trend": "na", "verification": "needs_verification", "source_id": "src-saps", "confidence": 0.5, "method": "Read murders/contact crime by precinct from SAPS quarterly stats."}
+    ],
+    "watchpoints": [
+      "Attach the specific SAPS quarter and precincts before publishing any crime figure.",
+      "Track LEAP deployment and impact against high-burden precincts."
+    ],
+    "sources": [
+      {"id": "src-budget-2627", "publisher": "City of Cape Town", "title": "2026/27 Budget ('City of Hope')", "url": "https://www.capetown.gov.za/Family%20and%20home/meet-the-city/city-budget", "retrieved_at": "2026-07-17", "coverage": "City of Cape Town, 2026/27"},
+      {"id": "src-saps", "publisher": "South African Police Service", "title": "Quarterly Crime Statistics", "url": "https://www.saps.gov.za/services/crimestats.php", "retrieved_at": "2026-07-17", "coverage": "South Africa (per precinct)"},
+      {"id": "src-wc-safety", "publisher": "Western Cape Government", "title": "Safety Dashboard / LEAP", "url": "https://www.westerncape.gov.za/", "retrieved_at": "2026-07-17", "coverage": "Western Cape"}
+    ]
+  },
+  {
+    "id": "governance_policies",
+    "name": "Governance & Policies",
+    "municipality": "City of Cape Town",
+    "summary": "Delivery is anchored by the 2022–2027 IDP and the 'City of Hope' budget agenda, with a rates-relief policy shift and a long-running open-data commitment.",
+    "last_updated": "2026-07-17",
+    "coverage_note": "Policy items are verifiable against City publications and the open data portal.",
+    "indicators": [
+      {"key": "mayor", "label": "Executive Mayor", "value": "Geordin Hill-Lewis", "as_of": "current term", "trend": "flat", "verification": "verified", "source_id": "src-city", "confidence": 0.8},
+      {"key": "wards", "label": "Municipal wards", "value": "116", "numeric": 116, "as_of": "current council", "trend": "flat", "verification": "verified", "source_id": "src-city", "confidence": 0.8},
+      {"key": "open_data", "label": "Open Data Portal", "value": "~220 datasets (since 2015)", "numeric": 220, "as_of": "live", "trend": "up", "verification": "verified", "source_id": "src-odp", "confidence": 0.75}
+    ],
+    "policies": [
+      {"title": "Integrated Development Plan 2022–2027", "status": "In force", "as_of": "2022–2027", "detail": "The five-year strategy setting priorities across all directorates.", "source_id": "src-idp"},
+      {"title": "'City of Hope' 2026/27 budget agenda", "status": "Adopted", "as_of": "29 Jun 2026", "detail": "R87.79bn budget prioritising infrastructure-led growth.", "source_id": "src-budget-2627"},
+      {"title": "Rates relief expansion", "status": "In force", "as_of": "2026/27", "detail": "Rates-free threshold raised R450k → R620k, easing the burden on lower-value households.", "source_id": "src-budget-2627"}
+    ],
+    "watchpoints": [
+      "Track delivery of IDP commitments against the SDBIP.",
+      "Publish policy changes with effective dates for auditability."
+    ],
+    "sources": [
+      {"id": "src-city", "publisher": "City of Cape Town", "title": "City of Cape Town official website", "url": "https://www.capetown.gov.za/", "retrieved_at": "2026-07-17", "coverage": "City of Cape Town"},
+      {"id": "src-idp", "publisher": "City of Cape Town", "title": "Integrated Development Plan (IDP) 2022–2027", "url": "https://www.capetown.gov.za/Family%20and%20home/meet-the-city/our-vision-for-the-city/cape-towns-integrated-development-plan", "retrieved_at": "2026-07-17", "coverage": "City of Cape Town"},
+      {"id": "src-budget-2627", "publisher": "City of Cape Town", "title": "2026/27 Budget ('City of Hope')", "url": "https://www.capetown.gov.za/Family%20and%20home/meet-the-city/city-budget", "retrieved_at": "2026-07-17", "coverage": "City of Cape Town, 2026/27"},
+      {"id": "src-odp", "publisher": "City of Cape Town", "title": "Open Data Portal", "url": "https://odp.capetown.gov.za", "retrieved_at": "2026-07-17", "coverage": "City of Cape Town"}
+    ]
+  },
+  {
+    "id": "water",
+    "name": "Water & Sanitation",
+    "municipality": "City of Cape Town",
+    "summary": "Dam storage is recovering but trails last year heading into peak demand, while a R16.7bn capital line signals a serious long-term investment in water security.",
+    "last_updated": "2026-07-17",
+    "coverage_note": "Dam levels from weekly DWS/City reporting; capital from the adopted budget.",
+    "indicators": [
+      {"key": "dams", "label": "Combined dam storage", "value": "~78% (vs ~82% same week 2025)", "numeric": 78, "unit": "percent", "as_of": "week of 13 Jul 2026", "trend": "down", "trend_note": "Below same week last year", "verification": "verified", "source_id": "src-dws", "confidence": 0.8},
+      {"key": "water_capital", "label": "Water & sanitation capital", "value": "R16.7bn", "numeric": 16700000000, "unit": "ZAR", "as_of": "2026/27 budget", "trend": "up", "verification": "verified", "source_id": "src-budget-2627", "confidence": 0.85},
+      {"key": "nrw", "label": "Non-revenue water", "value": "confirm (%)", "unit": "percent", "as_of": "latest water report", "trend": "na", "verification": "needs_verification", "source_id": "src-city", "confidence": 0.3}
+    ],
+    "watchpoints": [
+      "Sustain conservation messaging into summer; keep reuse and groundwater online.",
+      "Publish non-revenue water percentage from the latest water services report."
+    ],
+    "sources": [
+      {"id": "src-dws", "publisher": "Dept. of Water & Sanitation / City of Cape Town", "title": "Dam levels weekly report", "url": "https://www.dws.gov.za/Hydrology/Weekly/ProvinceWeek.aspx?region=WC", "retrieved_at": "2026-07-17", "coverage": "Western Cape Water Supply System"},
+      {"id": "src-budget-2627", "publisher": "City of Cape Town", "title": "2026/27 Budget ('City of Hope')", "url": "https://www.capetown.gov.za/Family%20and%20home/meet-the-city/city-budget", "retrieved_at": "2026-07-17", "coverage": "City of Cape Town, 2026/27"},
+      {"id": "src-city", "publisher": "City of Cape Town", "title": "Water & Sanitation reporting", "url": "https://www.capetown.gov.za/", "retrieved_at": "2026-07-17", "coverage": "City of Cape Town"}
+    ]
+  },
+  {
+    "id": "energy",
+    "name": "Energy",
+    "municipality": "City of Cape Town",
+    "summary": "A R6bn grid capital line and above-inflation electricity tariff underpin the City's push to insulate residents from load-shedding.",
+    "last_updated": "2026-07-17",
+    "coverage_note": "Grid capital and tariff from the adopted budget; load-shedding protection detail requires confirmation.",
+    "indicators": [
+      {"key": "grid_capital", "label": "Electricity grid capital", "value": "R6bn", "numeric": 6000000000, "unit": "ZAR", "as_of": "2026/27 budget", "trend": "up", "verification": "verified", "source_id": "src-budget-2627", "confidence": 0.85},
+      {"key": "tariff", "label": "Electricity tariff increase", "value": "+6.64%", "numeric": 6.64, "unit": "percent", "as_of": "2026/27 budget", "trend": "up", "verification": "verified", "source_id": "src-budget-2627", "confidence": 0.85},
+      {"key": "loadshedding", "label": "Load-shedding protection", "value": "Programme in place (confirm stages buffered)", "as_of": "current", "trend": "na", "verification": "needs_verification", "source_id": "src-city", "confidence": 0.4}
+    ],
+    "watchpoints": [
+      "Quantify the load-shedding stages the City currently buffers for residents.",
+      "Track independent power procurement progress."
+    ],
+    "sources": [
+      {"id": "src-budget-2627", "publisher": "City of Cape Town", "title": "2026/27 Budget ('City of Hope')", "url": "https://www.capetown.gov.za/Family%20and%20home/meet-the-city/city-budget", "retrieved_at": "2026-07-17", "coverage": "City of Cape Town, 2026/27"},
+      {"id": "src-city", "publisher": "City of Cape Town", "title": "Energy directorate reporting", "url": "https://www.capetown.gov.za/", "retrieved_at": "2026-07-17", "coverage": "City of Cape Town"}
+    ]
+  },
+  {
+    "id": "service_delivery",
+    "name": "Service Delivery",
+    "municipality": "City of Cape Town",
+    "summary": "The City runs a long-standing open-data programme; complaint (C3) notification volumes and resolution times are the clearest live signal of citizen experience.",
+    "last_updated": "2026-07-17",
+    "coverage_note": "Open Data Portal is verified. C3 complaint metrics should be pulled live from the open data portal.",
+    "indicators": [
+      {"key": "open_data", "label": "Open Data Portal datasets", "value": "~220 (since 2015)", "numeric": 220, "as_of": "live", "trend": "up", "verification": "verified", "source_id": "src-odp", "confidence": 0.75},
+      {"key": "c3", "label": "C3 service notifications", "value": "Pull live from open data", "as_of": "rolling", "trend": "na", "verification": "needs_verification", "source_id": "src-odp", "confidence": 0.4, "method": "Aggregate C3 notification counts and resolution times from the portal."}
+    ],
+    "watchpoints": [
+      "Wire live C3 notification counts and median resolution time by directorate.",
+      "Surface the worst-performing wards by unresolved notifications."
+    ],
+    "sources": [
+      {"id": "src-odp", "publisher": "City of Cape Town", "title": "Open Data Portal", "url": "https://odp.capetown.gov.za", "retrieved_at": "2026-07-17", "coverage": "City of Cape Town"}
+    ]
+  }
+]

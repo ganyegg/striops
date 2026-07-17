@@ -1,0 +1,105 @@
+[
+  {
+    "code": "CPT",
+    "name": "City of Cape Town",
+    "province": "Western Cape",
+    "category": "metro",
+    "seat": "Cape Town",
+    "population": "~5.0 million (Census 2022 + estimate)",
+    "wards": 116,
+    "status": "live",
+    "data_sources": {
+      "treasury": "https://municipaldata.treasury.gov.za/",
+      "open_data": "https://odp.capetown.gov.za",
+      "gis": "https://citymaps.capetown.gov.za/agsext/rest/services/Theme_Based/Open_Data_Service/FeatureServer"
+    },
+    "domains_available": [
+      "fiscal", "budget", "staffing", "housing_population",
+      "safety_policing", "governance_policies", "water", "energy", "service_delivery"
+    ]
+  },
+  {
+    "code": "JHB",
+    "name": "City of Johannesburg",
+    "province": "Gauteng",
+    "category": "metro",
+    "seat": "Johannesburg",
+    "population": "~4.8 million (Census 2022)",
+    "wards": 135,
+    "status": "planned",
+    "data_sources": {"treasury": "https://municipaldata.treasury.gov.za/"},
+    "domains_available": []
+  },
+  {
+    "code": "ETH",
+    "name": "eThekwini Metropolitan Municipality",
+    "province": "KwaZulu-Natal",
+    "category": "metro",
+    "seat": "Durban",
+    "population": "~4.2 million (Census 2022)",
+    "wards": 111,
+    "status": "planned",
+    "data_sources": {"treasury": "https://municipaldata.treasury.gov.za/"},
+    "domains_available": []
+  },
+  {
+    "code": "TSH",
+    "name": "City of Tshwane",
+    "province": "Gauteng",
+    "category": "metro",
+    "seat": "Pretoria",
+    "population": "~4.0 million (Census 2022)",
+    "wards": 107,
+    "status": "planned",
+    "data_sources": {"treasury": "https://municipaldata.treasury.gov.za/"},
+    "domains_available": []
+  },
+  {
+    "code": "EKU",
+    "name": "City of Ekurhuleni",
+    "province": "Gauteng",
+    "category": "metro",
+    "seat": "Germiston",
+    "population": "~4.1 million (Census 2022)",
+    "wards": 112,
+    "status": "planned",
+    "data_sources": {"treasury": "https://municipaldata.treasury.gov.za/"},
+    "domains_available": []
+  },
+  {
+    "code": "NMA",
+    "name": "Nelson Mandela Bay Municipality",
+    "province": "Eastern Cape",
+    "category": "metro",
+    "seat": "Gqeberha",
+    "population": "~1.3 million (Census 2022)",
+    "wards": 60,
+    "status": "planned",
+    "data_sources": {"treasury": "https://municipaldata.treasury.gov.za/"},
+    "domains_available": []
+  },
+  {
+    "code": "BUF",
+    "name": "Buffalo City Metropolitan Municipality",
+    "province": "Eastern Cape",
+    "category": "metro",
+    "seat": "East London",
+    "population": "~0.83 million (Census 2022)",
+    "wards": 50,
+    "status": "planned",
+    "data_sources": {"treasury": "https://municipaldata.treasury.gov.za/"},
+    "domains_available": []
+  },
+  {
+    "code": "MAN",
+    "name": "Mangaung Metropolitan Municipality",
+    "province": "Free State",
+    "category": "metro",
+    "seat": "Bloemfontein",
+    "population": "~0.79 million (Census 2022)",
+    "wards": 51,
+    "status": "planned",
+    "data_sources": {"treasury": "https://municipaldata.treasury.gov.za/"},
+    "domains_available": []
+  }
+]
