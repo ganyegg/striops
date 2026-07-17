@@ -24,7 +24,12 @@ export default function SiteHeader({
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div className="flex items-center gap-3">
           <Link href="/" className="flex items-center gap-2.5 transition hover:opacity-90">
-            <div className="h-3 w-3 rounded-full bg-helm-accent shadow-[0_0_12px_rgba(20,184,166,0.8)]" />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/brand/helm-logo.png"
+              alt="Helm"
+              className="h-8 w-8 rounded-md object-cover"
+            />
             <span className="font-display text-lg font-semibold tracking-wide text-white">Helm</span>
           </Link>
           <span className="hidden text-sm text-white/40 sm:inline">· Trusted with foresight</span>
