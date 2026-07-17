@@ -16,7 +16,7 @@ const display = Fraunces({
 });
 
 export const metadata: Metadata = {
-  title: "Helm — Think Ahead",
+  title: "Helm — Trusted with foresight",
   description: "Strategic Intelligence Operating System · Strategic Twin for Cities",
 };
 

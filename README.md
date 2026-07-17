@@ -4,7 +4,7 @@
   <img src="docs/brand/coct-logo.svg" alt="City of Cape Town" width="280" />
 </p>
 
-**Think Ahead.**
+**Trusted with foresight.**
 
 The Strategic Intelligence Operating System — an executive twin that continuously thinks about the future so leaders can act *before* problems happen.
 

@@ -27,7 +27,7 @@ export default function SiteHeader({
             <div className="h-3 w-3 rounded-full bg-helm-accent shadow-[0_0_12px_rgba(20,184,166,0.8)]" />
             <span className="font-display text-lg font-semibold tracking-wide text-white">Helm</span>
           </Link>
-          <span className="hidden text-sm text-white/40 sm:inline">· Think Ahead</span>
+          <span className="hidden text-sm text-white/40 sm:inline">· Trusted with foresight</span>
         </div>
 
         <nav className="hidden items-center gap-1 text-xs md:flex">
