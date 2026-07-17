@@ -60,10 +60,6 @@ class ComparativesReport(BaseModel):
 _LABELS = {
     "non_revenue_water_pct": "Non-revenue water",
     "dam_storage": "Dam storage",
-    "road_maintenance_backlog_km": "Road maintenance backlog",
-    "public_lighting_outages": "Public lighting outages",
-    "refuse_service_requests": "Refuse service requests",
-    "library_visits": "Library visits",
     "clinic_waiting_days": "Clinic waiting days",
     "ems_response_minutes": "EMS response time",
 }
@@ -71,10 +67,6 @@ _LABELS = {
 _HIGHER_IS_WORSE = {
     "non_revenue_water_pct": True,
     "dam_storage": False,
-    "road_maintenance_backlog_km": True,
-    "public_lighting_outages": True,
-    "refuse_service_requests": True,
-    "library_visits": False,
     "clinic_waiting_days": True,
     "ems_response_minutes": True,
 }
@@ -195,39 +187,6 @@ def build_comparatives(repo: Repository | None = None, municipality: str = "CPT"
             )
         )
 
-    roads_s = _find(series_list, "svc-roads", "road_maintenance_backlog_km")
-    light_s = _find(series_list, "svc-lighting", "public_lighting_outages")
-    if roads_s and light_s:
-        roads, light = _to_comp(roads_s), _to_comp(light_s)
-        ratio = None
-        if roads.latest and light.latest and light.latest > 0:
-            per = round(roads.latest / (light.latest / 1000.0), 1)
-            ratio = StrategicRatio(
-                key="backlog_per_1k_faults",
-                label="Backlog per 1k lighting faults",
-                value=per,
-                unit="km / 1k faults",
-                interpretation=(
-                    f"{roads.latest:,.0f} km backlog against {light.latest:,.0f} lighting faults "
-                    f"→ {per} km per thousand faults."
-                ),
-                why_it_matters=(
-                    "Roads and lighting are both streetscape signals but different directorates. "
-                    "Divergence shows where capital vs maintenance is winning."
-                ),
-            )
-        packs.append(
-            ComparativePack(
-                id="streetscape",
-                title="Streetscape pressure",
-                eyebrow="Roads vs lighting",
-                why_it_matters="Road backlog rising while lighting improves (or vice versa) is a portfolio signal.",
-                decision_anchor="Rebalance Urban Mobility vs Energy preventative spend.",
-                series=[roads, light],
-                ratio=ratio,
-            )
-        )
-
     wait_s = _find(series_list, "svc-health", "clinic_waiting_days")
     ems_s = _find(series_list, "svc-health", "ems_response_minutes")
     if wait_s and ems_s:
@@ -247,28 +206,9 @@ def build_comparatives(repo: Repository | None = None, municipality: str = "CPT"
             )
         )
 
-    # Libraries are a P3 signal — keep the pack but append last, never as a hero contrast.
-    refuse_s = _find(series_list, "svc-solid-waste", "refuse_service_requests")
-    lib_s = _find(series_list, "svc-libraries", "library_visits")
-    if refuse_s and lib_s:
-        refuse, lib = _to_comp(refuse_s), _to_comp(lib_s)
-        packs.append(
-            ComparativePack(
-                id="citizen_services",
-                title="Citizen service polarity (secondary)",
-                eyebrow="P3 · Fix-it vs use-it",
-                why_it_matters=(
-                    "Useful contrast, but secondary to Health, Water, Safety, and Housing. "
-                    "Rising refuse with falling library visits is a citizen-experience signal — not a P0."
-                ),
-                decision_anchor="Do not brief this ahead of clinic waits or dam/NRW stress.",
-                series=[refuse, lib],
-                ratio=None,
-            )
-        )
-
-    # Ensure critical packs lead: water, health, streetscape, then secondary.
-    rank = {"water_stress": 0, "health_access": 1, "streetscape": 2, "citizen_services": 9}
+    # Only complementary pairs that share a pathway are contrasted: water (dams vs
+    # losses) and health (clinics vs EMS). Unrelated series get their own metric report.
+    rank = {"water_stress": 0, "health_access": 1}
     packs.sort(key=lambda p: rank.get(p.id, 5))
 
     return ComparativesReport(municipality=municipality, data_through=data_through, packs=packs)

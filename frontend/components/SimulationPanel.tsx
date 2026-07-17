@@ -49,12 +49,14 @@ export default function SimulationPanel({
   }
 
   return (
-    <div className={`card relative overflow-hidden ${compact ? "p-4" : "p-6"}`}>
+    <div
+      className={`card relative flex flex-col overflow-hidden ${compact ? "h-[460px] p-4" : "p-6"}`}
+    >
       <div
         className="pointer-events-none absolute -right-8 -top-10 h-32 w-32 rounded-full bg-helm-accent/10 blur-2xl"
         aria-hidden
       />
-      <div className="relative">
+      <div className="relative flex min-h-0 flex-1 flex-col">
         <p className="text-[11px] uppercase tracking-[0.18em] text-helm-accent/80">What if</p>
         <h3 className="mt-1 font-display text-lg font-semibold text-white">Simulator</h3>
         <p className="mt-1 text-xs leading-snug text-white/45">
@@ -117,7 +119,7 @@ export default function SimulationPanel({
         {error ? <p className="mt-3 text-sm text-helm-bad">{error}</p> : null}
 
         {result ? (
-          <div className={`mt-4 space-y-3 ${compact ? "max-h-72 overflow-y-auto pr-1" : ""}`}>
+          <div className={`mt-4 space-y-3 ${compact ? "min-h-0 flex-1 overflow-y-auto pr-1" : ""}`}>
             <p className="text-sm font-medium text-white/80">{result.question}</p>
             <div className={`grid gap-3 ${compact ? "grid-cols-1" : "md:grid-cols-2"}`}>
               {[result.baseline, result.scenario].map((sc, idx) => (

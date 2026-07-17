@@ -2,10 +2,10 @@
   <img src="brand/coct-logo.svg" alt="City of Cape Town" width="280" />
 </p>
 
-# Helm — Knowledge Base
+# Helm — Internal Reference
 
 **Strategic Intelligence Operating System for cities**  
-Version covered: **v0.3** (accountability layer)  
+Version covered: **v0.4** (place-aware Ask, critical sectors, command-first UI)  
 Primary municipality: **City of Cape Town (CPT)**  
 Canonical repo: [https://github.com/ganyegg/helm](https://github.com/ganyegg/helm)  
 Pitch deck: [`docs/pitch/helm-pitch.html`](pitch/helm-pitch.html)  
@@ -108,7 +108,7 @@ AI does **not** invent metrics. Ask retrieves brief, health breakdown, pulse, co
 
 ## 1.7 Comparatives
 
-`GET /comparatives` and `/compare` pack related series (e.g. **dams vs NRW**, **clinics vs EMS**) and only emit ratios that support a real decision (loss–storage gap, access pressure index).
+`GET /comparatives` and `/compare` contrast **only complementary pairs that share a pathway** — **dams vs NRW** (water) and **clinics vs EMS** (health access) — and emit a ratio only when it supports a real decision (loss–storage gap, access pressure index). Unrelated series (roads, lighting, refuse, libraries) each get their own metric report rather than a forced cross-directorate contrast.
 
 ## 2. How the reasoning works
 
@@ -676,7 +676,7 @@ Full in-product glossary: `GET /glossary` and [`backend/helm/core/glossary.py`](
 
 ---
 
-## 14. What this knowledge base commits us to
+## 14. What this document commits us to
 
 1. Never pretend seed is live.
 2. Never let AI invent a number.
@@ -687,4 +687,4 @@ Full in-product glossary: `GET /glossary` and [`backend/helm/core/glossary.py`](
 
 ---
 
-*End of Helm Knowledge Base — v0.3. Update this file when feeds go live, when valuation assumptions are replaced with City-official figures, and when the pilot success test is signed.*
+*Internal reference — v0.4. This document is not served in the app. Update it when feeds go live, when valuation assumptions are replaced with City-official figures, and when the pilot success test is signed.*

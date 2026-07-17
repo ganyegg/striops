@@ -51,13 +51,6 @@ import {
 
 const MUNICIPALITY = "CPT";
 
-/** Mid-page framings — primary is snapshot.tagline; others offered as tone options. */
-const TAGLINE_ALTERNATES = [
-  "Price the wait. Protect the win. Redeploy what sits idle.",
-  "See the turn before the City feels it.",
-  "Act on the signal — not the siren.",
-];
-
 export const dynamic = "force-dynamic";
 
 function BackendDown({ message }: { message: string }) {
@@ -168,22 +161,6 @@ export default async function Home() {
           </aside>
         </div>
 
-        {/* ── Mid-page manifesto ── */}
-        <div className="manifesto-band">
-          <p className="text-[11px] uppercase tracking-[0.28em] text-helm-accent/70">Operating idea</p>
-          <p className="manifesto-line mt-3 font-display text-2xl font-semibold tracking-tight text-white md:text-3xl lg:text-[2.15rem] lg:leading-snug">
-            {snapshot.tagline}
-          </p>
-          <ul className="mt-5 flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:gap-x-6 sm:gap-y-2">
-            {TAGLINE_ALTERNATES.map((line) => (
-              <li key={line} className="text-sm text-white/40">
-                <span className="mr-2 text-helm-accent/50">·</span>
-                {line}
-              </li>
-            ))}
-          </ul>
-        </div>
-
         {/* ── Strategic read ── */}
         <StorySection
           step="02"
@@ -222,40 +199,37 @@ export default async function Home() {
           step="05"
           eyebrow="Contrast to decide"
           title="Headline contrasts"
-          lead="Dams vs NRW, clinics vs EMS, and other packs with strategic ratios — not chart spam."
+          lead="Only complementary pairs — dams vs losses, clinics vs EMS. Each opens the full chart."
         >
           <div className="grid gap-4 md:grid-cols-2">
-            {comparatives.packs
-              .filter((p) => p.id !== "citizen_services")
-              .slice(0, 3)
-              .map((pack) => (
-                <Link
-                  key={pack.id}
-                  href={`/compare#${pack.id}`}
-                  className="card group block p-5 transition hover:border-helm-accent/40 hover:shadow-glow"
-                >
-                  <p className="text-[11px] uppercase tracking-[0.16em] text-helm-accent/80">
-                    {pack.eyebrow}
+            {comparatives.packs.map((pack) => (
+              <Link
+                key={pack.id}
+                href={`/compare#${pack.id}`}
+                className="card group block p-5 transition hover:border-helm-accent/40 hover:shadow-glow"
+              >
+                <p className="text-[11px] uppercase tracking-[0.16em] text-helm-accent/80">
+                  {pack.eyebrow}
+                </p>
+                <h3 className="mt-1 font-display text-lg font-semibold text-white">{pack.title}</h3>
+                <p className="mt-2 line-clamp-2 text-sm text-white/55">{pack.why_it_matters}</p>
+                {pack.ratio ? (
+                  <p className="mt-3 font-display text-2xl font-semibold text-helm-sand">
+                    {pack.ratio.value}
+                    <span className="ml-2 font-sans text-xs font-normal text-white/40">
+                      {pack.ratio.label}
+                    </span>
                   </p>
-                  <h3 className="mt-1 font-display text-lg font-semibold text-white">{pack.title}</h3>
-                  <p className="mt-2 line-clamp-2 text-sm text-white/55">{pack.why_it_matters}</p>
-                  {pack.ratio ? (
-                    <p className="mt-3 font-display text-2xl font-semibold text-helm-sand">
-                      {pack.ratio.value}
-                      <span className="ml-2 font-sans text-xs font-normal text-white/40">
-                        {pack.ratio.label}
-                      </span>
-                    </p>
-                  ) : (
-                    <p className="mt-3 text-xs text-white/40">
-                      {pack.series.map((s) => s.label).join(" · ")}
-                    </p>
-                  )}
-                  <p className="mt-2 text-[11px] text-helm-accent opacity-80 group-hover:opacity-100">
-                    Open chart →
+                ) : (
+                  <p className="mt-3 text-xs text-white/40">
+                    {pack.series.map((s) => s.label).join(" · ")}
                   </p>
-                </Link>
-              ))}
+                )}
+                <p className="mt-2 text-[11px] text-helm-accent opacity-80 group-hover:opacity-100">
+                  Open chart →
+                </p>
+              </Link>
+            ))}
           </div>
           <p className="mt-3 text-xs text-white/35">
             Helm is dynamic — new metrics show up after ingest. Use{" "}

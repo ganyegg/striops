@@ -100,12 +100,6 @@ export default async function HealthPage() {
               )}
             </div>
           </dl>
-          <p className="mt-4 rounded-lg border border-white/10 bg-white/[0.02] px-3 py-2 font-mono text-xs text-white/55">
-            {breakdown.formula_plain_language}
-          </p>
-          <p className="mt-2 text-xs text-white/40">
-            Pre-round {breakdown.pre_round} → score {breakdown.health_score} (clamped 0–100).
-          </p>
         </div>
       </div>
 

@@ -50,12 +50,6 @@ export default function SiteHeader({
               {label}
             </a>
           ))}
-          <Link
-            href="/knowledge"
-            className="ml-1 rounded-full border border-helm-accent/30 bg-helm-accent/10 px-3 py-1.5 text-helm-accent transition hover:bg-helm-accent/20"
-          >
-            Knowledge base
-          </Link>
         </nav>
 
         <div className="flex flex-wrap items-center gap-2 text-xs">
