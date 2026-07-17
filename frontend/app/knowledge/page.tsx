@@ -19,8 +19,15 @@ const SECTIONS = [
 ];
 
 function loadHelmDoc(): string {
-  const docPath = path.join(process.cwd(), "..", "docs", "HELM.md");
-  return fs.readFileSync(docPath, "utf-8");
+  const candidates = [
+    path.join(process.cwd(), "..", "docs", "HELM.md"), // repo checkout (Render / local)
+    path.join(process.cwd(), "docs", "HELM.md"), // cwd = repo root
+    path.join(process.cwd(), "content", "HELM.md"), // optional vendored copy
+  ];
+  for (const docPath of candidates) {
+    if (fs.existsSync(docPath)) return fs.readFileSync(docPath, "utf-8");
+  }
+  return "# Helm\n\nKnowledge base file not found in this deploy layout.\n";
 }
 
 export default function KnowledgePage() {

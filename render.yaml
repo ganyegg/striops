@@ -40,18 +40,20 @@ services:
     runtime: node
     plan: free
     region: frankfurt
-    rootDir: frontend
-    buildCommand: npm ci && npm run build
-    startCommand: npx next start -H 0.0.0.0 -p $PORT
+    # Build from repo root so ../docs and scripts/ resolve (knowledge page + start scripts)
+    buildCommand: bash scripts/render-web-build.sh
+    startCommand: bash scripts/render-web-start.sh
     healthCheckPath: /
     autoDeploy: true
     envVars:
       - key: NODE_VERSION
-        value: "20"
-      - key: NODE_ENV
-        value: production
+        value: "20.18.0"
+      # Do NOT set NODE_ENV=production here — npm would skip devDependencies and
+      # `next build` fails (typescript/tailwind missing). Runtime sets production in start script.
       - key: NEXT_TELEMETRY_DISABLED
         value: "1"
+      - key: NPM_CONFIG_PRODUCTION
+        value: "false"
       # Public + SSR API URL → helm-api's onrender.com address
       - key: NEXT_PUBLIC_API_BASE_URL
         fromService:

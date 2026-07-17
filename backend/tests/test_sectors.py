@@ -62,6 +62,23 @@ def test_ask_hospital_gap_protocol():
     assert body.get("data_gaps") is not None
 
 
+def test_normalize_smashed_ask_markdown():
+    from helm.ask.service import normalize_answer_markdown
+
+    smashed = (
+        "### Snapshot Khayelitsha, with an estimated 400,000 residents, is a focus. "
+        "### Evidence * **Transport**: MyCiTi funded in 2026/27 MTREF. "
+        "* **Safety**: R6.8bn in 2026/27. "
+        "### Watch (metro-wide through February 2026) * **Water**: Dam storage worsening. "
+        "### Gaps * No Khayelitsha-only clinic series."
+    )
+    fixed = normalize_answer_markdown(smashed)
+    assert "### Snapshot\n" in fixed
+    assert "\n- **Transport**" in fixed or "\n- **Transport**:" in fixed
+    assert fixed.count("\n### ") >= 3
+    assert "### Snapshot Khayelitsha" not in fixed
+
+
 def test_ask_khayelitsha_place_dossier():
     cache_clear()
     from helm.places import clear_places_cache, detect_places
@@ -76,6 +93,9 @@ def test_ask_khayelitsha_place_dossier():
     assert "no information" not in answer and "does not contain specific information" not in answer
     assert "myciti" in answer or "transport" in answer or "cape flats" in answer
     assert any("khayelitsha" in (g.get("sector_name") or "").lower() for g in body.get("data_gaps") or [])
+    # Readable structure after normalize
+    assert "### snapshot" in answer
+    assert "\n- " in body["answer"] or "\n*" in body["answer"]
 
 
 def test_waste_and_transport_domains_live():

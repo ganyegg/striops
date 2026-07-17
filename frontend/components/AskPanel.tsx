@@ -111,7 +111,9 @@ export default function AskPanel({ compact = false }: { compact?: boolean }) {
               <AskMarkdown content={result.report_markdown} />
             </div>
           ) : null}
-          {result.data_gaps && result.data_gaps.length > 0 ? (
+          {result.data_gaps &&
+          result.data_gaps.length > 0 &&
+          !/###\s*Gaps/i.test(result.answer) ? (
             <div className="rounded-xl border border-helm-warn/25 bg-helm-warn/5 p-3">
               <p className="text-[11px] uppercase tracking-wide text-helm-warn">Data gaps (not invented)</p>
               <ul className="mt-2 space-y-1.5 text-xs text-white/60">

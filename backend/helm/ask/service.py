@@ -220,12 +220,25 @@ def _retrieve_context(
             "Distinguish place-named facts from metro-wide series. Do not invent ward KPIs."
         ),
         "format_protocol": (
-            "Respond in compact markdown for scanning. Prefer bullets over paragraphs. "
+            "Respond in compact markdown with REAL line breaks (use \\n). "
+            "Never put the whole answer on one line. Never put body text on the same line as ### headings. "
+            "Never put multiple bullets on one line. "
             "Include concrete dates/timelines (FY, MTREF, month labels from as_of / pulse / dated_metrics). "
             "Never say 'recently' or 'last period' without naming the period. "
-            "Structure: ### Snapshot (1–2 lines) → ### Evidence (bullets with dates) → "
-            "### Watch (metro trends that apply, labelled metro-wide) → ### Gaps (bullets). "
-            "Answer mode: max ~180 words / ~12 bullets. Report mode: same sections, max ~400 words."
+            "Exact shape (copy this spacing):\n"
+            "### Snapshot\n"
+            "One or two short sentences.\n"
+            "\n"
+            "### Evidence\n"
+            "- **Topic**: fact with date\n"
+            "- **Topic**: fact with date\n"
+            "\n"
+            "### Watch (metro-wide through <month year>)\n"
+            "- **Topic**: trend with Jan → Feb figures\n"
+            "\n"
+            "### Gaps\n"
+            "- missing fact\n"
+            "Answer mode: max ~160 words / ~10 bullets. Report mode: same sections, max ~350 words."
         ),
         "critical_sectors": [s.model_dump() for s in sectors.sectors],
         "data_gaps": [g.model_dump() for g in gaps],
@@ -427,8 +440,49 @@ _FORMAT_SYSTEM = (
     "Never claim there is no information about a place that has a dossier. "
     "Distinguish place-named evidence from metro-wide series. "
     "Never invent ward-level or hospital numbers. "
-    "Be brief, specific, and mayor-ready — dates and figures over adjectives."
+    "Be brief, specific, and mayor-ready — dates and figures over adjectives. "
+    "CRITICAL: output valid multi-line markdown. Each ### heading on its own line; "
+    "each bullet (- ) on its own line; blank line between sections."
 )
+
+_SECTION_NAMES = (
+    r"Snapshot",
+    r"Evidence(?:\s*\([^)]*\))?",
+    r"Watch(?:\s*\([^)]*\))?",
+    r"Gaps",
+)
+
+
+def normalize_answer_markdown(text: str) -> str:
+    """Repair smashed Gemini markdown so headings/bullets are scannable."""
+    t = (text or "").replace("\r\n", "\n").replace("\r", "\n").strip()
+    if not t:
+        return t
+
+    # Insert breaks before headings even when jammed mid-line
+    t = re.sub(r"\s*(###\s+)", r"\n\n\1", t)
+    # Bullets jammed after text or after another bullet
+    t = re.sub(r"\s+([*•]\s+\*\*)", r"\n- **", t)
+    t = re.sub(r"\s+(-\s+\*\*)", r"\n- **", t)
+    t = re.sub(r"(?<!\n)\s+([*•]\s+)", r"\n- ", t)
+    t = re.sub(r"(?<!\n)\s+(-\s+)(?!\*)", r"\n- ", t)
+    t = t.lstrip()
+
+    # "### Snapshot Khayelitsha…" → heading on its own line
+    for name in _SECTION_NAMES:
+        t = re.sub(
+            rf"(###\s+{name})\s+(?=[A-Za-z0-9*•\-])",
+            r"\1\n\n",
+            t,
+            flags=re.IGNORECASE,
+        )
+
+    # Normalise bullet markers
+    t = re.sub(r"(?m)^[*•]\s+", "- ", t)
+
+    # Collapse 3+ blank lines
+    t = re.sub(r"\n{3,}", "\n\n", t)
+    return t.strip() + "\n"
 
 
 def ask_helm(req: AskRequest, settings: Settings | None = None) -> AskResponse:
@@ -441,33 +495,36 @@ def ask_helm(req: AskRequest, settings: Settings | None = None) -> AskResponse:
 
     if req.mode == "report":
         prompt = (
-            f"Write a short executive briefing in markdown answering:\n{req.question}\n\n"
+            f"Write a short executive briefing in multi-line markdown answering:\n{req.question}\n\n"
             f"Context JSON:\n{context_json}\n\n"
-            "Follow format_protocol. Sections: Snapshot → Evidence (with dates) → Watch → Gaps. "
-            "Max ~400 words. Prefer bullets."
+            "Follow format_protocol exactly (newlines required). "
+            "Sections: Snapshot → Evidence → Watch → Gaps. Max ~350 words."
         )
     else:
         prompt = (
-            f"Answer this leadership question in compact markdown:\n{req.question}\n\n"
+            f"Answer this leadership question in multi-line markdown:\n{req.question}\n\n"
             f"Context JSON:\n{context_json}\n\n"
-            "Follow format_protocol strictly. Max ~180 words / ~12 bullets. "
-            "Every number should carry a date, FY, or period label from the context."
+            "Follow format_protocol exactly. Put each ### heading and each - bullet on its own line. "
+            "Max ~160 words / ~10 bullets. Every number needs a date/FY/period from context."
         )
 
     report_md = None
     if llm.name == "mock":
         answer, report_md = _mock_answer(req.question, context_json, req.mode, gaps)
     else:
-        text = llm.generate(prompt, system=_FORMAT_SYSTEM, temperature=0.15)
+        text = llm.generate(prompt, system=_FORMAT_SYSTEM, temperature=0.1)
         if req.mode == "report":
-            report_md = text
-            # Short teaser for the answer field — first section only
-            parts = re.split(r"\n(?=### )", text.strip())
-            answer = parts[0][:700] if parts else text.strip()[:700]
-            if len(parts) > 1 and "### Evidence" in text:
+            report_md = normalize_answer_markdown(text)
+            parts = re.split(r"\n(?=### )", report_md.strip())
+            answer = parts[0][:700] if parts else report_md[:700]
+            if len(parts) > 1 and "### Evidence" in report_md:
                 answer = "\n\n".join(parts[:2])[:900]
         else:
             answer = text.strip()
+
+    answer = normalize_answer_markdown(answer)
+    if report_md:
+        report_md = normalize_answer_markdown(report_md)
 
     seen: set[str] = set()
     uniq: list[AskCitation] = []
