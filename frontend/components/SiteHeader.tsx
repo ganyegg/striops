@@ -25,11 +25,8 @@ export default function SiteHeader({
         <div className="flex items-center gap-3">
           <Link href="/" className="flex items-center gap-2.5 transition hover:opacity-90">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/brand/helm-logo.png"
-              alt="Helm"
-              className="h-8 w-8 rounded-md object-cover"
-            />
+            <img src="/brand/helm-logo.svg" alt="Helm" className="h-8 w-8" />
+
             <span className="font-display text-lg font-semibold tracking-wide text-white">Helm</span>
           </Link>
           <span className="hidden text-sm text-white/40 sm:inline">· Trusted with foresight</span>
