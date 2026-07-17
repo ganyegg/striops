@@ -24,6 +24,7 @@ from helm.forecasting import forecast_series
 from helm.opportunity_engine import find_opportunities
 from helm.persistence import Repository, get_repository
 from helm.risk_engine import assess_risks
+from helm.valuation import attach_valuations
 
 # Domain indicator key → optional live metric series for charting.
 _INDICATOR_METRIC: dict[str, tuple[str, str]] = {
@@ -291,6 +292,7 @@ def build_metric_report(
 def build_risk_report(risk_id: str, repo: Repository | None = None) -> RiskReport:
     repo = repo or get_repository()
     risks = assess_risks(repo.service_areas(), repo.metric_series(), repo.budget_lines())
+    risks, _ = attach_valuations(risks, [], repo.metric_series())
     risk = next((r for r in risks if r.id == risk_id), None)
 
     # Also allow looking up via opportunity id that maps to a metric.

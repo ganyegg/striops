@@ -23,16 +23,25 @@ const DIRECTION_META: Record<
 };
 
 export default function PulseStrip({ pulse }: { pulse: CityPulse }) {
+  const comparison =
+    pulse.data_through && pulse.previous_period
+      ? `${pulse.data_through} vs ${pulse.previous_period}`
+      : "latest vs previous month";
+
   return (
     <div className="card overflow-hidden p-0">
       <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/10 bg-white/[0.03] px-5 py-3">
-        <div className="flex items-center gap-2.5">
-          <span className="relative flex h-2.5 w-2.5">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-helm-accent opacity-60" />
-            <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-helm-accent" />
+        <div className="flex flex-col gap-0.5 sm:flex-row sm:items-center sm:gap-2.5">
+          <span className="flex items-center gap-2.5">
+            <span className="relative flex h-2.5 w-2.5">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-helm-accent opacity-60" />
+              <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-helm-accent" />
+            </span>
+            <span className="text-sm font-semibold text-white/85">City Pulse</span>
           </span>
-          <span className="text-sm font-semibold text-white/85">City Pulse</span>
-          <span className="text-xs text-white/40">what changed since the last period</span>
+          <span className="text-xs text-white/40">
+            {comparison} · {pulse.cadence || "monthly"} series
+          </span>
         </div>
         <div className="flex items-center gap-3 text-xs">
           <span className="text-helm-bad">{pulse.worsening_count} worsening</span>

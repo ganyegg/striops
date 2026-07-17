@@ -62,3 +62,41 @@ body {
     rgba(6, 16, 24, 0.95) 100%
   );
 }
+
+/* Centred Strategic Health with tone-grouped KPIs around it */
+.kpi-constellation {
+  display: grid;
+  gap: 0.85rem;
+  grid-template-columns: 1fr;
+  align-items: stretch;
+}
+
+@media (min-width: 1024px) {
+  .kpi-constellation {
+    grid-template-columns: 1fr minmax(280px, 340px) 1fr;
+    gap: 1rem;
+    align-items: center;
+  }
+}
+
+.kpi-constellation-side {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: 1fr 1fr;
+}
+
+@media (min-width: 1024px) {
+  .kpi-constellation-side {
+    grid-template-columns: 1fr;
+  }
+}
+
+.kpi-constellation-centre {
+  order: -1;
+}
+
+@media (min-width: 1024px) {
+  .kpi-constellation-centre {
+    order: 0;
+  }
+}

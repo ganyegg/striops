@@ -17,6 +17,7 @@ from helm.forecasting import forecast_series
 from helm.persistence import Repository, get_repository
 from helm.reasoning import get_llm
 from helm.recommendation_engine import recommend
+from helm.valuation import attach_valuations
 
 log = get_logger("helm.executive_brief")
 
@@ -86,6 +87,9 @@ def build_executive_brief(
 
     risks = _dedupe_risks(all_risks)
     opportunities = _dedupe_opportunities(all_opps)
+    risks, opportunities = attach_valuations(
+        risks, opportunities, ctx.metric_series, settings.helm_municipality
+    )
     recommendations = recommend(risks, opportunities)
     health = _health_score(risks, opportunities)
 

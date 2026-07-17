@@ -1,8 +1,9 @@
-"""City Pulse — what moved since the last reporting period.
+"""City Pulse — what moved between two named reporting periods.
 
 The value of an operating system over a report is that nobody has to ask
 "what changed?" — Helm answers it on every load, per metric, with direction
-judged against the metric's polarity (is higher good or bad?).
+judged against the metric's polarity (is higher good or bad?), and with
+explicit period labels so "last period" is never vague.
 """
 from __future__ import annotations
 
@@ -12,6 +13,7 @@ from pydantic import BaseModel, Field
 
 from helm.core.config import Settings, get_settings
 from helm.core.glossary import explain
+from helm.core.periods import format_month, format_month_short
 from helm.persistence import Repository, get_repository
 
 # True => a rising value is bad news (losses, backlogs, faults).
@@ -45,10 +47,15 @@ class PulseItem(BaseModel):
     sentence: str
     plain_language: str | None = None
     href: str
+    latest_period: str | None = None
+    previous_period: str | None = None
 
 
 class CityPulse(BaseModel):
     generated_at: str
+    cadence: str = "monthly"
+    data_through: str | None = None  # e.g. "February 2026"
+    previous_period: str | None = None  # e.g. "January 2026"
     period_note: str
     items: list[PulseItem] = Field(default_factory=list)
     worsening_count: int = 0
@@ -68,30 +75,38 @@ def build_city_pulse(
     repo = repo or get_repository(settings)
 
     items: list[PulseItem] = []
-    latest_period: str | None = None
+    latest_date = None
+    previous_date = None
 
     for series in repo.metric_series():
         points = sorted(series.points, key=lambda p: p.period)
         if len(points) < 2:
             continue
-        prev, last = points[-2].value, points[-1].value
-        latest_period = str(points[-1].period)
+        prev_pt, last_pt = points[-2], points[-1]
+        prev, last = prev_pt.value, last_pt.value
+        latest_date = last_pt.period
+        previous_date = prev_pt.period
         change = last - prev
         change_pct = (change / prev * 100) if prev else 0.0
 
         label = _LABELS.get(series.metric, series.metric.replace("_", " ").title())
+        latest_label = format_month(last_pt.period)
+        previous_label = format_month(prev_pt.period)
         if abs(change_pct) < 0.5:
             direction = "flat"
         else:
             got_worse = (change > 0) == _HIGHER_IS_WORSE.get(series.metric, True)
             direction = "worsening" if got_worse else "improving"
 
-        verb = {"worsening": "up" if change > 0 else "down",
-                "improving": "up" if change > 0 else "down",
-                "flat": "flat"}[direction]
+        verb = {
+            "worsening": "up" if change > 0 else "down",
+            "improving": "up" if change > 0 else "down",
+            "flat": "flat",
+        }[direction]
         sentence = (
-            f"{label} {verb} {abs(change_pct):.1f}% vs the previous period "
-            f"({_fmt(prev, series.unit)} \u2192 {_fmt(last, series.unit)})."
+            f"{label} {verb} {abs(change_pct):.1f}% "
+            f"({format_month_short(prev_pt.period)} → {format_month_short(last_pt.period)}: "
+            f"{_fmt(prev, series.unit)} → {_fmt(last, series.unit)})."
         )
         glossary = explain(series.metric)
 
@@ -109,16 +124,30 @@ def build_city_pulse(
                 sentence=sentence,
                 plain_language=glossary["in_one_line"] if glossary else None,
                 href=f"/metrics/{series.entity_id}/{series.metric}",
+                latest_period=latest_label,
+                previous_period=previous_label,
             )
         )
 
-    # Worst news first: worsening by magnitude, then improving, then flat.
     order = {"worsening": 0, "improving": 1, "flat": 2}
     items.sort(key=lambda i: (order[i.direction], -abs(i.change_pct)))
 
+    data_through = format_month(latest_date)
+    previous_period = format_month(previous_date)
+    if data_through and previous_period:
+        period_note = (
+            f"{data_through} vs {previous_period} (monthly operational series). "
+            f"Data through {data_through}."
+        )
+    else:
+        period_note = "No periods on record."
+
     return CityPulse(
         generated_at=datetime.now(timezone.utc).isoformat(),
-        period_note=f"Latest period on record: {latest_period}" if latest_period else "No periods on record.",
+        cadence="monthly",
+        data_through=data_through,
+        previous_period=previous_period,
+        period_note=period_note,
         items=items,
         worsening_count=sum(1 for i in items if i.direction == "worsening"),
         improving_count=sum(1 for i in items if i.direction == "improving"),

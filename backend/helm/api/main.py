@@ -29,6 +29,7 @@ from helm.core.models import (
     RiskReport,
     SimulationResult,
 )
+from helm.actions import Action, ActionRegister, build_action_register, get_action
 from helm.decisions import DecisionRegister, build_decision_register
 from helm.domains import (
     domain_catalog,
@@ -48,6 +49,8 @@ from helm.reports import build_indicator_report, build_metric_report, build_risk
 from helm.risk_engine import assess_risks
 from helm.simulation import list_scenarios, simulate
 from helm.snapshot import build_city_snapshot
+from helm.valuation import attach_valuations, valuation_catalog
+from helm.value_ledger import ValueLedger, build_value_ledger
 from helm.wins import build_initiative_report, list_initiatives
 
 settings = get_settings()
@@ -92,7 +95,9 @@ def brief() -> ExecutiveBrief:
 @app.get("/risks", response_model=list[Risk], tags=["intelligence"])
 def risks() -> list[Risk]:
     repo = get_repository(settings)
-    return assess_risks(repo.service_areas(), repo.metric_series(), repo.budget_lines())
+    assessed = assess_risks(repo.service_areas(), repo.metric_series(), repo.budget_lines())
+    enriched, _ = attach_valuations(assessed, [], repo.metric_series(), settings.helm_municipality)
+    return enriched
 
 
 @app.get("/risks/{risk_id}", response_model=RiskReport, tags=["reports"])
@@ -172,7 +177,32 @@ def glossary_key(key: str) -> dict:
 @app.get("/opportunities", response_model=list[Opportunity], tags=["intelligence"])
 def opportunities() -> list[Opportunity]:
     repo = get_repository(settings)
-    return find_opportunities(repo.service_areas(), repo.metric_series(), repo.budget_lines())
+    opps = find_opportunities(repo.service_areas(), repo.metric_series(), repo.budget_lines())
+    _, enriched = attach_valuations([], opps, repo.metric_series(), settings.helm_municipality)
+    return enriched
+
+
+@app.get("/actions", response_model=ActionRegister, tags=["intelligence"])
+def actions() -> ActionRegister:
+    return build_action_register(settings.helm_municipality)
+
+
+@app.get("/actions/{action_id}", response_model=Action, tags=["intelligence"])
+def action_detail(action_id: str) -> Action:
+    action = get_action(settings.helm_municipality, action_id)
+    if action is None:
+        raise HTTPException(status_code=404, detail=f"Unknown action: {action_id}")
+    return action
+
+
+@app.get("/value-ledger", response_model=ValueLedger, tags=["intelligence"])
+def value_ledger() -> ValueLedger:
+    return build_value_ledger(settings.helm_municipality)
+
+
+@app.get("/valuation", tags=["intelligence"])
+def valuation() -> dict:
+    return valuation_catalog(settings.helm_municipality)
 
 
 @app.get("/entities", response_model=EntitiesResponse, tags=["strategic-twin"])

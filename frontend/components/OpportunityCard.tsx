@@ -28,6 +28,21 @@ export default function OpportunityCard({ opp }: { opp: Opportunity }) {
         </div>
       )}
       <p className="mt-2 text-sm leading-relaxed text-white/60">{opp.reason}</p>
+      {opp.gain_estimate ? (
+        <div className="mt-3 rounded-lg border border-helm-good/20 bg-helm-good/10 px-3 py-2">
+          <p className="text-[11px] font-medium uppercase tracking-wide text-helm-good">
+            Captureable gain
+          </p>
+          <p className="mt-0.5 font-display text-xl font-semibold text-helm-good">
+            {formatZAR(opp.gain_estimate.amount_zar)}
+            {opp.gain_estimate.unit_note ? (
+              <span className="ml-2 font-sans text-xs font-normal text-white/45">
+                {opp.gain_estimate.unit_note}
+              </span>
+            ) : null}
+          </p>
+        </div>
+      ) : null}
       <div className="mt-3 rounded-lg bg-helm-good/5 p-3 text-sm text-white/70">
         <span className="text-[11px] font-medium uppercase tracking-wide text-helm-good">Action</span>
         <p className="mt-0.5">{opp.action}</p>

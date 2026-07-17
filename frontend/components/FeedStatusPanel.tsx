@@ -25,6 +25,9 @@ export default function FeedStatusPanel({ report }: { report: FeedsReport }) {
               <p className="mt-1 text-xs text-white/45">
                 {feed.publisher} · {feed.cadence}
               </p>
+              <p className="mt-1 text-[11px] text-white/35">
+                Last refreshed: {feed.last_refreshed_label || "unknown"}
+              </p>
               <p className="mt-2 flex-1 text-sm leading-relaxed text-white/60">{feed.description}</p>
               <p className="mt-3 border-t border-white/10 pt-2.5 text-xs text-white/45">
                 <span className="font-medium text-helm-accent/90">Live unlocks:</span> {feed.unlocks}

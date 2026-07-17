@@ -4,7 +4,10 @@
 
 The Strategic Intelligence Operating System — an executive twin that continuously thinks about the future so leaders can act *before* problems happen.
 
-> Version 0.1 — Strategic Twin for Cities. First customer: **City of Cape Town**.
+> Version **0.3** — Accountability layer (actions, valuation, value ledger) + mayor-ready UI. First customer: **City of Cape Town**.
+
+**Full knowledge base (product, data, pilot, pricing, security):** [`docs/HELM.md`](docs/HELM.md)  
+**Pitch deck:** [`docs/pitch/helm-pitch.html`](docs/pitch/helm-pitch.html)
 
 Helm is not a chatbot and not a dashboard. It is a continuously-reasoning layer that sits above ERP / CRM / HR / Accounting / BI and answers the questions leadership actually cares about:
 

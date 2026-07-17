@@ -1,0 +1,120 @@
+{
+  "municipality": "CPT",
+  "currency": "ZAR",
+  "as_of": "2026-02",
+  "note": "Unit economics used to estimate annual cost of open risks and gains from opportunities. Every assumption is stated so a CFO can challenge it.",
+  "metrics": {
+    "non_revenue_water_pct": {
+      "label": "Non-revenue water",
+      "unit": "percentage point of system input",
+      "rand_per_unit_per_year": 185000000,
+      "method": "system_input_volume_kl × bulk_treatment_cost_per_kl × 0.01",
+      "confidence": 0.72,
+      "assumptions": [
+        {
+          "key": "system_input_volume_kl_per_year",
+          "value": 370000000,
+          "unit": "kl/year",
+          "note": "Illustrative Cape Town bulk system input order-of-magnitude (~1 GL/day). Replace with Water & Sanitation official annual system input for the pilot.",
+          "source_url": "https://www.capetown.gov.za/Family%20and%20home/residential-utility-services/residential-water-and-sanitation-services"
+        },
+        {
+          "key": "bulk_treatment_and_distribution_cost_per_kl",
+          "value": 5.0,
+          "unit": "ZAR/kl",
+          "note": "Conservative blended production + pumping cost. Does not include retail tariff or scarcity premium.",
+          "source_url": "https://www.capetown.gov.za/"
+        },
+        {
+          "key": "rand_per_percentage_point",
+          "value": 185000000,
+          "unit": "ZAR/year",
+          "note": "370e6 kl × R5/kl × 1% = R18.5m per 0.1pp; scaled to R185m per full percentage point per year.",
+          "source_url": null
+        }
+      ]
+    },
+    "road_maintenance_backlog_km": {
+      "label": "Road maintenance backlog",
+      "unit": "km of backlog",
+      "rand_per_unit_per_year": 850000,
+      "method": "km × (rebuild_cost_per_km − preventative_cost_per_km) × failure_probability_this_year",
+      "confidence": 0.65,
+      "assumptions": [
+        {
+          "key": "preventative_resurfacing_cost_per_km",
+          "value": 1200000,
+          "unit": "ZAR/km",
+          "note": "Typical preventative resurfacing order-of-magnitude for metro roads.",
+          "source_url": null
+        },
+        {
+          "key": "rebuild_cost_per_km",
+          "value": 6000000,
+          "unit": "ZAR/km",
+          "note": "Full reconstruction after failure is typically 4–6× preventative cost.",
+          "source_url": null
+        },
+        {
+          "key": "annualised_deferred_cost_share",
+          "value": 0.18,
+          "unit": "fraction",
+          "note": "Share of deferred km expected to tip into costly failure within 12 months if backlog keeps growing.",
+          "source_url": null
+        }
+      ]
+    },
+    "refuse_service_requests": {
+      "label": "Refuse service requests",
+      "unit": "request/month",
+      "rand_per_unit_per_year": 2400,
+      "method": "extra_requests_per_month × handling_cost × 12",
+      "confidence": 0.6,
+      "assumptions": [
+        {
+          "key": "handling_cost_per_request",
+          "value": 200,
+          "unit": "ZAR",
+          "note": "Call-centre + crew divert cost per logged refuse complaint.",
+          "source_url": null
+        }
+      ]
+    },
+    "public_lighting_outages": {
+      "label": "Public lighting outages",
+      "unit": "fault/month",
+      "rand_per_unit_per_year": 1800,
+      "method": "extra_faults × repair_cost × 12",
+      "confidence": 0.55,
+      "assumptions": [
+        {
+          "key": "repair_cost_per_fault",
+          "value": 150,
+          "unit": "ZAR",
+          "note": "Average repair / call-out cost per lighting fault ticket.",
+          "source_url": null
+        }
+      ]
+    },
+    "library_visits": {
+      "label": "Library visits",
+      "unit": "visit/month",
+      "rand_per_unit_per_year": 0,
+      "method": "social-outcome metric; no direct ZAR conversion in v0.3",
+      "confidence": 0.3,
+      "assumptions": [
+        {
+          "key": "monetisation",
+          "value": 0,
+          "unit": "ZAR",
+          "note": "Tracked for service quality; not converted to rands until a City-approved social valuation method exists.",
+          "source_url": null
+        }
+      ]
+    }
+  },
+  "opportunity_defaults": {
+    "underspend_redeployment_capture_rate": 0.35,
+    "efficiency_annual_gain_months": 6
+  }
+}

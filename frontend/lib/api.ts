@@ -18,6 +18,15 @@ export interface Forecast {
   contributing_factors: string[];
 }
 
+export interface CostEstimate {
+  amount_zar: number;
+  basis: string;
+  method: string;
+  confidence: number;
+  assumptions: Array<Record<string, unknown>>;
+  unit_note?: string | null;
+}
+
 export interface Risk {
   id: string;
   title: string;
@@ -32,6 +41,7 @@ export interface Risk {
   evidence: Evidence[];
   forecast?: Forecast | null;
   score: number;
+  cost_estimate?: CostEstimate | null;
 }
 
 export interface Opportunity {
@@ -45,6 +55,7 @@ export interface Opportunity {
   owner: string;
   action: string;
   evidence: Evidence[];
+  gain_estimate?: CostEstimate | null;
 }
 
 export interface Recommendation {
@@ -445,8 +456,13 @@ export interface CitySnapshot {
   greeting: string;
   tagline: string;
   health_score: number;
+  health_narrative?: string | null;
   kpis: HeroKPI[];
   confidence_note: string;
+  data_through?: string | null;
+  previous_period?: string | null;
+  generated_at?: string | null;
+  brief_refreshed_at?: string | null;
 }
 
 export interface WinMetric {
@@ -533,10 +549,15 @@ export interface PulseItem {
   sentence: string;
   plain_language?: string | null;
   href: string;
+  latest_period?: string | null;
+  previous_period?: string | null;
 }
 
 export interface CityPulse {
   generated_at: string;
+  cadence?: string;
+  data_through?: string | null;
+  previous_period?: string | null;
   period_note: string;
   items: PulseItem[];
   worsening_count: number;
@@ -552,6 +573,8 @@ export interface FeedStatus {
   cadence: string;
   description: string;
   unlocks: string;
+  last_refreshed?: string | null;
+  last_refreshed_label: string;
 }
 
 export interface FeedsReport {
@@ -599,6 +622,83 @@ export async function getDecisions(): Promise<DecisionRegister> {
   const res = await fetch(`${SERVER_BASE}/decisions`, { cache: "no-store" });
   if (!res.ok) throw new Error(`decisions failed: ${res.status}`);
   return res.json();
+}
+
+export interface Action {
+  id: string;
+  title: string;
+  source_type: string;
+  source_ref: string;
+  department: string;
+  owner: string;
+  due_date?: string | null;
+  status: "proposed" | "assigned" | "in_progress" | "done" | "overdue" | string;
+  expected_impact_zar?: number | null;
+  expected_impact_note?: string | null;
+  outcome?: string | null;
+  created_at?: string | null;
+}
+
+export interface ActionRegister {
+  municipality: string;
+  actions: Action[];
+  open_count: number;
+  overdue_count: number;
+  done_count: number;
+  total_expected_impact_zar: number;
+  note: string;
+}
+
+export interface ValueEntry {
+  id: string;
+  surfaced_at: string;
+  insight: string;
+  action_id?: string | null;
+  outcome: string;
+  value_zar: number;
+  value_basis: "realised" | "projected" | "avoided_cost" | string;
+  verification: string;
+  note?: string | null;
+}
+
+export interface ValueLedger {
+  municipality: string;
+  entries: ValueEntry[];
+  cumulative_projected_zar: number;
+  cumulative_realised_zar: number;
+  cumulative_avoided_zar: number;
+  cumulative_attributed_zar: number;
+  note: string;
+}
+
+export async function getActions(): Promise<ActionRegister> {
+  const res = await fetch(`${SERVER_BASE}/actions`, { cache: "no-store" });
+  if (!res.ok) throw new Error(`actions failed: ${res.status}`);
+  return res.json();
+}
+
+export async function getValueLedger(): Promise<ValueLedger> {
+  const res = await fetch(`${SERVER_BASE}/value-ledger`, { cache: "no-store" });
+  if (!res.ok) throw new Error(`value-ledger failed: ${res.status}`);
+  return res.json();
+}
+
+/** Format an ISO timestamp in Africa/Johannesburg for the header badge. */
+export function formatRefreshSAST(iso?: string | null): string {
+  if (!iso) return "—";
+  try {
+    return new Intl.DateTimeFormat("en-ZA", {
+      timeZone: "Africa/Johannesburg",
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    }).format(new Date(iso)) + " SAST";
+  } catch {
+    return iso;
+  }
 }
 
 export function glossaryForRisk(riskId: string, glossary: Record<string, GlossaryEntry>): GlossaryEntry | null {

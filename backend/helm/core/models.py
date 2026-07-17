@@ -93,6 +93,17 @@ class Evidence(BaseModel):
     source: str | None = None
 
 
+class CostEstimate(BaseModel):
+    """Sourced annual cost / gain estimate attached to a risk or opportunity."""
+
+    amount_zar: float
+    basis: str  # e.g. "annual_cost_of_current_level" | "annual_cost_of_trend"
+    method: str
+    confidence: float = Field(ge=0.0, le=1.0)
+    assumptions: list[dict] = Field(default_factory=list)
+    unit_note: str | None = None
+
+
 class Risk(BaseModel):
     id: str
     title: str
@@ -106,6 +117,7 @@ class Risk(BaseModel):
     mitigation: str
     evidence: list[Evidence] = Field(default_factory=list)
     forecast: Forecast | None = None
+    cost_estimate: CostEstimate | None = None
 
     @computed_field  # type: ignore[prop-decorator]
     @property
@@ -125,6 +137,7 @@ class Opportunity(BaseModel):
     owner: str
     action: str
     evidence: list[Evidence] = Field(default_factory=list)
+    gain_estimate: CostEstimate | None = None
 
 
 class Recommendation(BaseModel):
@@ -445,5 +458,10 @@ class CitySnapshot(BaseModel):
     greeting: str
     tagline: str
     health_score: int
+    health_narrative: str | None = None
     kpis: list[HeroKPI] = Field(default_factory=list)
     confidence_note: str
+    data_through: str | None = None  # e.g. "February 2026"
+    previous_period: str | None = None  # e.g. "January 2026"
+    generated_at: str | None = None  # ISO timestamp of brief/snapshot build
+    brief_refreshed_at: str | None = None

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { GlossaryEntry, Risk } from "@/lib/api";
-import { priorityColor } from "@/lib/api";
+import { formatZAR, priorityColor } from "@/lib/api";
 import ConfidenceBar from "./ConfidenceBar";
 import EvidenceList from "./EvidenceList";
 
@@ -32,6 +32,19 @@ export default function RiskCard({
         <span className="ml-auto text-[11px] text-helm-accent">Open report →</span>
       </div>
       <p className="mt-2 text-sm leading-relaxed text-white/65">{risk.reason}</p>
+      {risk.cost_estimate ? (
+        <div className="mt-3 rounded-lg border border-helm-bad/20 bg-helm-bad/10 px-3 py-2">
+          <p className="text-[11px] font-medium uppercase tracking-wide text-helm-bad">
+            Estimated annual cost
+          </p>
+          <p className="mt-0.5 font-display text-xl font-semibold text-helm-bad">
+            {formatZAR(risk.cost_estimate.amount_zar)}
+            <span className="ml-2 font-sans text-xs font-normal text-white/45">
+              {risk.cost_estimate.unit_note}
+            </span>
+          </p>
+        </div>
+      ) : null}
       <div className="mt-3 rounded-lg bg-helm-accent/10 p-3 text-sm text-white/75">
         <span className="text-[11px] font-medium uppercase tracking-wide text-helm-accent">
           Mitigation
