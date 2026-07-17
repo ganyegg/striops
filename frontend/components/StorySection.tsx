@@ -34,8 +34,12 @@ export default function StorySection({
           {eyebrow ? (
             <p className="text-xs uppercase tracking-[0.22em] text-white/35">{eyebrow}</p>
           ) : null}
-          <h2 className="mt-1 font-display text-2xl font-semibold text-white md:text-3xl">{title}</h2>
-          {lead ? <p className="mt-2 max-w-2xl text-sm leading-relaxed text-white/55">{lead}</p> : null}
+          <h2 className="mt-1 font-display text-2xl font-semibold tracking-tight text-white md:text-[1.85rem]">
+            {title}
+          </h2>
+          {lead ? (
+            <p className="mt-2 max-w-2xl text-sm leading-relaxed text-white/55 text-pretty">{lead}</p>
+          ) : null}
         </div>
       </div>
       {children}

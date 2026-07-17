@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import {
+  formatZAR,
   runSimulation,
   type ScenarioOption,
   type SimulationResult,
@@ -16,13 +17,24 @@ const DIMENSION_LABEL: Record<string, string> = {
   risk: "Risk",
 };
 
-export default function SimulationPanel({ scenarios }: { scenarios: ScenarioOption[] }) {
+export default function SimulationPanel({
+  scenarios,
+  compact = false,
+}: {
+  scenarios: ScenarioOption[];
+  compact?: boolean;
+}) {
   const modelled = scenarios.filter((s) => s.modelled);
   const [fn, setFn] = useState(modelled[0]?.function_name ?? scenarios[0]?.function_name ?? "");
   const [pct, setPct] = useState(10);
   const [result, setResult] = useState<SimulationResult | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const selected = scenarios.find((s) => s.function_name === fn);
+  const unspent = selected
+    ? Math.max(0, selected.current_budget - selected.current_actual)
+    : 0;
 
   async function onRun() {
     setLoading(true);
@@ -37,101 +49,120 @@ export default function SimulationPanel({ scenarios }: { scenarios: ScenarioOpti
   }
 
   return (
-    <div className="card p-6">
-      <div className="flex flex-col gap-4 md:flex-row md:items-end">
-        <label className="flex-1">
-          <span className="mb-1 block text-xs uppercase tracking-wide text-white/40">Decision</span>
-          <select
-            value={fn}
-            onChange={(e) => setFn(e.target.value)}
-            className="w-full rounded-lg border border-white/10 bg-ink-800 px-3 py-2 text-sm text-white/90 outline-none focus:border-helm-accent"
-          >
-            {scenarios.map((s) => (
-              <option key={s.function_name} value={s.function_name}>
-                {s.function_name}
-                {s.modelled ? "" : " (unmodelled)"}
-              </option>
-            ))}
-          </select>
-        </label>
-        <label className="flex-1">
-          <span className="mb-1 block text-xs uppercase tracking-wide text-white/40">
-            Budget change: <span className="text-helm-accent">{pct > 0 ? "+" : ""}{pct}%</span>
-          </span>
-          <input
-            type="range"
-            min={-30}
-            max={30}
-            step={5}
-            value={pct}
-            onChange={(e) => setPct(Number(e.target.value))}
-            className="w-full accent-helm-accent"
-          />
-        </label>
-        <button
-          onClick={onRun}
-          disabled={loading || !fn}
-          className="rounded-lg bg-helm-ocean px-5 py-2.5 text-sm font-semibold text-white shadow-glow transition hover:bg-helm-oceanDeep disabled:opacity-50"
-        >
-          {loading ? "Simulating…" : "Run Simulation"}
-        </button>
-      </div>
+    <div className={`card relative overflow-hidden ${compact ? "p-4" : "p-6"}`}>
+      <div
+        className="pointer-events-none absolute -right-8 -top-10 h-32 w-32 rounded-full bg-helm-accent/10 blur-2xl"
+        aria-hidden
+      />
+      <div className="relative">
+        <p className="text-[11px] uppercase tracking-[0.18em] text-helm-accent/80">What if</p>
+        <h3 className="mt-1 font-display text-lg font-semibold text-white">Simulator</h3>
+        <p className="mt-1 text-xs leading-snug text-white/45">
+          Stress a budget line before the mid-year review does.
+        </p>
 
-      {error ? <p className="mt-4 text-sm text-helm-bad">{error}</p> : null}
+        {selected ? (
+          <p className="mt-3 rounded-lg border border-white/8 bg-ink-950/50 px-3 py-2 text-[11px] text-white/55">
+            <span className="text-white/75">{formatZAR(selected.current_budget)}</span> budget ·{" "}
+            <span className="text-helm-accent">{formatZAR(selected.current_actual)}</span> spent ·{" "}
+            <span className="text-helm-gold">{formatZAR(unspent)}</span> unspent
+          </p>
+        ) : null}
 
-      {result ? (
-        <div className="mt-6 space-y-5">
-          <div>
-            <p className="text-sm font-medium text-white/80">{result.question}</p>
-          </div>
-
-          <div className="grid gap-4 md:grid-cols-2">
-            {[result.baseline, result.scenario].map((sc, idx) => (
-              <div
-                key={idx}
-                className={`rounded-xl border p-4 ${
-                  idx === 1 ? "border-helm-accent/40 bg-helm-accent/5" : "border-white/10 bg-white/[0.02]"
-                }`}
-              >
-                <p className="text-xs uppercase tracking-wide text-white/40">
-                  {idx === 0 ? "Baseline" : "Scenario"}
-                </p>
-                <p className="mt-0.5 text-sm font-semibold text-white/90">{sc.name}</p>
-                <p className="mt-1 text-xs text-white/50">{sc.description}</p>
-                <div className="mt-3 space-y-2">
-                  {sc.impacts.map((im, i) => (
-                    <div key={i} className="text-xs">
-                      <div className="flex items-center justify-between">
-                        <span className="text-white/50">{DIMENSION_LABEL[im.dimension] ?? im.dimension}</span>
-                        <span className="font-medium text-white/85">{im.delta}</span>
-                      </div>
-                      <p className="text-white/40">{im.detail}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <div className="rounded-xl border border-helm-gold/30 bg-helm-gold/5 p-4">
-            <div className="flex items-center justify-between">
-              <p className="text-xs uppercase tracking-wide text-helm-gold">Recommendation</p>
-              <span className="text-xs text-white/50">
-                Confidence {Math.round(result.confidence * 100)}%
+        <div className={`mt-4 flex flex-col gap-3 ${compact ? "" : "md:flex-row md:items-end"}`}>
+          <label className="flex-1">
+            <span className="mb-1 block text-[10px] uppercase tracking-wide text-white/40">
+              Function
+            </span>
+            <select
+              value={fn}
+              onChange={(e) => setFn(e.target.value)}
+              className="w-full rounded-lg border border-white/10 bg-ink-800 px-3 py-2 text-sm text-white/90 outline-none focus:border-helm-accent"
+            >
+              {scenarios.map((s) => (
+                <option key={s.function_name} value={s.function_name}>
+                  {s.function_name}
+                  {s.modelled ? "" : " (unmodelled)"}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label className="flex-1">
+            <span className="mb-1 block text-[10px] uppercase tracking-wide text-white/40">
+              Change{" "}
+              <span className="text-helm-accent">
+                {pct > 0 ? "+" : ""}
+                {pct}%
               </span>
-            </div>
-            <p className="mt-1 text-sm font-semibold text-white/90">{result.recommended}</p>
-            <p className="mt-1 text-sm text-white/60">{result.recommendation_detail}</p>
-            {result.alternatives?.length ? (
-              <ul className="mt-3 list-disc space-y-1 pl-5 text-xs text-white/50">
-                {result.alternatives.map((a, i) => (
-                  <li key={i}>{a}</li>
-                ))}
-              </ul>
-            ) : null}
-          </div>
+            </span>
+            <input
+              type="range"
+              min={-30}
+              max={30}
+              step={5}
+              value={pct}
+              onChange={(e) => setPct(Number(e.target.value))}
+              className="w-full accent-helm-accent"
+            />
+          </label>
+          <button
+            onClick={onRun}
+            disabled={loading || !fn}
+            className="rounded-lg bg-helm-ocean px-4 py-2.5 text-sm font-semibold text-white shadow-glow transition hover:bg-helm-oceanDeep disabled:opacity-50"
+          >
+            {loading ? "Simulating…" : "Run Simulation"}
+          </button>
         </div>
-      ) : null}
+
+        {error ? <p className="mt-3 text-sm text-helm-bad">{error}</p> : null}
+
+        {result ? (
+          <div className={`mt-4 space-y-3 ${compact ? "max-h-72 overflow-y-auto pr-1" : ""}`}>
+            <p className="text-sm font-medium text-white/80">{result.question}</p>
+            <div className={`grid gap-3 ${compact ? "grid-cols-1" : "md:grid-cols-2"}`}>
+              {[result.baseline, result.scenario].map((sc, idx) => (
+                <div
+                  key={idx}
+                  className={`rounded-xl border p-3 ${
+                    idx === 1
+                      ? "border-helm-accent/40 bg-helm-accent/5"
+                      : "border-white/10 bg-white/[0.02]"
+                  }`}
+                >
+                  <p className="text-[10px] uppercase tracking-wide text-white/40">
+                    {idx === 0 ? "Baseline" : "Scenario"}
+                  </p>
+                  <p className="mt-0.5 text-sm font-semibold text-white/90">{sc.name}</p>
+                  <div className="mt-2 space-y-1.5">
+                    {sc.impacts.slice(0, compact ? 3 : undefined).map((im, i) => (
+                      <div key={i} className="text-xs">
+                        <div className="flex items-center justify-between gap-2">
+                          <span className="text-white/50">
+                            {DIMENSION_LABEL[im.dimension] ?? im.dimension}
+                          </span>
+                          <span className="font-medium text-white/85">{im.delta}</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div className="rounded-xl border border-helm-gold/30 bg-helm-gold/5 p-3">
+              <div className="flex items-center justify-between gap-2">
+                <p className="text-[10px] uppercase tracking-wide text-helm-gold">Recommendation</p>
+                <span className="text-[10px] text-white/45">
+                  {Math.round(result.confidence * 100)}%
+                </span>
+              </div>
+              <p className="mt-1 text-sm font-semibold text-white/90">{result.recommended}</p>
+              {!compact ? (
+                <p className="mt-1 text-sm text-white/60">{result.recommendation_detail}</p>
+              ) : null}
+            </div>
+          </div>
+        ) : null}
+      </div>
     </div>
   );
 }

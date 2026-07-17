@@ -1,6 +1,7 @@
 import ActionTracker from "@/components/ActionTracker";
 import AskPanel from "@/components/AskPanel";
 import BriefingBento from "@/components/BriefingBento";
+import BudgetSpendChart from "@/components/BudgetSpendChart";
 import CriticalSectors from "@/components/CriticalSectors";
 import DecisionLog from "@/components/DecisionLog";
 import DomainGrid from "@/components/DomainGrid";
@@ -12,6 +13,7 @@ import RiskCard from "@/components/RiskCard";
 import SimulationPanel from "@/components/SimulationPanel";
 import SiteHeader from "@/components/SiteHeader";
 import StorySection from "@/components/StorySection";
+import StrategicRead from "@/components/StrategicRead";
 import ValueLedgerPanel from "@/components/ValueLedgerPanel";
 import WinCard from "@/components/WinCard";
 import Link from "next/link";
@@ -48,6 +50,13 @@ import {
 } from "@/lib/api";
 
 const MUNICIPALITY = "CPT";
+
+/** Mid-page framings — primary is snapshot.tagline; others offered as tone options. */
+const TAGLINE_ALTERNATES = [
+  "Price the wait. Protect the win. Redeploy what sits idle.",
+  "See the turn before the City feels it.",
+  "Act on the signal — not the siren.",
+];
 
 export const dynamic = "force-dynamic";
 
@@ -115,56 +124,80 @@ export default async function Home() {
   const briefRefreshed = formatRefreshSAST(snapshot.brief_refreshed_at || snapshot.generated_at);
 
   return (
-    <main className="pb-20">
-      {/* ── Hero ── */}
+    <main className="pb-24">
+      {/* ── Hero (brand + orientation only) ── */}
       <div className="hero-band">
-        <div className="hero-band-overlay px-6 pb-14 pt-6">
+        <div className="hero-band-overlay px-6 pb-10 pt-6">
           <div className="mx-auto max-w-6xl">
             <SiteHeader dataThrough={dataThrough} briefRefreshed={briefRefreshed} />
-
-            <div className="mt-10 grid gap-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-end">
-              <div>
-                <p className="text-xs font-medium uppercase tracking-[0.28em] text-helm-sand/80">
-                  {snapshot.greeting}
-                </p>
-                <h1 className="mt-2 font-display text-4xl font-semibold tracking-tight text-white md:text-5xl lg:text-[3.25rem] lg:leading-[1.08]">
-                  Steer before the storm.
-                </h1>
-                <p className="hero-summary mt-4 max-w-xl text-lg leading-relaxed text-helm-sand/90">
-                  {snapshot.tagline}
-                </p>
-              </div>
-              <div className="card border-helm-accent/20 bg-ink-950/50 p-5">
-                <p className="text-[11px] uppercase tracking-[0.18em] text-helm-accent/80">
-                  Today&apos;s strategic read
-                </p>
-                <p className="mt-3 text-[15px] leading-relaxed text-white/78">{brief.strategic_summary}</p>
-              </div>
+            <div className="mt-8 max-w-2xl">
+              <p className="text-xs font-medium uppercase tracking-[0.28em] text-helm-sand/80">
+                {snapshot.greeting}
+              </p>
+              <h1 className="mt-2 font-display text-3xl font-semibold tracking-tight text-white md:text-4xl">
+                Cape Town command
+              </h1>
+              <p className="mt-2 text-sm text-white/55">
+                Health {brief.health_score}/100 · Data through {dataThrough} · Brief {briefRefreshed}
+              </p>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="mx-auto max-w-6xl space-y-14 px-6">
-        {/* ── Command centre ── */}
+      <div className="mx-auto max-w-6xl space-y-12 px-6 pt-8">
+        {/* ── Command + Simulator (side) ── */}
+        <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_340px]">
+          <StorySection
+            step="01"
+            eyebrow="Start here"
+            title="Command centre"
+            lead="Strategic health and headline KPIs — each tile opens evidence or a breakdown."
+          >
+            <BriefingBento
+              kpis={snapshot.kpis}
+              healthScore={brief.health_score}
+              healthNarrative={snapshot.health_narrative || brief.health_narrative}
+            />
+            <p className="mt-4 text-xs leading-relaxed text-white/38">{snapshot.confidence_note}</p>
+          </StorySection>
+
+          <aside className="space-y-4 lg:sticky lg:top-20">
+            <SimulationPanel scenarios={scenarios} compact />
+            <BudgetSpendChart scenarios={scenarios} compact />
+          </aside>
+        </div>
+
+        {/* ── Mid-page manifesto ── */}
+        <div className="manifesto-band">
+          <p className="text-[11px] uppercase tracking-[0.28em] text-helm-accent/70">Operating idea</p>
+          <p className="manifesto-line mt-3 font-display text-2xl font-semibold tracking-tight text-white md:text-3xl lg:text-[2.15rem] lg:leading-snug">
+            {snapshot.tagline}
+          </p>
+          <ul className="mt-5 flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:gap-x-6 sm:gap-y-2">
+            {TAGLINE_ALTERNATES.map((line) => (
+              <li key={line} className="text-sm text-white/40">
+                <span className="mr-2 text-helm-accent/50">·</span>
+                {line}
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* ── Strategic read ── */}
         <StorySection
-          step="01"
-          eyebrow="Start here"
-          title="Command centre"
-          lead="Strategic health and headline KPIs — each tile opens evidence or a breakdown."
+          step="02"
+          eyebrow="Briefing"
+          title="Today's strategic read"
+          lead="Snapshot, pressure, redeploy, and watch — scannable like Ask Helm."
         >
-          <BriefingBento
-            kpis={snapshot.kpis}
-            healthScore={brief.health_score}
-            healthNarrative={snapshot.health_narrative || brief.health_narrative}
-          />
-          <p className="mt-4 text-xs leading-relaxed text-white/38">{snapshot.confidence_note}</p>
+          <StrategicRead brief={brief} />
         </StorySection>
 
         {/* ── Critical sectors ── */}
         <StorySection
           id="sectors"
-          step="02"
+          step="03"
           eyebrow="Mayor spine"
           title="Critical sectors"
           lead="Health, water, safety, housing, energy first — libraries stay secondary. Empty means the data request, not silence."
@@ -175,7 +208,7 @@ export default async function Home() {
         {/* ── City pulse ── */}
         <StorySection
           id="pulse"
-          step="03"
+          step="04"
           eyebrow="What moved"
           title="City pulse"
           lead={`${pulse.data_through} vs ${pulse.previous_period} — every line opens a metric report.`}
@@ -186,47 +219,55 @@ export default async function Home() {
         {/* ── Compare ── */}
         <StorySection
           id="compare"
-          step="04"
+          step="05"
           eyebrow="Contrast to decide"
           title="Headline contrasts"
           lead="Dams vs NRW, clinics vs EMS, and other packs with strategic ratios — not chart spam."
         >
           <div className="grid gap-4 md:grid-cols-2">
-            {comparatives.packs.filter((p) => p.id !== "citizen_services").slice(0, 3).map((pack) => (
-              <Link
-                key={pack.id}
-                href={`/compare#${pack.id}`}
-                className="card block p-5 transition hover:border-helm-accent/40 hover:shadow-glow"
-              >
-                <p className="text-[11px] uppercase tracking-[0.16em] text-helm-accent/80">
-                  {pack.eyebrow}
-                </p>
-                <h3 className="mt-1 font-display text-lg font-semibold text-white">{pack.title}</h3>
-                <p className="mt-2 line-clamp-2 text-sm text-white/55">{pack.why_it_matters}</p>
-                {pack.ratio ? (
-                  <p className="mt-3 font-display text-2xl font-semibold text-helm-sand">
-                    {pack.ratio.value}
-                    <span className="ml-2 font-sans text-xs font-normal text-white/40">
-                      {pack.ratio.label}
-                    </span>
+            {comparatives.packs
+              .filter((p) => p.id !== "citizen_services")
+              .slice(0, 3)
+              .map((pack) => (
+                <Link
+                  key={pack.id}
+                  href={`/compare#${pack.id}`}
+                  className="card group block p-5 transition hover:border-helm-accent/40 hover:shadow-glow"
+                >
+                  <p className="text-[11px] uppercase tracking-[0.16em] text-helm-accent/80">
+                    {pack.eyebrow}
                   </p>
-                ) : (
-                  <p className="mt-3 text-xs text-white/40">{pack.series.map((s) => s.label).join(" · ")}</p>
-                )}
-                <p className="mt-2 text-[11px] text-helm-accent">Open chart →</p>
-              </Link>
-            ))}
+                  <h3 className="mt-1 font-display text-lg font-semibold text-white">{pack.title}</h3>
+                  <p className="mt-2 line-clamp-2 text-sm text-white/55">{pack.why_it_matters}</p>
+                  {pack.ratio ? (
+                    <p className="mt-3 font-display text-2xl font-semibold text-helm-sand">
+                      {pack.ratio.value}
+                      <span className="ml-2 font-sans text-xs font-normal text-white/40">
+                        {pack.ratio.label}
+                      </span>
+                    </p>
+                  ) : (
+                    <p className="mt-3 text-xs text-white/40">
+                      {pack.series.map((s) => s.label).join(" · ")}
+                    </p>
+                  )}
+                  <p className="mt-2 text-[11px] text-helm-accent opacity-80 group-hover:opacity-100">
+                    Open chart →
+                  </p>
+                </Link>
+              ))}
           </div>
           <p className="mt-3 text-xs text-white/35">
-            Helm is dynamic — new metrics show up after ingest. Use <strong className="text-white/50">Refresh now</strong>{" "}
-            in the header when you need data immediately.
+            Helm is dynamic — new metrics show up after ingest. Use{" "}
+            <strong className="text-white/50">Refresh now</strong> in the header when you need data
+            immediately.
           </p>
         </StorySection>
 
         {/* ── Ask ── */}
         <StorySection
           id="ask"
-          step="05"
+          step="06"
           eyebrow="Interrogate the twin"
           title="Ask Helm"
           lead="Natural language over retrieved facts. Engines own the numbers; AI writes the answer."
@@ -237,7 +278,7 @@ export default async function Home() {
         {/* ── Wins ── */}
         <StorySection
           id="wins"
-          step="06"
+          step="07"
           eyebrow="Momentum first"
           title="What's working"
           lead="Lead with delivery the City can stand on — before the room only hears problems."
@@ -253,7 +294,7 @@ export default async function Home() {
         {/* ── Risks ── */}
         <StorySection
           id="risks"
-          step="07"
+          step="08"
           eyebrow="Act before it happens"
           title="Top risks"
           lead="Ranked by score, priced where we can, each with a full drill-down report."
@@ -268,7 +309,7 @@ export default async function Home() {
         {/* ── Opportunities ── */}
         <StorySection
           id="opportunities"
-          step="08"
+          step="09"
           eyebrow="Value in plain sight"
           title="Opportunities"
           lead="Underspend and efficiency gains you can redeploy this cycle."
@@ -283,7 +324,7 @@ export default async function Home() {
         {/* ── Accountability ── */}
         <div id="act" className="grid scroll-mt-24 gap-14 lg:grid-cols-2 lg:gap-8">
           <StorySection
-            step="08"
+            step="10"
             eyebrow="Assign & track"
             title="Action tracker"
             lead={`${actions.open_count} open · ${actions.overdue_count} overdue · ${formatZAR(actions.total_expected_impact_zar)} expected on open actions`}
@@ -292,7 +333,7 @@ export default async function Home() {
           </StorySection>
 
           <StorySection
-            step="09"
+            step="11"
             eyebrow="Prove the ROI"
             title="Value delivered"
             lead="What Helm surfaced → what happened → what it was worth."
@@ -303,7 +344,7 @@ export default async function Home() {
 
         {/* ── Decisions ── */}
         <StorySection
-          step="10"
+          step="12"
           eyebrow="Highest-leverage moves"
           title="Recommended decisions"
           lead="The engine's synthesis — each links to the underlying risk or opportunity."
@@ -316,7 +357,7 @@ export default async function Home() {
         </StorySection>
 
         <StorySection
-          step="11"
+          step="13"
           eyebrow="Institutional memory"
           title="Decision register"
           lead="What was decided, by whom, and when it comes up for review."
@@ -325,38 +366,31 @@ export default async function Home() {
           <DecisionLog register={decisionRegister} />
         </StorySection>
 
-        {/* ── Explore ── */}
+        {/* ── Domains (simulator moved up) ── */}
         <div id="explore" className="scroll-mt-24">
           <StorySection
-            step="12"
+            step="14"
             eyebrow="Go deeper"
-            title="Domains & simulation"
-            lead="Source-linked intelligence by directorate, plus what-if on budget lines."
+            title="Domain intelligence"
+            lead="Source-linked profiles by directorate — use the simulator above for what-if runs."
           >
-            <div className="grid gap-8 lg:grid-cols-5">
-              <div className="lg:col-span-3">
-                <DomainGrid code={MUNICIPALITY} domains={domains} />
-              </div>
-              <div className="lg:col-span-2">
-                <SimulationPanel scenarios={scenarios} />
-              </div>
-            </div>
+            <DomainGrid code={MUNICIPALITY} domains={domains} />
           </StorySection>
         </div>
 
         {/* ── Trust layer ── */}
         <StorySection
-          step="13"
+          step="15"
           eyebrow="Nothing to hide"
           title="Sources & reasoning"
-          lead="Where every feed stands today — and the agents that merged today's brief. New feeds appear after ingest; Refresh now pulls on demand."
+          lead="Where every feed stands today — and the agents that merged today's brief."
         >
           <FeedStatusPanel report={feeds} />
           <div className="mt-6 grid gap-3 md:grid-cols-2">
             {brief.agent_contributions
               .filter((c) => c.confidence > 0)
               .map((c) => (
-                <div key={c.agent} className="card p-4">
+                <div key={c.agent} className="card p-4 transition hover:border-white/20">
                   <div className="flex items-center justify-between">
                     <span className="text-sm font-semibold text-white/85">{c.agent}</span>
                     <span className="text-xs text-white/40">{Math.round(c.confidence * 100)}%</span>

@@ -171,7 +171,7 @@ def build_city_snapshot(code: str = "CPT") -> CitySnapshot:
     return CitySnapshot(
         municipality=city,
         greeting=_greeting(city),
-        tagline="Steer before the storm. Celebrate what is working.",
+        tagline="Decide while the numbers still move.",
         health_score=brief.health_score,
         health_narrative=brief.health_narrative,
         kpis=kpis,
