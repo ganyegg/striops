@@ -1,6 +1,6 @@
-# Helm AI — Architecture (v0.1 slice)
+# Helm — Architecture (v0.1 slice)
 
-Helm AI is intelligence-first: the reasoning core (graph + engines + agents) is
+Helm is intelligence-first: the reasoning core (graph + engines + agents) is
 the product; the LLM is a narrator over it, and the UI is the last mile.
 
 ## Component map

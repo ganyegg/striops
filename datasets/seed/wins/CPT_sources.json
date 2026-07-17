@@ -1,0 +1,50 @@
+[
+  {
+    "id": "src-budget-2627",
+    "publisher": "City of Cape Town",
+    "title": "2026/27 Budget ('City of Hope')",
+    "url": "https://www.capetown.gov.za/Family%20and%20home/meet-the-city/city-budget",
+    "retrieved_at": "2026-07-17",
+    "coverage": "City of Cape Town, 2026/27"
+  },
+  {
+    "id": "src-mayor-speech",
+    "publisher": "City of Cape Town — Executive Mayor",
+    "title": "Mayor Hill-Lewis speech: Tabling of 2026/27 City of Hope Budget",
+    "url": "https://www.capetown.gov.za/Media-and-news/Mayor%20Hill-Lewis%20speech:%20Tabling%20of%202026-27%20City%20of%20Hope%20Budget",
+    "retrieved_at": "2026-07-17",
+    "coverage": "Official speech / City media"
+  },
+  {
+    "id": "src-infra-news",
+    "publisher": "Infrastructure News",
+    "title": "Cape Town Adopts City Of Hope Budget, R40bn Basic Infrastructure Investment",
+    "url": "https://infrastructurenews.co.za/2026/06/29/cape-town-adopts-city-of-hope-budget-r40bn-basic-infrastructure-investment/",
+    "retrieved_at": "2026-07-17",
+    "coverage": "Secondary report of Council adoption 29 Jun 2026"
+  },
+  {
+    "id": "src-odp",
+    "publisher": "City of Cape Town",
+    "title": "Open Data Portal",
+    "url": "https://odp.capetown.gov.za",
+    "retrieved_at": "2026-07-17",
+    "coverage": "City of Cape Town"
+  },
+  {
+    "id": "src-saps",
+    "publisher": "South African Police Service",
+    "title": "Quarterly Crime Statistics",
+    "url": "https://www.saps.gov.za/services/crimestats.php",
+    "retrieved_at": "2026-07-17",
+    "coverage": "Confirm precinct-level figures before publishing"
+  },
+  {
+    "id": "src-dws-citizen",
+    "publisher": "The Citizen / City dam dashboards",
+    "title": "Cape Town dam levels (~78% week of 13 Jul 2026)",
+    "url": "https://www.citizen.co.za/news/cape-town-dam-levels-rise-slightly-heres-how-they-compare-with-last-years-figures/",
+    "retrieved_at": "2026-07-17",
+    "coverage": "Cross-check City weekly dam dashboard"
+  }
+]

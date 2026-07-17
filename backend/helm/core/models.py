@@ -1,6 +1,6 @@
 """Shared domain models.
 
-These are the vocabulary of Helm AI's reasoning core. They are deliberately
+These are the vocabulary of Helm's reasoning core. They are deliberately
 independent of any datastore so engines and agents can be unit-tested in
 isolation with hand-built inputs (no DB required).
 """
@@ -9,7 +9,7 @@ from __future__ import annotations
 from datetime import date
 from enum import Enum
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, computed_field
 
 
 class EntityType(str, Enum):
@@ -107,6 +107,7 @@ class Risk(BaseModel):
     evidence: list[Evidence] = Field(default_factory=list)
     forecast: Forecast | None = None
 
+    @computed_field  # type: ignore[prop-decorator]
     @property
     def score(self) -> float:
         """Risk = Likelihood x Impact x Trend x Confidence, scaled to 0-100."""
@@ -182,6 +183,80 @@ class SimulationResult(BaseModel):
     confidence: float = Field(ge=0.0, le=1.0)
     evidence: list[Evidence] = Field(default_factory=list)
     alternatives: list[str] = Field(default_factory=list)
+
+
+# --------------------------------------------------------------------------
+# Drill-down reports (risks / metrics) — full narrative + series + sources
+# --------------------------------------------------------------------------
+
+
+class ScoreBreakdown(BaseModel):
+    likelihood: float
+    impact: float
+    trend: float
+    confidence: float
+    score: float
+    formula: str = "Likelihood × Impact × Trend × Confidence × 100"
+
+
+class MetricStats(BaseModel):
+    latest: float
+    previous: float | None = None
+    change: float | None = None
+    change_pct: float | None = None
+    period_start: str | None = None
+    period_end: str | None = None
+    n_points: int = 0
+    min_value: float | None = None
+    max_value: float | None = None
+    mean: float | None = None
+
+
+class ChartPoint(BaseModel):
+    period: str
+    value: float
+    kind: str = "actual"  # actual | projected
+
+
+class ReferenceLink(BaseModel):
+    label: str
+    publisher: str
+    url: str
+    as_of: str | None = None
+    note: str | None = None
+
+
+class MetricReport(BaseModel):
+    entity_id: str
+    entity_name: str
+    metric: str
+    metric_label: str
+    unit: str | None = None
+    series: list[ChartPoint] = Field(default_factory=list)
+    projected: list[ChartPoint] = Field(default_factory=list)
+    forecast: Forecast | None = None
+    stats: MetricStats
+    owner: str | None = None
+    department: str | None = None
+    related_domain_id: str | None = None
+    related_risk_id: str | None = None
+    narrative: str
+    references: list[ReferenceLink] = Field(default_factory=list)
+
+
+class RiskReport(BaseModel):
+    risk: Risk
+    score_breakdown: ScoreBreakdown
+    metric_report: MetricReport | None = None
+    related_domain_id: str | None = None
+    related_budget_function: str | None = None
+    narrative: str
+    what_changed: list[str] = Field(default_factory=list)
+    recommended_actions: list[str] = Field(default_factory=list)
+    references: list[ReferenceLink] = Field(default_factory=list)
+    plain_language: str | None = None
+    term: str | None = None
+    in_one_line: str | None = None
 
 
 # --------------------------------------------------------------------------
@@ -293,3 +368,82 @@ class Municipality(BaseModel):
     status: str = "planned"  # "live" | "in_progress" | "planned"
     data_sources: dict = Field(default_factory=dict)
     domains_available: list[DomainId] = Field(default_factory=list)
+
+
+class IndicatorReport(BaseModel):
+    municipality_code: str
+    municipality_name: str
+    domain_id: str
+    domain_name: str
+    indicator: Indicator
+    source: Source | None = None
+    domain_summary: str
+    watchpoints: list[str] = Field(default_factory=list)
+    related_indicators: list[Indicator] = Field(default_factory=list)
+    related_risk_ids: list[str] = Field(default_factory=list)
+    related_metric: dict | None = None  # {entity_id, metric} if linked
+    narrative: str
+    references: list[ReferenceLink] = Field(default_factory=list)
+
+
+# --------------------------------------------------------------------------
+# Wins / Initiatives — the other half of an honest executive briefing
+# --------------------------------------------------------------------------
+
+
+class WinMetric(BaseModel):
+    label: str
+    value: str
+    as_of: str
+    source_id: str
+
+
+class Initiative(BaseModel):
+    id: str
+    title: str
+    headline: str
+    plain_language: str
+    why_it_matters: str
+    category: str
+    status: str
+    priority: Priority
+    confidence: float = Field(ge=0.0, le=1.0)
+    owner: str
+    image_url: str | None = None
+    image_credit: str | None = None
+    metrics: list[WinMetric] = Field(default_factory=list)
+    evidence: list[Evidence] = Field(default_factory=list)
+    next_step: str
+    related_domain_id: str | None = None
+    related_risk_ids: list[str] = Field(default_factory=list)
+    related_metric: dict | None = None
+    source_ids: list[str] = Field(default_factory=list)
+
+
+class InitiativeReport(BaseModel):
+    initiative: Initiative
+    sources: list[Source] = Field(default_factory=list)
+    references: list[ReferenceLink] = Field(default_factory=list)
+    narrative: str
+    metric_report: MetricReport | None = None
+
+
+class HeroKPI(BaseModel):
+    key: str
+    label: str
+    value: str
+    hint: str
+    tone: str  # good | warn | bad | neutral
+    href: str | None = None
+    plain_language: str | None = None
+
+
+class CitySnapshot(BaseModel):
+    """Mayor-facing top-of-brief numbers — verifiable, sparse, high-signal."""
+
+    municipality: str
+    greeting: str
+    tagline: str
+    health_score: int
+    kpis: list[HeroKPI] = Field(default_factory=list)
+    confidence_note: str

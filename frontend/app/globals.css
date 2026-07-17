@@ -8,16 +8,57 @@
 
 body {
   background:
-    radial-gradient(1200px 600px at 15% -10%, rgba(91, 140, 255, 0.12), transparent 55%),
-    radial-gradient(900px 500px at 100% 0%, rgba(232, 195, 122, 0.08), transparent 50%),
-    #070a12;
+    radial-gradient(1000px 520px at 8% -8%, rgba(56, 189, 248, 0.22), transparent 55%),
+    radial-gradient(900px 480px at 92% 4%, rgba(245, 158, 11, 0.16), transparent 50%),
+    radial-gradient(700px 400px at 50% 100%, rgba(13, 148, 136, 0.14), transparent 55%),
+    linear-gradient(165deg, #061018 0%, #0a1a24 45%, #0c2430 100%);
   min-height: 100vh;
 }
 
 .card {
-  @apply rounded-2xl border border-white/5 bg-white/[0.03] backdrop-blur-sm;
+  @apply rounded-2xl border border-white/10 bg-ink-900/70 shadow-card backdrop-blur-md;
+}
+
+.card-win {
+  @apply rounded-2xl border border-helm-ocean/25 bg-gradient-to-br from-helm-ocean/15 via-ink-900/80 to-ink-900/90 shadow-card backdrop-blur-md;
+}
+
+.card-risk {
+  @apply rounded-2xl border border-helm-bad/20 bg-gradient-to-br from-helm-bad/10 via-ink-900/80 to-ink-900/90 shadow-card backdrop-blur-md;
 }
 
 .pill {
   @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium;
+}
+
+.kpi-tile {
+  @apply relative overflow-hidden rounded-2xl border border-white/10 bg-ink-800/80 p-4 shadow-card transition hover:border-helm-accent/40 hover:shadow-glow;
+}
+
+.kpi-tile::after {
+  content: "";
+  position: absolute;
+  inset: auto -20% -40% auto;
+  width: 120px;
+  height: 120px;
+  border-radius: 999px;
+  background: radial-gradient(circle, rgba(20, 184, 166, 0.2), transparent 70%);
+  pointer-events: none;
+}
+
+.hero-band {
+  background:
+    linear-gradient(120deg, rgba(13, 148, 136, 0.25), rgba(56, 189, 248, 0.12) 45%, rgba(245, 158, 11, 0.18)),
+    url("https://images.unsplash.com/photo-1580060839134-75a5edca2e99?auto=format&fit=crop&w=1800&q=70");
+  background-size: cover;
+  background-position: center 35%;
+}
+
+.hero-band-overlay {
+  background: linear-gradient(
+    180deg,
+    rgba(6, 16, 24, 0.55) 0%,
+    rgba(6, 16, 24, 0.72) 50%,
+    rgba(6, 16, 24, 0.95) 100%
+  );
 }

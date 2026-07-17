@@ -38,7 +38,7 @@ class Agent(ABC):
         if ctx.llm is None:
             return fallback
         try:
-            text = ctx.llm.generate(prompt, system=f"You are the {self.name} of Helm AI, an AI executive for {ctx.municipality}. Be concise, factual, and decision-oriented.")
+            text = ctx.llm.generate(prompt, system=f"You are the {self.name} of Helm, an AI executive for {ctx.municipality}. Be concise, factual, and decision-oriented.")
             return text or fallback
         except Exception:
             return fallback

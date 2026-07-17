@@ -1,23 +1,45 @@
+import DecisionLog from "@/components/DecisionLog";
+import DomainGrid from "@/components/DomainGrid";
+import FeedStatusPanel from "@/components/FeedStatusPanel";
 import HealthGauge from "@/components/HealthGauge";
+import HeroKPIStrip from "@/components/HeroKPIStrip";
 import OpportunityCard from "@/components/OpportunityCard";
+import PulseStrip from "@/components/PulseStrip";
 import RecommendationCard from "@/components/RecommendationCard";
 import RiskCard from "@/components/RiskCard";
 import Section from "@/components/Section";
 import SimulationPanel from "@/components/SimulationPanel";
+import WinCard from "@/components/WinCard";
 import {
   getBrief,
+  getDecisions,
+  getFeeds,
+  getGlossary,
+  getMunicipalityDomains,
+  getPulse,
   getScenarios,
+  getSnapshot,
+  getWins,
+  glossaryForRisk,
+  type CityPulse,
+  type DecisionRegister,
+  type DomainSummary,
   type ExecutiveBrief,
+  type FeedsReport,
+  type GlossaryEntry,
+  type Initiative,
   type ScenarioOption,
+  type CitySnapshot,
 } from "@/lib/api";
 
-// The brief is generated live; never cache.
+const MUNICIPALITY = "CPT";
+
 export const dynamic = "force-dynamic";
 
 function BackendDown({ message }: { message: string }) {
   return (
     <main className="mx-auto max-w-3xl px-6 py-24">
-      <h1 className="text-2xl font-semibold text-white/90">Helm AI is waking up</h1>
+      <h1 className="font-display text-2xl font-semibold text-white">Helm is waking up</h1>
       <p className="mt-3 text-white/60">
         The reasoning core is not reachable yet. Start the backend and refresh.
       </p>
@@ -29,99 +51,170 @@ function BackendDown({ message }: { message: string }) {
 export default async function Home() {
   let brief: ExecutiveBrief;
   let scenarios: ScenarioOption[];
+  let domains: DomainSummary[];
+  let snapshot: CitySnapshot;
+  let wins: Initiative[];
+  let glossary: Record<string, GlossaryEntry>;
+  let pulse: CityPulse;
+  let decisionRegister: DecisionRegister;
+  let feeds: FeedsReport;
   try {
-    [brief, scenarios] = await Promise.all([getBrief(), getScenarios()]);
+    [brief, scenarios, domains, snapshot, wins, glossary, pulse, decisionRegister, feeds] =
+      await Promise.all([
+        getBrief(),
+        getScenarios(),
+        getMunicipalityDomains(MUNICIPALITY),
+        getSnapshot(),
+        getWins(),
+        getGlossary(),
+        getPulse(),
+        getDecisions(),
+        getFeeds(),
+      ]);
   } catch (e) {
     return <BackendDown message={e instanceof Error ? e.message : String(e)} />;
   }
 
   return (
-    <main className="mx-auto max-w-6xl px-6 py-12">
-      <header className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <div className="h-2.5 w-2.5 rounded-full bg-helm-accent" />
-          <span className="text-sm font-semibold tracking-wide text-white/80">HELM AI</span>
-          <span className="text-sm text-white/30">· Think Ahead</span>
-        </div>
-        <span className="text-xs text-white/40">
-          Overall confidence {Math.round(brief.confidence * 100)}%
-        </span>
-      </header>
+    <main className="pb-16">
+      {/* Full-bleed hero */}
+      <div className="hero-band">
+        <div className="hero-band-overlay px-6 pb-12 pt-8">
+          <div className="mx-auto max-w-6xl">
+            <header className="flex items-center justify-between">
+              <div className="flex items-center gap-2.5">
+                <div className="h-3 w-3 rounded-full bg-helm-accent shadow-[0_0_12px_rgba(20,184,166,0.8)]" />
+                <span className="font-display text-lg font-semibold tracking-wide text-white">
+                  Helm
+                </span>
+                <span className="hidden text-sm text-white/45 sm:inline">· Think Ahead</span>
+              </div>
+              <span className="rounded-full border border-white/15 bg-white/5 px-3 py-1 text-xs text-white/60">
+                City of Cape Town · live briefing
+              </span>
+            </header>
 
-      <div className="mt-10 grid items-center gap-8 md:grid-cols-[1fr_320px]">
-        <div>
-          <h1 className="text-4xl font-semibold tracking-tight text-white md:text-5xl">
-            {brief.greeting}
-          </h1>
-          <p className="mt-4 max-w-2xl text-lg leading-relaxed text-white/70">
-            {brief.strategic_summary}
-          </p>
-          <p className="mt-3 max-w-2xl text-sm text-white/45">{brief.health_narrative}</p>
-        </div>
-        <div className="card p-4">
-          <HealthGauge score={brief.health_score} />
+            <div className="mt-12 grid items-end gap-8 md:grid-cols-[1.4fr_280px]">
+              <div>
+                <p className="text-xs font-medium uppercase tracking-[0.28em] text-helm-sand/80">
+                  Executive briefing
+                </p>
+                <h1 className="mt-2 font-display text-4xl font-semibold tracking-tight text-white md:text-5xl lg:text-6xl">
+                  {snapshot.greeting}
+                </h1>
+                <p className="mt-3 max-w-xl text-lg text-helm-sand/90">{snapshot.tagline}</p>
+                <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-white/75">
+                  {brief.strategic_summary}
+                </p>
+              </div>
+              <div className="card border-helm-accent/20 bg-ink-950/50 p-3 shadow-glow">
+                <HealthGauge score={brief.health_score} />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
-      {brief.emerging_trends.length ? (
-        <div className="mt-8 flex flex-wrap gap-2">
-          {brief.emerging_trends.map((t, i) => (
-            <span key={i} className="pill bg-white/5 text-white/60">
-              {t}
-            </span>
-          ))}
-        </div>
-      ) : null}
+      <div className="mx-auto max-w-6xl px-6">
+        {/* Hero KPIs — the numbers the room will ask about */}
+        <section className="-mt-6">
+          <p className="mb-3 text-xs font-medium uppercase tracking-[0.22em] text-white/40">
+            City health at a glance
+          </p>
+          <HeroKPIStrip kpis={snapshot.kpis} />
+          <p className="mt-4 text-xs leading-relaxed text-white/40">{snapshot.confidence_note}</p>
+        </section>
 
-      <Section eyebrow="Act before it happens" title="Today's Top Risks">
-        <div className="grid gap-4 md:grid-cols-2">
-          {brief.top_risks.map((r) => (
-            <RiskCard key={r.id} risk={r} />
-          ))}
-        </div>
-      </Section>
+        {/* Pulse — nobody has to ask "what changed?" */}
+        <section className="mt-10">
+          <PulseStrip pulse={pulse} />
+        </section>
 
-      <Section eyebrow="Value hiding in plain sight" title="Today's Top Opportunities">
-        <div className="grid gap-4 md:grid-cols-2">
-          {brief.top_opportunities.map((o) => (
-            <OpportunityCard key={o.id} opp={o} />
-          ))}
-        </div>
-      </Section>
-
-      <Section eyebrow="The highest-leverage moves" title="Recommended Decisions">
-        <div className="grid gap-4">
-          {brief.recommended_decisions.map((rec, i) => (
-            <RecommendationCard key={rec.id} rec={rec} index={i} />
-          ))}
-        </div>
-      </Section>
-
-      <Section eyebrow="What happens if…" title="Decision Simulator">
-        <SimulationPanel scenarios={scenarios} />
-      </Section>
-
-      <Section eyebrow="Independent reasoning, merged" title="Agent Briefing">
-        <div className="grid gap-3 md:grid-cols-2">
-          {brief.agent_contributions
-            .filter((c) => c.confidence > 0)
-            .map((c) => (
-              <div key={c.agent} className="card p-4">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm font-semibold text-white/85">{c.agent}</span>
-                  <span className="text-xs text-white/40">
-                    {Math.round(c.confidence * 100)}%
-                  </span>
-                </div>
-                <p className="mt-1.5 text-sm text-white/60">{c.summary}</p>
-              </div>
+        {/* WINS first — balance the risk narrative */}
+        <Section eyebrow="What is working" title="Today's Wins & Initiatives">
+          <p className="-mt-2 mb-5 max-w-2xl text-sm text-white/55">
+            Delivery the City can stand on — with plain language, source links, and open reports.
+            Celebrate these before the room only hears problems.
+          </p>
+          <div id="wins" className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+            {wins.map((w) => (
+              <WinCard key={w.id} win={w} />
             ))}
-        </div>
-      </Section>
+          </div>
+        </Section>
 
-      <footer className="mt-16 border-t border-white/5 pt-6 text-xs text-white/30">
-        Helm AI · Strategic Intelligence Operating System · Serving {brief.generated_for}
-      </footer>
+        <Section eyebrow="Act before it happens" title="Today's Top Risks">
+          <p className="-mt-2 mb-5 max-w-2xl text-sm text-white/55">
+            Each risk opens a full report: trend chart, score breakdown, and references you can
+            defend in the room.
+          </p>
+          <div id="risks" className="grid gap-4 md:grid-cols-2">
+            {brief.top_risks.map((r) => (
+              <RiskCard key={r.id} risk={r} glossary={glossaryForRisk(r.id, glossary)} />
+            ))}
+          </div>
+        </Section>
+
+        <Section eyebrow="Value hiding in plain sight" title="Today's Top Opportunities">
+          <div className="grid gap-4 md:grid-cols-2">
+            {brief.top_opportunities.map((o) => (
+              <OpportunityCard key={o.id} opp={o} />
+            ))}
+          </div>
+        </Section>
+
+        <Section eyebrow="The highest-leverage moves" title="Recommended Decisions">
+          <div className="grid gap-4">
+            {brief.recommended_decisions.map((rec, i) => (
+              <RecommendationCard key={rec.id} rec={rec} index={i} />
+            ))}
+          </div>
+        </Section>
+
+        <Section eyebrow="Institutional memory" title="Decision Register">
+          <p className="-mt-2 mb-5 max-w-2xl text-sm text-white/55">
+            What was decided, by whom, and when it comes up for review — linked to the risk or
+            win it addresses. This is the memory that survives elections and staff turnover.
+          </p>
+          <DecisionLog register={decisionRegister} />
+        </Section>
+
+        <Section eyebrow="Verifiable, source-linked intelligence" title="Deep Dive by Domain">
+          <DomainGrid code={MUNICIPALITY} domains={domains} />
+        </Section>
+
+        <Section eyebrow="What happens if…" title="Decision Simulator">
+          <SimulationPanel scenarios={scenarios} />
+        </Section>
+
+        <Section eyebrow="Independent reasoning, merged" title="Agent Briefing">
+          <div className="grid gap-3 md:grid-cols-2">
+            {brief.agent_contributions
+              .filter((c) => c.confidence > 0)
+              .map((c) => (
+                <div key={c.agent} className="card p-4">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-semibold text-white/85">{c.agent}</span>
+                    <span className="text-xs text-white/40">
+                      {Math.round(c.confidence * 100)}%
+                    </span>
+                  </div>
+                  <p className="mt-1.5 text-sm text-white/60">{c.summary}</p>
+                </div>
+              ))}
+          </div>
+        </Section>
+
+        <Section eyebrow="Nothing to hide" title="Where the Numbers Come From">
+          <FeedStatusPanel report={feeds} />
+        </Section>
+
+        <footer className="mt-16 border-t border-white/10 pt-6 text-xs text-white/35">
+          Helm · Strategic Intelligence Operating System · Serving {brief.generated_for}. Images on
+          win cards are illustrative (Unsplash); every number links to a public City / Treasury /
+          SAPS / DWS source in its report.
+        </footer>
+      </div>
     </main>
   );
 }

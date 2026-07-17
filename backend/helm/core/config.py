@@ -13,10 +13,12 @@ class Settings(BaseSettings):
     helm_env: str = "development"
     helm_log_level: str = "INFO"
     helm_municipality: str = "CPT"
+    # LLM-backed briefs are cached in-process for this long (0 disables).
+    helm_brief_ttl_seconds: int = 3600
 
     # LLM / Gemini
     gemini_api_key: str = ""
-    gemini_model: str = "gemini-2.0-flash"
+    gemini_model: str = "gemini-2.5-flash"
     gemini_embed_model: str = "text-embedding-004"
 
     # Postgres

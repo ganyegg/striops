@@ -13,7 +13,7 @@ export default function Section({
         {eyebrow ? (
           <p className="text-xs uppercase tracking-[0.25em] text-white/35">{eyebrow}</p>
         ) : null}
-        <h2 className="mt-1 text-xl font-semibold text-white/90">{title}</h2>
+        <h2 className="mt-1 font-display text-2xl font-semibold text-white">{title}</h2>
       </div>
       {children}
     </section>

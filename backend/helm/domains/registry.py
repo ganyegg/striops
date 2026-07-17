@@ -1,6 +1,6 @@
 """Municipality registry + canonical domain catalog.
 
-The catalog is the fixed list of deep-dive domains Helm AI covers. The registry
+The catalog is the fixed list of deep-dive domains Helm covers. The registry
 is the set of municipalities we serve (metros first), loaded from seed config.
 Both are municipality-agnostic: adding a metro is data, not code.
 """

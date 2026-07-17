@@ -4,6 +4,7 @@ from __future__ import annotations
 from datetime import datetime
 
 from helm.agents import SPECIALIST_AGENTS, AgentContext, ExecutiveAgent
+from helm.core.cache import cache_get, cache_set
 from helm.core.config import Settings, get_settings
 from helm.core.logging import get_logger
 from helm.core.models import (
@@ -58,6 +59,14 @@ def build_executive_brief(
     llm = get_llm(settings)
     city = _MUNICIPALITY_NAMES.get(settings.helm_municipality, settings.helm_municipality)
 
+    # The brief is expensive (a dozen LLM calls); serve a cached copy within
+    # the TTL, refreshing only the time-of-day greeting.
+    cache_key = f"brief:{settings.helm_municipality}"
+    if settings.helm_brief_ttl_seconds > 0:
+        cached = cache_get(cache_key, settings.helm_brief_ttl_seconds)
+        if cached is not None:
+            return cached.model_copy(update={"greeting": _greeting(city)})
+
     ctx = AgentContext(
         service_areas=repo.service_areas(),
         metric_series=repo.metric_series(),
@@ -102,7 +111,7 @@ def build_executive_brief(
         extra={"context": {"health": health, "risks": len(risks), "opps": len(opportunities), "backend": repo.backend}},
     )
 
-    return ExecutiveBrief(
+    brief = ExecutiveBrief(
         greeting=_greeting(city),
         generated_for=city,
         health_score=health,
@@ -115,3 +124,6 @@ def build_executive_brief(
         confidence=confidence,
         agent_contributions=contributions,
     )
+    if settings.helm_brief_ttl_seconds > 0:
+        cache_set(cache_key, brief)
+    return brief

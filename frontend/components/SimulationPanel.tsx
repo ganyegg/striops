@@ -71,7 +71,7 @@ export default function SimulationPanel({ scenarios }: { scenarios: ScenarioOpti
         <button
           onClick={onRun}
           disabled={loading || !fn}
-          className="rounded-lg bg-helm-accent px-5 py-2.5 text-sm font-semibold text-ink-950 transition hover:brightness-110 disabled:opacity-50"
+          className="rounded-lg bg-helm-ocean px-5 py-2.5 text-sm font-semibold text-white shadow-glow transition hover:bg-helm-oceanDeep disabled:opacity-50"
         >
           {loading ? "Simulating…" : "Run Simulation"}
         </button>

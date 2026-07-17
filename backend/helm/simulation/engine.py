@@ -183,7 +183,7 @@ def simulate(
         f"Fiscal effect: R{delta_budget / 1e9:+.2f}bn. Be balanced and decisive."
     )
     try:
-        detail = llm.generate(prompt, system="You are the Simulation Agent of Helm AI.") or detail_fallback
+        detail = llm.generate(prompt, system="You are the Simulation Agent of Helm.") or detail_fallback
     except Exception:
         detail = detail_fallback
 

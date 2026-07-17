@@ -1,0 +1,74 @@
+[
+  {
+    "id": "dec-2026-budget-adoption",
+    "date": "2026-05-28",
+    "title": "Council adopts the 2026/27 'Invested in Hope' budget of R87.79bn",
+    "status": "decided",
+    "owner": "Council / Mayoral Committee: Finance",
+    "context": "Total budget with R40bn three-year infrastructure programme protected despite tariff pressure.",
+    "outcome": "Adopted. Capital programme ring-fenced; tariff package approved with relief bands.",
+    "linked_win_id": "win-city-of-hope-capex",
+    "linked_risk_id": null,
+    "review_by": null
+  },
+  {
+    "id": "dec-water-capital-allocation",
+    "date": "2026-05-28",
+    "title": "R16.7bn water & sanitation capital allocation approved (40% of capex)",
+    "status": "decided",
+    "owner": "MMC: Water and Sanitation",
+    "context": "Largest single capital share, targeting pipe replacement, wastewater works and new supply.",
+    "outcome": "Approved within the adopted budget. Delivery tracked via the pipe replacement programme.",
+    "linked_win_id": "win-pipe-replacement",
+    "linked_risk_id": "risk-svc-water-non_revenue_water_pct",
+    "review_by": null
+  },
+  {
+    "id": "dec-leak-detection-acceleration",
+    "date": "2026-06-15",
+    "title": "Accelerate leak detection and zone metering in worst-loss supply zones",
+    "status": "in_progress",
+    "owner": "Director: Water and Sanitation",
+    "context": "Non-revenue water trending toward 28%. Every percentage point is treated water paid for but never billed.",
+    "outcome": "Crews re-deployed to top-loss zones; progress reads directly from the non-revenue water series.",
+    "linked_win_id": "win-pipe-replacement",
+    "linked_risk_id": "risk-svc-water-non_revenue_water_pct",
+    "review_by": "2026-09-30"
+  },
+  {
+    "id": "dec-road-resurfacing-reprioritisation",
+    "date": null,
+    "title": "Reprioritise capital toward preventative road resurfacing",
+    "status": "pending",
+    "owner": "Director: Urban Mobility",
+    "context": "Backlog projected to pass 1,715 km next period. Preventative resurfacing is 4-6x cheaper than rebuild after failure.",
+    "outcome": null,
+    "linked_win_id": null,
+    "linked_risk_id": "risk-svc-roads-road_maintenance_backlog_km",
+    "review_by": "2026-08-31"
+  },
+  {
+    "id": "dec-safety-budget-deployment",
+    "date": "2026-05-28",
+    "title": "Record R6.8bn safety & security allocation, LEAP deployment sustained",
+    "status": "decided",
+    "owner": "MMC: Safety and Security",
+    "context": "Record allocation continuing investment in law enforcement capacity in highest-burden areas.",
+    "outcome": "Adopted with the budget. Effect claims stay Needs-verification until the SAPS quarter is attached.",
+    "linked_win_id": "win-safety-capacity",
+    "linked_risk_id": null,
+    "review_by": null
+  },
+  {
+    "id": "dec-refuse-capacity-review",
+    "date": "2026-04-30",
+    "title": "Review refuse collection capacity against rising service requests",
+    "status": "overdue",
+    "owner": "Director: Urban Waste Management",
+    "context": "Refuse service requests have risen for consecutive periods; capacity review was due before budget adoption.",
+    "outcome": null,
+    "linked_win_id": null,
+    "linked_risk_id": "risk-svc-solid-waste-refuse_service_requests",
+    "review_by": "2026-06-30"
+  }
+]

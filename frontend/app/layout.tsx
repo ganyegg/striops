@@ -1,14 +1,27 @@
 import type { Metadata } from "next";
+import { DM_Sans, Fraunces } from "next/font/google";
 import "./globals.css";
 
+const sans = DM_Sans({
+  subsets: ["latin"],
+  variable: "--font-sans",
+  weight: ["400", "500", "600", "700"],
+});
+
+const display = Fraunces({
+  subsets: ["latin"],
+  variable: "--font-display",
+  weight: ["500", "600", "700"],
+});
+
 export const metadata: Metadata = {
-  title: "Helm AI — Think Ahead",
-  description: "Strategic Intelligence Operating System · AI Strategic Twin for Cities",
+  title: "Helm — Think Ahead",
+  description: "Strategic Intelligence Operating System · Strategic Twin for Cities",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${sans.variable} ${display.variable}`}>
       <body className="font-sans text-white/90 antialiased">{children}</body>
     </html>
   );

@@ -1,29 +1,39 @@
 import type { Config } from "tailwindcss";
 
 const config: Config = {
-  content: [
-    "./app/**/*.{ts,tsx}",
-    "./components/**/*.{ts,tsx}",
-  ],
+  content: ["./app/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}"],
   theme: {
     extend: {
       colors: {
+        // Cape Town coastal — ocean, fynbos, sunrise, sandstone
         ink: {
-          950: "#070a12",
-          900: "#0b1020",
-          800: "#111a2e",
-          700: "#1b2740",
+          950: "#061018",
+          900: "#0a1a24",
+          800: "#102636",
+          700: "#1a3a4d",
         },
         helm: {
-          accent: "#5b8cff",
-          gold: "#e8c37a",
-          good: "#4ade80",
+          ocean: "#0d9488",
+          oceanDeep: "#0f766e",
+          sky: "#38bdf8",
+          accent: "#14b8a6",
+          gold: "#f59e0b",
+          sunrise: "#fb923c",
+          sand: "#f5e6c8",
+          fynbos: "#84cc16",
+          good: "#34d399",
           warn: "#fbbf24",
           bad: "#f87171",
         },
       },
       fontFamily: {
-        sans: ["ui-sans-serif", "system-ui", "-apple-system", "Segoe UI", "Roboto", "Helvetica", "Arial"],
+        display: ["var(--font-display)", "Georgia", "serif"],
+        sans: ["var(--font-sans)", "ui-sans-serif", "system-ui", "sans-serif"],
+        mono: ["ui-monospace", "SF Mono", "Menlo", "monospace"],
+      },
+      boxShadow: {
+        glow: "0 0 40px rgba(20, 184, 166, 0.15)",
+        card: "0 8px 32px rgba(0, 0, 0, 0.25)",
       },
     },
   },

@@ -3,7 +3,7 @@
 Each domain (fiscal, staffing, housing, safety, policies, ...) is a
 provenance-first `DomainProfile`: every indicator resolves to a public source
 so figures are verifiable. The same domain adapters run for every municipality,
-which is how Helm AI replicates across metros and, eventually, nationally.
+which is how Helm replicates across metros and, eventually, nationally.
 """
 from helm.domains.registry import DOMAIN_CATALOG, domain_catalog
 from helm.domains.service import (

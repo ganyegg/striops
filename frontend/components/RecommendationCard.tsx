@@ -1,5 +1,6 @@
+import Link from "next/link";
 import type { Recommendation } from "@/lib/api";
-import { priorityColor } from "@/lib/api";
+import { priorityColor, recommendationHref } from "@/lib/api";
 import ConfidenceBar from "./ConfidenceBar";
 
 export default function RecommendationCard({
@@ -10,7 +11,10 @@ export default function RecommendationCard({
   index: number;
 }) {
   return (
-    <div className="card flex gap-4 p-5">
+    <Link
+      href={recommendationHref(rec)}
+      className="card flex gap-4 p-5 transition hover:border-helm-gold/40 hover:bg-white/[0.05]"
+    >
       <div className="flex h-8 w-8 flex-none items-center justify-center rounded-full bg-helm-gold/15 text-sm font-bold text-helm-gold">
         {index + 1}
       </div>
@@ -24,10 +28,11 @@ export default function RecommendationCard({
           <span className="text-helm-gold">Expected impact: </span>
           {rec.expected_impact}
         </p>
-        <div className="mt-3">
+        <div className="mt-3 flex items-center justify-between">
           <ConfidenceBar value={rec.confidence} />
+          <span className="text-[11px] text-helm-accent">Open report →</span>
         </div>
       </div>
-    </div>
+    </Link>
   );
 }

@@ -1,12 +1,12 @@
-# Helm AI
+# Helm
 
 **Think Ahead.**
 
-The world's first Strategic Intelligence Operating System — an AI executive that continuously thinks about the future so leaders can act *before* problems happen.
+The Strategic Intelligence Operating System — an executive twin that continuously thinks about the future so leaders can act *before* problems happen.
 
-> Version 0.1 — AI Strategic Twin for Cities. First customer: **City of Cape Town**.
+> Version 0.1 — Strategic Twin for Cities. First customer: **City of Cape Town**.
 
-Helm AI is not a chatbot and not a dashboard. It is a continuously-reasoning layer that sits above ERP / CRM / HR / Accounting / BI and answers the questions leadership actually cares about:
+Helm is not a chatbot and not a dashboard. It is a continuously-reasoning layer that sits above ERP / CRM / HR / Accounting / BI and answers the questions leadership actually cares about:
 
 - What is changing?
 - What is likely to happen?
@@ -100,4 +100,4 @@ The domain packages live under [`backend/helm`](backend/helm): `ingestion`, `kno
 
 ## License
 
-Proprietary — Helm AI.
+Proprietary — Helm.

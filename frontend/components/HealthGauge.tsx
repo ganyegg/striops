@@ -7,7 +7,7 @@ import type { EChartsOption } from "echarts";
 const ReactECharts = dynamic(() => import("echarts-for-react"), { ssr: false });
 
 function colorFor(score: number): string {
-  if (score >= 75) return "#4ade80";
+  if (score >= 75) return "#34d399";
   if (score >= 50) return "#fbbf24";
   return "#f87171";
 }
@@ -38,6 +38,7 @@ export default function HealthGauge({ score }: { score: number }) {
           fontWeight: 700,
           color: "#f8fafc",
           formatter: "{value}",
+          fontFamily: "Fraunces, Georgia, serif",
         },
         data: [{ value: score }],
       },
@@ -47,7 +48,7 @@ export default function HealthGauge({ score }: { score: number }) {
   return (
     <div className="relative h-56 w-full">
       <ReactECharts option={option} style={{ height: "100%", width: "100%" }} />
-      <div className="pointer-events-none absolute inset-x-0 bottom-6 text-center text-xs uppercase tracking-[0.2em] text-white/40">
+      <div className="pointer-events-none absolute inset-x-0 bottom-6 text-center text-xs uppercase tracking-[0.2em] text-helm-sand/70">
         Strategic Health
       </div>
     </div>

@@ -1,0 +1,156 @@
+[
+  {
+    "id": "win-pipe-replacement",
+    "title": "Pipe replacement at national-leading pace",
+    "headline": "401 km of water and sewer pipes replaced (2022–2025)",
+    "plain_language": "Ageing pipes burst and leak. Replacing them means fewer sewage spills, fewer water losses, and more reliable taps — especially in townships where dignity starts with working sanitation.",
+    "why_it_matters": "Between 2022 and 2025 Cape Town replaced three times more water and sewer pipes than Johannesburg, Tshwane and Ekurhuleni combined — a delivery fact the Mayor can stand on.",
+    "category": "Water & Sanitation",
+    "status": "Delivering",
+    "priority": "high",
+    "confidence": 0.85,
+    "owner": "Water and Sanitation",
+    "image_url": "https://images.unsplash.com/photo-1621905252507-b35492cc74b4?auto=format&fit=crop&w=1400&q=80",
+    "image_credit": "Unsplash — water infrastructure (illustrative)",
+    "metrics": [
+      {"label": "Pipes replaced", "value": "401 km", "as_of": "2022–2025", "source_id": "src-mayor-speech"},
+      {"label": "Further pipe programme", "value": "R2bn", "as_of": "2026/27 MTREF", "source_id": "src-budget-2627"}
+    ],
+    "evidence": [
+      {"label": "Peer comparison", "value": "3× more pipe km than JHB + Tshwane + Ekurhuleni combined", "source": "Mayor budget speech 2026/27"},
+      {"label": "Water capital share", "value": "R16.7bn (40% of 3-yr capital)", "source": "City of Hope budget"}
+    ],
+    "next_step": "Keep the R2bn pipe-replacement line ring-fenced through mid-year review.",
+    "related_domain_id": "water",
+    "related_risk_ids": ["risk-svc-water-non_revenue_water_pct"],
+    "source_ids": ["src-mayor-speech", "src-budget-2627"]
+  },
+  {
+    "id": "win-city-of-hope-capex",
+    "title": "City of Hope infrastructure programme protected",
+    "headline": "R40bn three-year basic infrastructure investment adopted",
+    "plain_language": "This is the City’s long-term build programme for water, power, roads and transport — the bones of a working metro. Protecting it means Capetonians keep getting services that other metros are losing.",
+    "why_it_matters": "Council adopted the 2026/27 City of Hope budget with the full R40bn infrastructure run-rate intact, while expanding rates relief.",
+    "category": "Budget & Investment",
+    "status": "Adopted",
+    "priority": "high",
+    "confidence": 0.9,
+    "owner": "Executive Mayor / Finance",
+    "image_url": "https://images.unsplash.com/photo-1580060839134-75a5edca2e99?auto=format&fit=crop&w=1400&q=80",
+    "image_credit": "Unsplash — Cape Town / Table Mountain vista (illustrative)",
+    "metrics": [
+      {"label": "Total budget 2026/27", "value": "R87.79bn", "as_of": "adopted 29 Jun 2026", "source_id": "src-budget-2627"},
+      {"label": "3-year infrastructure", "value": "R40bn", "as_of": "2026/27–2028/29", "source_id": "src-budget-2627"},
+      {"label": "Water & sanitation share", "value": "R16.7bn", "as_of": "MTREF", "source_id": "src-budget-2627"}
+    ],
+    "evidence": [
+      {"label": "Adoption", "value": "Council adopted 29 June 2026", "source": "City of Cape Town"},
+      {"label": "Coverage", "value": "~75% of infrastructure spend benefits lower-income households (City claim)", "source": "Mayor budget speech"}
+    ],
+    "next_step": "Publish a public capital delivery tracker by ward for the R40bn programme.",
+    "related_domain_id": "budget",
+    "related_risk_ids": [],
+    "source_ids": ["src-budget-2627", "src-mayor-speech", "src-infra-news"]
+  },
+  {
+    "id": "win-rates-relief",
+    "title": "Widest rates relief among SA metros",
+    "headline": "Rates-free threshold raised R450k → R620k",
+    "plain_language": "Property rates are the monthly tax on a home’s value. Raising the rates-free threshold means more lower- and middle-value homes pay nothing (or less) in rates — putting money back into household budgets.",
+    "why_it_matters": "Creates political space and resident goodwill while the City still funds a record capital programme.",
+    "category": "Cost of living",
+    "status": "In force",
+    "priority": "high",
+    "confidence": 0.88,
+    "owner": "Finance",
+    "image_url": "https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=1400&q=80",
+    "image_credit": "Unsplash — residential street (illustrative)",
+    "metrics": [
+      {"label": "Rates-free threshold", "value": "R620,000", "as_of": "2026/27", "source_id": "src-budget-2627"},
+      {"label": "Previous threshold", "value": "R450,000", "as_of": "prior year", "source_id": "src-budget-2627"}
+    ],
+    "evidence": [
+      {"label": "City claim", "value": "Widest rates relief / competitive monthly bills vs SA metros", "source": "Mayor budget speech 2026/27"}
+    ],
+    "next_step": "Pair the relief message with a clear ‘what your rates fund’ ward brief.",
+    "related_domain_id": "fiscal",
+    "related_risk_ids": [],
+    "source_ids": ["src-budget-2627", "src-mayor-speech"]
+  },
+  {
+    "id": "win-safety-capacity",
+    "title": "Record safety budget and LEAP capacity growth",
+    "headline": "R6.8bn safety & security · policing personnel +50% this term",
+    "plain_language": "LEAP (Law Enforcement Advancement Plan) puts additional officers into high-crime precincts. A larger, better-funded safety budget means more visible patrols where murders and contact crime concentrate.",
+    "why_it_matters": "Safety is the top resident anxiety. The City has grown policing capacity by more than 50% over four years (+1,340 officers) and tabled a record safety budget.",
+    "category": "Safety",
+    "status": "Scaling",
+    "priority": "high",
+    "confidence": 0.7,
+    "owner": "Safety and Security",
+    "image_url": "https://images.unsplash.com/photo-1453873535-8aedfdf99245?auto=format&fit=crop&w=1400&q=80",
+    "image_credit": "Unsplash — city street night (illustrative)",
+    "metrics": [
+      {"label": "Safety budget 2026/27", "value": "R6.8bn", "as_of": "adopted budget", "source_id": "src-budget-2627"},
+      {"label": "Additional officers (term)", "value": "+1,340", "as_of": "last four FYs (City claim)", "source_id": "src-mayor-speech"}
+    ],
+    "evidence": [
+      {"label": "LEAP areas (Q3 2025/26)", "value": "Murder rate −3.7% in combined LEAP precincts (external analysis — confirm SAPS quarter)", "source": "Needs SAPS verification"}
+    ],
+    "next_step": "Attach the exact SAPS quarter and precinct list before any crime claim in the room.",
+    "related_domain_id": "safety_policing",
+    "related_risk_ids": [],
+    "source_ids": ["src-budget-2627", "src-mayor-speech", "src-saps"]
+  },
+  {
+    "id": "win-myciti-expansion",
+    "title": "MyCiTi Cape Flats expansion funded",
+    "headline": "R3.2–R3.3bn toward Mitchells Plain / Khayelitsha expansion",
+    "plain_language": "MyCiTi is the City’s bus rapid transit system. Expanding it into the Cape Flats means shorter, safer, more reliable trips for residents who depend on public transport — not private cars.",
+    "why_it_matters": "Described by the City as the largest investment of its kind in South Africa; connects opportunity to historically underserved areas.",
+    "category": "Transport",
+    "status": "Funded",
+    "priority": "medium",
+    "confidence": 0.8,
+    "owner": "Urban Mobility",
+    "image_url": "https://images.unsplash.com/photo-1544620341-11a8d17463bd?auto=format&fit=crop&w=1400&q=80",
+    "image_credit": "Unsplash — bus transit (illustrative)",
+    "metrics": [
+      {"label": "Cape Flats expansion", "value": "R3.2bn–R3.3bn", "as_of": "2026/27 MTREF", "source_id": "src-budget-2627"},
+      {"label": "Roads & stormwater", "value": "R3.7bn", "as_of": "MTREF", "source_id": "src-budget-2627"}
+    ],
+    "evidence": [
+      {"label": "Priority corridors", "value": "Mitchells Plain and Khayelitsha expansion called out in Mayor’s speech", "source": "Mayor budget speech 2026/27"}
+    ],
+    "next_step": "Publish monthly ridership and construction milestones for the Cape Flats corridors.",
+    "related_domain_id": "transport",
+    "related_risk_ids": ["risk-svc-roads-road_maintenance_backlog_km"],
+    "source_ids": ["src-budget-2627", "src-mayor-speech"]
+  },
+  {
+    "id": "win-lighting-reliability",
+    "title": "Public lighting outages trending down",
+    "headline": "Faults falling ~2.7% per period — safer streets at night",
+    "plain_language": "When streetlights fail, streets feel less safe and crime risk rises after dark. A falling outage trend means maintenance is catching up — lights stay on where people walk and wait for transport.",
+    "why_it_matters": "One of the few operational metrics currently improving in the Helm twin — a tangible ‘basics better’ win.",
+    "category": "Energy & Basics",
+    "status": "Improving",
+    "priority": "medium",
+    "confidence": 0.75,
+    "owner": "Energy",
+    "image_url": "https://images.unsplash.com/photo-1519501025264-65ba15a82390?auto=format&fit=crop&w=1400&q=80",
+    "image_credit": "Unsplash — city lights (illustrative)",
+    "metrics": [
+      {"label": "Latest outages", "value": "498 faults/month", "as_of": "Feb 2026 (seed series)", "source_id": "src-odp"},
+      {"label": "Trend", "value": "Improving (−2.7%/period)", "as_of": "8-period series", "source_id": "src-odp"}
+    ],
+    "evidence": [
+      {"label": "Operational series", "value": "public_lighting_outages declining Jul 2025 → Feb 2026", "source": "Helm metric series / ODP"}
+    ],
+    "next_step": "Map remaining dark spots by ward and publish a 90-day fix list.",
+    "related_domain_id": "energy",
+    "related_risk_ids": [],
+    "related_metric": {"entity_id": "svc-lighting", "metric": "public_lighting_outages"},
+    "source_ids": ["src-odp", "src-budget-2627"]
+  }
+]
