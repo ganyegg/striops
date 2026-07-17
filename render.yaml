@@ -1,0 +1,65 @@
+# Helm on Render — https://render.com/docs/blueprint-spec
+# Deploy: Render Dashboard → New → Blueprint → connect ganyegg/helm
+#
+# Two web services: API (FastAPI) + UI (Next.js). Default posture uses seed
+# facts (no managed Postgres/Neo4j). Set GEMINI_API_KEY in the dashboard for live Ask.
+services:
+  - type: web
+    name: helm-api
+    runtime: python
+    plan: free
+    region: frankfurt
+    buildCommand: pip install -r backend/requirements.txt
+    startCommand: bash scripts/render-api-start.sh
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.12.8"
+      - key: HELM_ENV
+        value: production
+      - key: HELM_LOG_LEVEL
+        value: INFO
+      - key: HELM_MUNICIPALITY
+        value: CPT
+      - key: GEMINI_MODEL
+        value: gemini-2.5-flash
+      # Force seed fallback (no Render Postgres in this blueprint)
+      - key: POSTGRES_HOST
+        value: 127.0.0.1
+      - key: POSTGRES_PORT
+        value: "1"
+      - key: NEO4J_URI
+        value: bolt://127.0.0.1:1
+      # Set in Render Dashboard (Environment) — never commit secrets:
+      - key: GEMINI_API_KEY
+        sync: false
+
+  - type: web
+    name: helm-web
+    runtime: node
+    plan: free
+    region: frankfurt
+    rootDir: frontend
+    buildCommand: npm ci && npm run build
+    startCommand: npx next start -H 0.0.0.0 -p $PORT
+    healthCheckPath: /
+    autoDeploy: true
+    envVars:
+      - key: NODE_VERSION
+        value: "20"
+      - key: NODE_ENV
+        value: production
+      - key: NEXT_TELEMETRY_DISABLED
+        value: "1"
+      # Public + SSR API URL → helm-api's onrender.com address
+      - key: NEXT_PUBLIC_API_BASE_URL
+        fromService:
+          type: web
+          name: helm-api
+          envVarKey: RENDER_EXTERNAL_URL
+      - key: API_BASE_URL
+        fromService:
+          type: web
+          name: helm-api
+          envVarKey: RENDER_EXTERNAL_URL
