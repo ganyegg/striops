@@ -1,8 +1,6 @@
 <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Striops">
-  <!-- Rounded uprights -->
-  <rect x="12" y="11" width="10" height="42" rx="5" fill="#14b8a6"/>
-  <rect x="42" y="11" width="10" height="42" rx="5" fill="#14b8a6"/>
-  <!-- Diagonal compass needle: gold points NE (foresight), teal SW -->
-  <path d="M44 21 L34.4 33.9 L30.1 29.4 Z" fill="#f59e0b"/>
-  <path d="M20 43 L34.4 33.9 L30.1 29.4 Z" fill="#14b8a6"/>
+  <!-- Chevron points forward, toward the target ahead -->
+  <path d="M14 18 L30 32 L14 46" stroke="#14b8a6" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- The point ahead -->
+  <circle cx="45" cy="32" r="6" fill="#f59e0b"/>
 </svg>
