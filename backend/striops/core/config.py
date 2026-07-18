@@ -33,11 +33,17 @@ class Settings(BaseSettings):
     neo4j_user: str = "neo4j"
     neo4j_password: str = "striops-strategic-twin"
 
+    # Fail fast if Postgres is unreachable (e.g. still provisioning on first
+    # deploy) so startup never blocks on a hanging TCP handshake — the app
+    # falls back to seed until the database is ready.
+    postgres_connect_timeout: int = 5
+
     @property
     def postgres_dsn(self) -> str:
         return (
             f"postgresql://{self.postgres_user}:{self.postgres_password}"
             f"@{self.postgres_host}:{self.postgres_port}/{self.postgres_db}"
+            f"?connect_timeout={self.postgres_connect_timeout}"
         )
 
     @property
