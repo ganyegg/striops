@@ -4,13 +4,13 @@ from fastapi.testclient import TestClient
 from striops.actions import build_action_register
 from striops.api.main import app
 from striops.core.cache import cache_clear
+from striops.core.models import Forecast, Priority, Risk, Trend
 from striops.core.periods import format_month
+from striops.persistence import get_repository
 from striops.pulse import build_city_pulse
 from striops.snapshot import build_city_snapshot
-from striops.valuation import attach_valuations, estimate_risk_cost, valuation_catalog
+from striops.valuation import estimate_risk_cost, valuation_catalog
 from striops.value_ledger import build_value_ledger
-from striops.core.models import Forecast, Priority, Risk, Trend
-from striops.persistence import get_repository
 
 client = TestClient(app)
 

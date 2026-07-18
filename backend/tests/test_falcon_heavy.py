@@ -4,8 +4,8 @@ from fastapi.testclient import TestClient
 from striops.api.main import app
 from striops.comparatives import build_comparatives
 from striops.core.cache import cache_clear
-from striops.health_score import build_health_breakdown, compute_health_breakdown
 from striops.core.models import Opportunity, Priority, Risk
+from striops.health_score import build_health_breakdown, compute_health_breakdown
 
 client = TestClient(app)
 
@@ -16,7 +16,7 @@ def test_health_breakdown_line_items():
     assert 0 <= bd.health_score <= 100
     assert bd.base == 100
     assert bd.risk_lines
-    assert abs(bd.risk_penalty_raw - sum(l.contribution for l in bd.risk_lines)) < 0.02
+    assert abs(bd.risk_penalty_raw - sum(line.contribution for line in bd.risk_lines)) < 0.02
     assert bd.formula_plain_language
     r = client.get("/health-breakdown")
     assert r.status_code == 200

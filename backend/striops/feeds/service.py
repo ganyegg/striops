@@ -6,7 +6,7 @@ integration would upgrade.
 """
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 from pydantic import BaseModel, Field
@@ -48,13 +48,13 @@ _STATUS_LABELS = {
 def _mtime_iso(path: Path) -> str | None:
     if not path.exists():
         return None
-    return datetime.fromtimestamp(path.stat().st_mtime, tz=timezone.utc).isoformat()
+    return datetime.fromtimestamp(path.stat().st_mtime, tz=UTC).isoformat()
 
 
 def _mtime_label(path: Path | None, fallback: str) -> tuple[str | None, str]:
     if path is None or not path.exists():
         return None, fallback
-    ts = datetime.fromtimestamp(path.stat().st_mtime, tz=timezone.utc)
+    ts = datetime.fromtimestamp(path.stat().st_mtime, tz=UTC)
     return ts.isoformat(), ts.strftime("%d %b %Y %H:%M UTC")
 
 
@@ -162,7 +162,7 @@ def build_feeds_report(
 
     live_count = sum(1 for f in feeds if f.status in ("live", "cached"))
     return FeedsReport(
-        generated_at=datetime.now(timezone.utc).isoformat(),
+        generated_at=datetime.now(UTC).isoformat(),
         honesty_note=(
             "Striops never hides its sources. Feeds marked Seed are demonstration "
             "series; the 90-day pilot replaces them with live departmental connections. "

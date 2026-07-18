@@ -1,7 +1,7 @@
 """Mayor-facing city snapshot — the numbers that should sit above the fold."""
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from striops.core.cache import cache_age_seconds
 from striops.core.config import get_settings
@@ -40,10 +40,10 @@ def build_city_snapshot(code: str = "CPT") -> CitySnapshot:
     city = brief.generated_for
     wins = list_initiatives(code)
     data_through, previous_period = _metric_periods(code)
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     cache_age = cache_age_seconds(f"brief:{settings.striops_municipality}")
     if cache_age is not None:
-        brief_refreshed = datetime.fromtimestamp(now.timestamp() - cache_age, tz=timezone.utc)
+        brief_refreshed = datetime.fromtimestamp(now.timestamp() - cache_age, tz=UTC)
     else:
         brief_refreshed = now
 

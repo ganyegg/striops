@@ -5,12 +5,15 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
 from striops import __version__
+from striops.actions import Action, ActionRegister, build_action_register, get_action
 from striops.agents import default_registry
 from striops.api.schemas import (
     EntitiesResponse,
     HealthResponse,
     SimulationRequest,
 )
+from striops.ask import AskRequest, AskResponse, ask_striops
+from striops.comparatives import ComparativesReport, build_comparatives
 from striops.core.config import get_settings
 from striops.core.glossary import GLOSSARY, explain, explain_risk_id
 from striops.core.logging import configure_logging, get_logger
@@ -29,12 +32,8 @@ from striops.core.models import (
     RiskReport,
     SimulationResult,
 )
-from striops.actions import Action, ActionRegister, build_action_register, get_action
-from striops.ask import AskRequest, AskResponse, ask_striops
-from striops.comparatives import ComparativesReport, build_comparatives
-from striops.demographics import attach_affected
-from striops.sectors import SectorsReport, build_sectors_report
 from striops.decisions import DecisionRegister, build_decision_register
+from striops.demographics import attach_affected
 from striops.domains import (
     domain_catalog,
     get_domain,
@@ -53,6 +52,7 @@ from striops.reasoning import get_llm
 from striops.refresh import RefreshResult, run_refresh
 from striops.reports import build_indicator_report, build_metric_report, build_risk_report
 from striops.risk_engine import assess_risks
+from striops.sectors import SectorsReport, build_sectors_report
 from striops.simulation import list_scenarios, simulate
 from striops.snapshot import build_city_snapshot
 from striops.valuation import attach_valuations, valuation_catalog

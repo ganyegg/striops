@@ -7,7 +7,7 @@ explicit period labels so "last period" is never vague.
 """
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from pydantic import BaseModel, Field
 
@@ -166,7 +166,7 @@ def build_city_pulse(
         period_note = "No periods on record."
 
     return CityPulse(
-        generated_at=datetime.now(timezone.utc).isoformat(),
+        generated_at=datetime.now(UTC).isoformat(),
         cadence="monthly",
         data_through=data_through,
         previous_period=previous_period,

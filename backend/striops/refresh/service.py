@@ -1,7 +1,7 @@
 """On-demand refresh — clear caches, re-ingest public feeds, rebuild brief."""
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from pydantic import BaseModel, Field
 
@@ -92,7 +92,7 @@ def run_refresh(settings: Settings | None = None, *, run_ingest: bool = True) ->
 
     return RefreshResult(
         ok=ingest_error is None,
-        refreshed_at=datetime.now(timezone.utc).isoformat(),
+        refreshed_at=datetime.now(UTC).isoformat(),
         ingestion=ingestion,
         ingestion_error=ingest_error,
         feeds_live_count=live,

@@ -4,12 +4,11 @@ from __future__ import annotations
 from pydantic import BaseModel, Field
 
 from striops.core.models import AffectedPopulation
-from striops.demographics import domain_affected
+from striops.demographics import attach_affected, domain_affected
 from striops.domains import list_domains
 from striops.persistence import get_repository
 from striops.pulse import build_city_pulse
 from striops.risk_engine import assess_risks
-from striops.demographics import attach_affected
 from striops.valuation import attach_valuations
 
 
