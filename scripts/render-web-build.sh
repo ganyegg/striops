@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Render.com — Striops web build (Next.js)
+# Render.com — Striops web build (Next.js, standalone output)
 # Keep install able to see devDependencies even when NODE_ENV=production.
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
@@ -18,3 +18,9 @@ else
 fi
 
 npm run build
+
+# `output: "standalone"` emits a self-contained server at .next/standalone/,
+# but static assets and public/ must be copied in alongside it.
+cp -r public .next/standalone/public
+mkdir -p .next/standalone/.next/static
+cp -r .next/static/. .next/standalone/.next/static/
