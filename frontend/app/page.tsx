@@ -157,7 +157,7 @@ export default async function Home() {
             <BudgetSpendChart scenarios={scenarios} />
           </div>
 
-          <aside className="lg:sticky lg:top-20">
+          <aside className="lg:sticky lg:top-20 lg:h-[calc(100vh-7rem)]">
             <SimulationPanel scenarios={scenarios} compact />
           </aside>
         </div>

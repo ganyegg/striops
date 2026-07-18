@@ -50,7 +50,7 @@ export default function SimulationPanel({
 
   return (
     <div
-      className={`card relative flex flex-col overflow-hidden ${compact ? "h-[540px] p-5" : "p-6"}`}
+      className={`card relative flex flex-col overflow-hidden ${compact ? "h-full min-h-[460px] p-5" : "p-6"}`}
     >
       <div
         className="pointer-events-none absolute -right-8 -top-10 h-32 w-32 rounded-full bg-striops-accent/10 blur-2xl"
