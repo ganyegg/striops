@@ -6,7 +6,7 @@ function VerifiedBar({ share }: { share: number }) {
   return (
     <div className="mt-3 flex items-center gap-2">
       <div className="h-1 w-16 overflow-hidden rounded-full bg-white/10">
-        <div className="h-full rounded-full bg-helm-good" style={{ width: `${pct}%` }} />
+        <div className="h-full rounded-full bg-striops-good" style={{ width: `${pct}%` }} />
       </div>
       <span className="text-[10px] text-white/40">{pct}% verified</span>
     </div>
@@ -48,7 +48,7 @@ export default function DomainGrid({
           <Link
             key={d.id}
             href={`/${code}/domains/${d.id}`}
-            className="card p-4 transition hover:border-helm-accent/30 hover:bg-white/[0.05]"
+            className="card p-4 transition hover:border-striops-accent/30 hover:bg-white/[0.05]"
           >
             {inner}
           </Link>

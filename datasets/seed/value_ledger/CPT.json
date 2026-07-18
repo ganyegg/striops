@@ -2,7 +2,7 @@
   {
     "id": "vl-nrw-flagged",
     "surfaced_at": "2026-06-15",
-    "insight": "Helm flagged non-revenue water as critical (score 106) with a projected path past 28% — and quantified the annual cost at ~R185m per percentage point.",
+    "insight": "Striops flagged non-revenue water as critical (score 106) with a projected path past 28% — and quantified the annual cost at ~R185m per percentage point.",
     "action_id": "act-nrw-leak-crews",
     "outcome": "Water & Sanitation accelerated leak-detection deployment to top-loss zones. Outcome value will update once the next NRW period posts.",
     "value_zar": 92500000,
@@ -13,7 +13,7 @@
   {
     "id": "vl-lighting-held",
     "surfaced_at": "2026-05-20",
-    "insight": "Helm surfaced improving public lighting outages as an efficiency opportunity — hold the gains rather than redeploy the maintenance budget away.",
+    "insight": "Striops surfaced improving public lighting outages as an efficiency opportunity — hold the gains rather than redeploy the maintenance budget away.",
     "action_id": "act-lighting-hold-gains",
     "outcome": "Maintenance cadence locked; outages down a further 1.4% in the latest month.",
     "value_zar": 151200,
@@ -24,7 +24,7 @@
   {
     "id": "vl-roads-pending",
     "surfaced_at": "2026-07-01",
-    "insight": "Road backlog projected past 1,715 km next period; Helm recommended preventative resurfacing before rebuild costs compound.",
+    "insight": "Road backlog projected past 1,715 km next period; Striops recommended preventative resurfacing before rebuild costs compound.",
     "action_id": "act-roads-preventative",
     "outcome": "Action assigned to Urban Mobility; capital reprioritisation awaiting Mayco decision.",
     "value_zar": 68000000,

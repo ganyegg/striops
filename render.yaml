@@ -1,11 +1,11 @@
-# Helm on Render — https://render.com/docs/blueprint-spec
-# Deploy: Render Dashboard → New → Blueprint → connect ganyegg/helm
+# Striops on Render — https://render.com/docs/blueprint-spec
+# Deploy: Render Dashboard → New → Blueprint → connect ganyegg/striops
 #
 # Two web services: API (FastAPI) + UI (Next.js). Default posture uses seed
 # facts (no managed Postgres/Neo4j). Set GEMINI_API_KEY in the dashboard for live Ask.
 services:
   - type: web
-    name: helm-api
+    name: striops-api
     runtime: python
     plan: free
     region: frankfurt
@@ -16,11 +16,11 @@ services:
     envVars:
       - key: PYTHON_VERSION
         value: "3.12.8"
-      - key: HELM_ENV
+      - key: STRIOPS_ENV
         value: production
-      - key: HELM_LOG_LEVEL
+      - key: STRIOPS_LOG_LEVEL
         value: INFO
-      - key: HELM_MUNICIPALITY
+      - key: STRIOPS_MUNICIPALITY
         value: CPT
       - key: GEMINI_MODEL
         value: gemini-2.5-flash
@@ -36,7 +36,7 @@ services:
         sync: false
 
   - type: web
-    name: helm-web
+    name: striops-web
     runtime: node
     plan: free
     region: frankfurt
@@ -54,14 +54,14 @@ services:
         value: "1"
       - key: NPM_CONFIG_PRODUCTION
         value: "false"
-      # Public + SSR API URL → helm-api's onrender.com address
+      # Public + SSR API URL → striops-api's onrender.com address
       - key: NEXT_PUBLIC_API_BASE_URL
         fromService:
           type: web
-          name: helm-api
+          name: striops-api
           envVarKey: RENDER_EXTERNAL_URL
       - key: API_BASE_URL
         fromService:
           type: web
-          name: helm-api
+          name: striops-api
           envVarKey: RENDER_EXTERNAL_URL

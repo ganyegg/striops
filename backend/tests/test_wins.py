@@ -1,7 +1,7 @@
 from fastapi.testclient import TestClient
 
-from helm.api.main import app
-from helm.wins import list_initiatives
+from striops.api.main import app
+from striops.wins import list_initiatives
 
 client = TestClient(app)
 

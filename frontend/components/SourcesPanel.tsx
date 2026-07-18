@@ -21,7 +21,7 @@ export default function SourcesPanel({ sources }: { sources: Source[] }) {
                 href={s.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex-none text-xs text-helm-accent hover:underline"
+                className="flex-none text-xs text-striops-accent hover:underline"
               >
                 Open ↗
               </a>

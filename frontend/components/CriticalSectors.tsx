@@ -4,11 +4,11 @@ import type { CriticalSector, SectorsReport } from "@/lib/api";
 function statusClass(status: string): string {
   switch (status) {
     case "worsening":
-      return "text-helm-bad border-helm-bad/30 bg-helm-bad/10";
+      return "text-striops-bad border-striops-bad/30 bg-striops-bad/10";
     case "improving":
-      return "text-helm-good border-helm-good/30 bg-helm-good/10";
+      return "text-striops-good border-striops-good/30 bg-striops-good/10";
     case "mixed":
-      return "text-helm-warn border-helm-warn/30 bg-helm-warn/10";
+      return "text-striops-warn border-striops-warn/30 bg-striops-warn/10";
     case "flat":
       return "text-white/55 border-white/15 bg-white/5";
     default:
@@ -21,7 +21,7 @@ function SectorCard({ s }: { s: CriticalSector }) {
   return (
     <Link
       href={s.href}
-      className={`card block p-4 transition hover:border-helm-accent/40 ${
+      className={`card block p-4 transition hover:border-striops-accent/40 ${
         s.priority === "P3" ? "opacity-80" : ""
       }`}
     >
@@ -40,7 +40,7 @@ function SectorCard({ s }: { s: CriticalSector }) {
         <p className="mt-2 line-clamp-2 text-sm text-white/70">{s.headline}</p>
       ) : null}
       {estimate != null ? (
-        <p className="mt-3 font-display text-xl font-semibold text-helm-sand">
+        <p className="mt-3 font-display text-xl font-semibold text-striops-sand">
           ~{estimate.toLocaleString("en-ZA")}
           <span className="ml-1.5 font-sans text-xs font-normal text-white/40">{s.affected?.unit}</span>
         </p>
@@ -53,7 +53,7 @@ function SectorCard({ s }: { s: CriticalSector }) {
         <p className="mt-2 text-[10px] leading-relaxed text-white/35">{s.ownership_note}</p>
       ) : null}
       {s.top_risk_title ? (
-        <p className="mt-2 text-[11px] text-helm-bad/80">Risk: {s.top_risk_title}</p>
+        <p className="mt-2 text-[11px] text-striops-bad/80">Risk: {s.top_risk_title}</p>
       ) : null}
     </Link>
   );
@@ -69,7 +69,7 @@ export default function CriticalSectors({ report }: { report: SectorsReport }) {
         <p className="text-xs text-white/45">
           P0 ready {report.p0_ready_count}/{report.p0_total} · Empty cells are data requests, not silence
         </p>
-        <Link href="/ask" className="text-xs text-helm-accent hover:underline">
+        <Link href="/ask" className="text-xs text-striops-accent hover:underline">
           Ask about a sector →
         </Link>
       </div>

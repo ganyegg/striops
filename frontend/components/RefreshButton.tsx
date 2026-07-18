@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { refreshHelm } from "@/lib/api";
+import { refreshStriops } from "@/lib/api";
 
 export default function RefreshButton() {
   const router = useRouter();
@@ -13,7 +13,7 @@ export default function RefreshButton() {
     setBusy(true);
     setMsg(null);
     try {
-      const result = await refreshHelm(true);
+      const result = await refreshStriops(true);
       setMsg(
         result.ok
           ? `Refreshed ${new Date(result.refreshed_at).toLocaleTimeString("en-ZA")}`
@@ -33,7 +33,7 @@ export default function RefreshButton() {
         type="button"
         onClick={onRefresh}
         disabled={busy}
-        className="rounded-full border border-helm-sky/40 bg-helm-sky/10 px-3 py-1.5 text-xs font-medium text-helm-sky transition hover:bg-helm-sky/20 disabled:opacity-50"
+        className="rounded-full border border-striops-sky/40 bg-striops-sky/10 px-3 py-1.5 text-xs font-medium text-striops-sky transition hover:bg-striops-sky/20 disabled:opacity-50"
         title="Clear caches and re-pull public feeds so new data surfaces now"
       >
         {busy ? "Refreshing…" : "Refresh now"}

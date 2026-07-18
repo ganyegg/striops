@@ -2,9 +2,9 @@
   <img src="brand/coct-logo.svg" alt="City of Cape Town" width="280" />
 </p>
 
-# Helm — Architecture (v0.1 slice)
+# Striops — Architecture (v0.1 slice)
 
-Helm is intelligence-first: the reasoning core (graph + engines + agents) is
+Striops is intelligence-first: the reasoning core (graph + engines + agents) is
 the product; the LLM is a narrator over it, and the UI is the last mile.
 
 ## Component map
@@ -57,6 +57,17 @@ the product; the LLM is a narrator over it, and the UI is the last mile.
   cite contributing factors; simulations always compare scenario vs baseline.
 - **Engines decide, the LLM narrates.** Scores, deltas and recommendations come
   from deterministic engines; the LLM only phrases them.
+
+## Moat (architecture as product strategy)
+
+The durable advantage is **not** the model. It is:
+
+1. **Sustained live-data integration** — departmental + public feeds on natural cadence, with feed transparency (`live` / `cached` / `curated` / `seed`).
+2. **Governance posture** — provenance badges, source URLs, POPIA-ready tenancy options, AGSA-oriented evidence trails (roadmap: audit packs).
+3. **Institutional memory** — decision register, action tracker, value ledger that survive staff and administration turnover.
+4. **Accountability** — insight → owned action → attributed rand value.
+
+Wrapping a general LLM on a data lake copies none of this. New engines (sentinel, cost-of-delay, foresight backtest) sit on the same facts store and twin — see product-pivot roadmap in [`STRIOPS.md`](STRIOPS.md).
 
 ## Risk score
 

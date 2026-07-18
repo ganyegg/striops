@@ -17,12 +17,12 @@ function groupByTone(kpis: HeroKPI[]): Record<string, HeroKPI[]> {
 function KPITile({ k }: { k: HeroKPI }) {
   const border =
     k.tone === "good"
-      ? "border-helm-good/25 hover:border-helm-good/50"
+      ? "border-striops-good/25 hover:border-striops-good/50"
       : k.tone === "warn"
-        ? "border-helm-warn/25 hover:border-helm-warn/50"
+        ? "border-striops-warn/25 hover:border-striops-warn/50"
         : k.tone === "bad"
-          ? "border-helm-bad/25 hover:border-helm-bad/50"
-          : "border-white/10 hover:border-helm-sky/40";
+          ? "border-striops-bad/25 hover:border-striops-bad/50"
+          : "border-white/10 hover:border-striops-sky/40";
   const inner = (
     <>
       <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-white/45">{k.label}</p>
@@ -67,7 +67,7 @@ export default function HeroKPIStrip({
         ))}
       </div>
 
-      <div className="kpi-constellation-centre card border-helm-accent/30 bg-ink-950/60 p-4 shadow-glow">
+      <div className="kpi-constellation-centre card border-striops-accent/30 bg-ink-950/60 p-4 shadow-glow">
         <HealthGauge score={healthScore} />
         {healthNarrative ? (
           <p className="mt-1 px-2 pb-2 text-center text-xs leading-relaxed text-white/55">

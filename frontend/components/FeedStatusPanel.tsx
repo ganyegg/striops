@@ -1,10 +1,10 @@
 import type { FeedsReport } from "@/lib/api";
 
 const STATUS_META: Record<string, { className: string }> = {
-  live: { className: "bg-helm-good/15 text-helm-good border border-helm-good/30" },
-  cached: { className: "bg-helm-accent/15 text-helm-accent border border-helm-accent/30" },
-  curated: { className: "bg-helm-sky/15 text-helm-sky border border-helm-sky/30" },
-  seed: { className: "bg-helm-warn/15 text-helm-warn border border-helm-warn/30" },
+  live: { className: "bg-striops-good/15 text-striops-good border border-striops-good/30" },
+  cached: { className: "bg-striops-accent/15 text-striops-accent border border-striops-accent/30" },
+  curated: { className: "bg-striops-sky/15 text-striops-sky border border-striops-sky/30" },
+  seed: { className: "bg-striops-warn/15 text-striops-warn border border-striops-warn/30" },
 };
 
 export default function FeedStatusPanel({ report }: { report: FeedsReport }) {
@@ -30,7 +30,7 @@ export default function FeedStatusPanel({ report }: { report: FeedsReport }) {
               </p>
               <p className="mt-2 flex-1 text-sm leading-relaxed text-white/60">{feed.description}</p>
               <p className="mt-3 border-t border-white/10 pt-2.5 text-xs text-white/45">
-                <span className="font-medium text-helm-accent/90">Live unlocks:</span> {feed.unlocks}
+                <span className="font-medium text-striops-accent/90">Live unlocks:</span> {feed.unlocks}
               </p>
             </div>
           );

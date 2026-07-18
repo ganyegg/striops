@@ -55,16 +55,16 @@ export default function StrategicRead({ brief }: { brief: ExecutiveBrief }) {
   ).filter((b) => b.lines.length > 0);
 
   const toneBorder: Record<Block["tone"], string> = {
-    accent: "border-helm-accent/30",
-    warn: "border-helm-warn/25",
-    good: "border-helm-good/25",
+    accent: "border-striops-accent/30",
+    warn: "border-striops-warn/25",
+    good: "border-striops-good/25",
     neutral: "border-white/10",
   };
   const toneLabel: Record<Block["tone"], string> = {
-    accent: "text-helm-accent/85",
-    warn: "text-helm-warn/90",
-    good: "text-helm-good/90",
-    neutral: "text-helm-sand/80",
+    accent: "text-striops-accent/85",
+    warn: "text-striops-warn/90",
+    good: "text-striops-good/90",
+    neutral: "text-striops-sand/80",
   };
 
   return (
@@ -89,7 +89,7 @@ export default function StrategicRead({ brief }: { brief: ExecutiveBrief }) {
               {b.lines.map((line, i) => (
                 <li
                   key={i}
-                  className="relative pl-3.5 text-sm leading-relaxed text-white/75 before:absolute before:left-0 before:top-[0.55em] before:h-1.5 before:w-1.5 before:rounded-full before:bg-helm-accent/80"
+                  className="relative pl-3.5 text-sm leading-relaxed text-white/75 before:absolute before:left-0 before:top-[0.55em] before:h-1.5 before:w-1.5 before:rounded-full before:bg-striops-accent/80"
                 >
                   {line}
                 </li>

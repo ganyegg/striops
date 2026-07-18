@@ -26,7 +26,7 @@ export default async function DomainsIndex({
   } catch (e) {
     return (
       <main className="mx-auto max-w-3xl px-6 py-24">
-        <Link href="/" className="text-sm text-helm-accent hover:underline">
+        <Link href="/" className="text-sm text-striops-accent hover:underline">
           ← Back to briefing
         </Link>
         <p className="mt-6 text-white/60">
@@ -42,7 +42,7 @@ export default async function DomainsIndex({
         crumbs={
           <>
             <Link href="/" className="font-semibold text-white/80 hover:text-white">
-              Helm
+              Striops
             </Link>
             <span className="text-white/25">/</span>
             <span className="text-white/50">{muni.name}</span>

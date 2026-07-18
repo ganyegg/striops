@@ -26,7 +26,7 @@ export default function PolicyList({
                 href={src.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-2 inline-block text-[11px] text-helm-accent hover:underline"
+                className="mt-2 inline-block text-[11px] text-striops-accent hover:underline"
               >
                 Verify ↗ {src.publisher}
               </a>

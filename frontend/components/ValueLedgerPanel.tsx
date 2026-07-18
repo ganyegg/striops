@@ -4,15 +4,15 @@ import { formatZAR } from "@/lib/api";
 const BASIS_META: Record<string, { label: string; className: string }> = {
   realised: {
     label: "Realised",
-    className: "bg-helm-good/15 text-helm-good border border-helm-good/30",
+    className: "bg-striops-good/15 text-striops-good border border-striops-good/30",
   },
   projected: {
     label: "Projected",
-    className: "bg-helm-accent/15 text-helm-accent border border-helm-accent/30",
+    className: "bg-striops-accent/15 text-striops-accent border border-striops-accent/30",
   },
   avoided_cost: {
     label: "Avoided cost",
-    className: "bg-helm-sky/15 text-helm-sky border border-helm-sky/30",
+    className: "bg-striops-sky/15 text-striops-sky border border-striops-sky/30",
   },
 };
 
@@ -20,9 +20,9 @@ export default function ValueLedgerPanel({ ledger }: { ledger: ValueLedger }) {
   return (
     <div>
       <div className="mb-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        <div className="card border-helm-accent/30 p-4">
+        <div className="card border-striops-accent/30 p-4">
           <p className="text-[11px] uppercase tracking-[0.16em] text-white/40">Attributed total</p>
-          <p className="mt-1 font-display text-3xl font-semibold text-helm-accent">
+          <p className="mt-1 font-display text-3xl font-semibold text-striops-accent">
             {formatZAR(ledger.cumulative_attributed_zar)}
           </p>
         </div>
@@ -34,13 +34,13 @@ export default function ValueLedgerPanel({ ledger }: { ledger: ValueLedger }) {
         </div>
         <div className="card p-4">
           <p className="text-[11px] uppercase tracking-[0.16em] text-white/40">Avoided cost</p>
-          <p className="mt-1 font-display text-2xl font-semibold text-helm-sky">
+          <p className="mt-1 font-display text-2xl font-semibold text-striops-sky">
             {formatZAR(ledger.cumulative_avoided_zar)}
           </p>
         </div>
         <div className="card p-4">
           <p className="text-[11px] uppercase tracking-[0.16em] text-white/40">Realised</p>
-          <p className="mt-1 font-display text-2xl font-semibold text-helm-good">
+          <p className="mt-1 font-display text-2xl font-semibold text-striops-good">
             {formatZAR(ledger.cumulative_realised_zar)}
           </p>
         </div>
@@ -57,7 +57,7 @@ export default function ValueLedgerPanel({ ledger }: { ledger: ValueLedger }) {
                   <p className="mt-1 text-sm font-semibold text-white/90">{e.insight}</p>
                 </div>
                 <div className="text-right">
-                  <p className="font-display text-xl font-semibold text-helm-accent">
+                  <p className="font-display text-xl font-semibold text-striops-accent">
                     {formatZAR(e.value_zar)}
                   </p>
                   <span className={`mt-1 inline-block rounded-full px-2.5 py-0.5 text-[11px] ${meta.className}`}>

@@ -26,7 +26,7 @@ export default async function HealthPage() {
   } catch (e) {
     return (
       <main className="mx-auto max-w-3xl px-6 py-24">
-        <Link href="/" className="text-sm text-helm-accent hover:underline">
+        <Link href="/" className="text-sm text-striops-accent hover:underline">
           ← Back to briefing
         </Link>
         <h1 className="mt-6 font-display text-2xl font-semibold text-white">Health report unavailable</h1>
@@ -42,7 +42,7 @@ export default async function HealthPage() {
         crumbs={
           <>
             <Link href="/" className="font-display font-semibold text-white/80 hover:text-white">
-              Helm
+              Striops
             </Link>
             <span className="text-white/25">/</span>
             <span className="text-white/80">Strategic health</span>
@@ -51,8 +51,8 @@ export default async function HealthPage() {
       />
 
       <div className="mt-8 grid gap-8 lg:grid-cols-[minmax(280px,340px)_1fr]">
-        <div className="card border-helm-accent/30 bg-ink-950/60 p-6 shadow-glow">
-          <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-helm-accent/90">
+        <div className="card border-striops-accent/30 bg-ink-950/60 p-6 shadow-glow">
+          <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-striops-accent/90">
             Composite score
           </p>
           <HealthGauge score={breakdown.health_score} />
@@ -69,9 +69,9 @@ export default async function HealthPage() {
               <dt className="text-[11px] uppercase tracking-wide text-white/40">Base</dt>
               <dd className="mt-1 font-display text-2xl font-semibold text-white">{breakdown.base}</dd>
             </div>
-            <div className="rounded-xl border border-helm-bad/20 bg-helm-bad/5 p-4">
+            <div className="rounded-xl border border-striops-bad/20 bg-striops-bad/5 p-4">
               <dt className="text-[11px] uppercase tracking-wide text-white/40">Risk penalty</dt>
-              <dd className="mt-1 font-display text-2xl font-semibold text-helm-bad">
+              <dd className="mt-1 font-display text-2xl font-semibold text-striops-bad">
                 −{breakdown.risk_penalty_capped.toFixed(1)}
               </dd>
               {breakdown.risk_cap_applied ? (
@@ -84,9 +84,9 @@ export default async function HealthPage() {
                 </p>
               )}
             </div>
-            <div className="rounded-xl border border-helm-good/20 bg-helm-good/5 p-4">
+            <div className="rounded-xl border border-striops-good/20 bg-striops-good/5 p-4">
               <dt className="text-[11px] uppercase tracking-wide text-white/40">Opportunity bonus</dt>
-              <dd className="mt-1 font-display text-2xl font-semibold text-helm-good">
+              <dd className="mt-1 font-display text-2xl font-semibold text-striops-good">
                 +{breakdown.opportunity_bonus_capped.toFixed(1)}
               </dd>
               {breakdown.opportunity_cap_applied ? (
@@ -123,11 +123,11 @@ export default async function HealthPage() {
                 <tr key={line.risk_id} className="hover:bg-white/[0.02]">
                   <td className="px-4 py-3 text-white/40">{line.rank}</td>
                   <td className="px-4 py-3">
-                    <Link href={line.href} className="text-white/85 hover:text-helm-accent">
+                    <Link href={line.href} className="text-white/85 hover:text-striops-accent">
                       {line.title}
                     </Link>
                   </td>
-                  <td className="px-4 py-3 tabular-nums text-helm-bad">{line.score}</td>
+                  <td className="px-4 py-3 tabular-nums text-striops-bad">{line.score}</td>
                   <td className="px-4 py-3 tabular-nums text-white/70">−{line.contribution.toFixed(2)}</td>
                 </tr>
               ))}
@@ -137,7 +137,7 @@ export default async function HealthPage() {
                 <td className="px-4 py-3" colSpan={3}>
                   Penalty {breakdown.risk_cap_applied ? "(capped)" : "(sum)"}
                 </td>
-                <td className="px-4 py-3 tabular-nums text-helm-bad">
+                <td className="px-4 py-3 tabular-nums text-striops-bad">
                   −{breakdown.risk_penalty_capped.toFixed(2)}
                 </td>
               </tr>
@@ -170,7 +170,7 @@ export default async function HealthPage() {
                     {formatZAR(line.value_estimate)}
                   </td>
                   <td className="px-4 py-3">{line.qualifies ? "Yes" : "No"}</td>
-                  <td className="px-4 py-3 tabular-nums text-helm-good">
+                  <td className="px-4 py-3 tabular-nums text-striops-good">
                     {line.qualifies ? `+${line.contribution.toFixed(1)}` : "—"}
                   </td>
                 </tr>
@@ -181,7 +181,7 @@ export default async function HealthPage() {
                 <td className="px-4 py-3" colSpan={3}>
                   Bonus {breakdown.opportunity_cap_applied ? "(capped)" : "(sum)"}
                 </td>
-                <td className="px-4 py-3 tabular-nums text-helm-good">
+                <td className="px-4 py-3 tabular-nums text-striops-good">
                   +{breakdown.opportunity_bonus_capped.toFixed(1)}
                 </td>
               </tr>
@@ -212,11 +212,11 @@ export default async function HealthPage() {
 
       <p className="mt-10 text-sm text-white/45">
         Looking for <strong className="text-white/70">City Health</strong> (clinics / EMS)? That is the{" "}
-        <Link href="/CPT/domains/health" className="text-helm-accent hover:underline">
+        <Link href="/CPT/domains/health" className="text-striops-accent hover:underline">
           Health domain
         </Link>
         , also in{" "}
-        <Link href="/compare" className="text-helm-accent hover:underline">
+        <Link href="/compare" className="text-striops-accent hover:underline">
           Compare → Health access
         </Link>
         .

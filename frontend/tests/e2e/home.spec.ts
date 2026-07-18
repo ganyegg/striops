@@ -4,7 +4,7 @@ test("executive homepage shows an intelligence-first briefing", async ({ page })
   await page.goto("/");
 
   // Brand + tagline.
-  await expect(page.getByText("Helm").first()).toBeVisible();
+  await expect(page.getByText("Striops").first()).toBeVisible();
   await expect(page.getByText("Trusted with foresight")).toBeVisible();
 
   // Intelligence-first: wins + risks, not a chart-first dashboard.

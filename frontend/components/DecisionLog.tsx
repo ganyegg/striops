@@ -4,19 +4,19 @@ import type { Decision, DecisionRegister } from "@/lib/api";
 const STATUS_META: Record<string, { label: string; className: string }> = {
   overdue: {
     label: "Overdue",
-    className: "bg-helm-bad/15 text-helm-bad border border-helm-bad/30",
+    className: "bg-striops-bad/15 text-striops-bad border border-striops-bad/30",
   },
   pending: {
     label: "Awaiting decision",
-    className: "bg-helm-warn/15 text-helm-warn border border-helm-warn/30",
+    className: "bg-striops-warn/15 text-striops-warn border border-striops-warn/30",
   },
   in_progress: {
     label: "In progress",
-    className: "bg-helm-accent/15 text-helm-accent border border-helm-accent/30",
+    className: "bg-striops-accent/15 text-striops-accent border border-striops-accent/30",
   },
   decided: {
     label: "Decided",
-    className: "bg-helm-good/15 text-helm-good border border-helm-good/30",
+    className: "bg-striops-good/15 text-striops-good border border-striops-good/30",
   },
 };
 
@@ -46,7 +46,7 @@ function DecisionRow({ decision }: { decision: Decision }) {
           {decision.linked_risk_id ? (
             <Link
               href={`/risks/${encodeURIComponent(decision.linked_risk_id)}`}
-              className="rounded-full border border-white/15 bg-white/5 px-2.5 py-0.5 text-white/55 transition-colors hover:border-helm-accent/40 hover:text-helm-accent"
+              className="rounded-full border border-white/15 bg-white/5 px-2.5 py-0.5 text-white/55 transition-colors hover:border-striops-accent/40 hover:text-striops-accent"
             >
               Linked risk →
             </Link>
@@ -54,7 +54,7 @@ function DecisionRow({ decision }: { decision: Decision }) {
           {decision.linked_win_id ? (
             <Link
               href={`/wins/${encodeURIComponent(decision.linked_win_id)}`}
-              className="rounded-full border border-white/15 bg-white/5 px-2.5 py-0.5 text-white/55 transition-colors hover:border-helm-good/40 hover:text-helm-good"
+              className="rounded-full border border-white/15 bg-white/5 px-2.5 py-0.5 text-white/55 transition-colors hover:border-striops-good/40 hover:text-striops-good"
             >
               Linked win →
             </Link>
@@ -73,7 +73,7 @@ export default function DecisionLog({ register }: { register: DecisionRegister }
           {register.open_count} open
         </span>
         {register.overdue_count > 0 ? (
-          <span className="rounded-full border border-helm-bad/30 bg-helm-bad/10 px-3 py-1 text-helm-bad">
+          <span className="rounded-full border border-striops-bad/30 bg-striops-bad/10 px-3 py-1 text-striops-bad">
             {register.overdue_count} overdue review{register.overdue_count > 1 ? "s" : ""}
           </span>
         ) : null}

@@ -19,7 +19,7 @@ export default async function RiskReportPage({
   } catch (e) {
     return (
       <main className="mx-auto max-w-3xl px-6 py-24">
-        <Link href="/" className="text-sm text-helm-accent hover:underline">
+        <Link href="/" className="text-sm text-striops-accent hover:underline">
           ← Back to briefing
         </Link>
         <h1 className="mt-6 text-2xl font-semibold text-white/90">Report unavailable</h1>
@@ -38,7 +38,7 @@ export default async function RiskReportPage({
         crumbs={
           <>
             <Link href="/" className="font-display font-semibold text-white/80 hover:text-white">
-              Helm
+              Striops
             </Link>
             <span className="text-white/25">/</span>
             <span className="text-white/50">Risk report</span>
@@ -55,13 +55,13 @@ export default async function RiskReportPage({
           <span className={`pill ${priorityColor(risk.priority)}`}>{risk.priority}</span>
         </div>
         {report.plain_language ? (
-          <div className="mt-4 rounded-2xl border border-helm-sky/20 bg-helm-sky/10 p-5">
-            <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-helm-sky">
+          <div className="mt-4 rounded-2xl border border-striops-sky/20 bg-striops-sky/10 p-5">
+            <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-striops-sky">
               What is {report.term}?
             </p>
             <p className="mt-2 text-[15px] leading-relaxed text-white/85">{report.plain_language}</p>
             {report.in_one_line ? (
-              <p className="mt-2 text-sm text-helm-sand/80">In one line: {report.in_one_line}</p>
+              <p className="mt-2 text-sm text-striops-sand/80">In one line: {report.in_one_line}</p>
             ) : null}
           </div>
         ) : null}
@@ -74,7 +74,7 @@ export default async function RiskReportPage({
           {report.related_domain_id ? (
             <Link
               href={`/CPT/domains/${report.related_domain_id}`}
-              className="text-helm-accent hover:underline"
+              className="text-striops-accent hover:underline"
             >
               · Domain deep dive ↗
             </Link>
@@ -89,13 +89,13 @@ export default async function RiskReportPage({
           <ul className="mt-3 space-y-2">
             {report.what_changed.map((w, i) => (
               <li key={i} className="flex gap-2 text-sm text-white/65">
-                <span className="text-helm-warn">•</span>
+                <span className="text-striops-warn">•</span>
                 {w}
               </li>
             ))}
           </ul>
-          <div className="mt-5 rounded-lg bg-helm-accent/5 p-3 text-sm text-white/70">
-            <span className="text-[11px] font-medium uppercase tracking-wide text-helm-accent">
+          <div className="mt-5 rounded-lg bg-striops-accent/5 p-3 text-sm text-white/70">
+            <span className="text-[11px] font-medium uppercase tracking-wide text-striops-accent">
               Mitigation
             </span>
             <p className="mt-0.5">{risk.mitigation}</p>
@@ -117,7 +117,7 @@ export default async function RiskReportPage({
             </div>
             <Link
               href={`/metrics/${mr.entity_id}/${mr.metric}`}
-              className="text-xs text-helm-accent hover:underline"
+              className="text-xs text-striops-accent hover:underline"
             >
               Full metric report ↗
             </Link>
@@ -152,7 +152,7 @@ export default async function RiskReportPage({
         <ol className="space-y-2">
           {report.recommended_actions.map((a, i) => (
             <li key={i} className="card flex gap-3 p-4 text-sm text-white/70">
-              <span className="font-mono text-helm-accent">{String(i + 1).padStart(2, "0")}</span>
+              <span className="font-mono text-striops-accent">{String(i + 1).padStart(2, "0")}</span>
               {a}
             </li>
           ))}

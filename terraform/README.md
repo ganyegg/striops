@@ -1,6 +1,6 @@
 # Terraform (placeholder)
 
-Infrastructure-as-code for Helm's Azure deployment lands here in a later
+Infrastructure-as-code for Striops' Azure deployment lands here in a later
 phase. The v0.1 slice runs entirely on Docker Compose (see the repo root).
 
 Planned modules:

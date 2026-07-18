@@ -132,7 +132,7 @@
     "title": "Public lighting outages trending down",
     "headline": "Faults falling ~2.7% per period — safer streets at night",
     "plain_language": "When streetlights fail, streets feel less safe and crime risk rises after dark. A falling outage trend means maintenance is catching up — lights stay on where people walk and wait for transport.",
-    "why_it_matters": "One of the few operational metrics currently improving in the Helm twin — a tangible ‘basics better’ win.",
+    "why_it_matters": "One of the few operational metrics currently improving in the Striops twin — a tangible ‘basics better’ win.",
     "category": "Energy & Basics",
     "status": "Improving",
     "priority": "medium",
@@ -145,7 +145,7 @@
       {"label": "Trend", "value": "Improving (−2.7%/period)", "as_of": "8-period series", "source_id": "src-odp"}
     ],
     "evidence": [
-      {"label": "Operational series", "value": "public_lighting_outages declining Jul 2025 → Feb 2026", "source": "Helm metric series / ODP"}
+      {"label": "Operational series", "value": "public_lighting_outages declining Jul 2025 → Feb 2026", "source": "Striops metric series / ODP"}
     ],
     "next_step": "Map remaining dark spots by ward and publish a 90-day fix list.",
     "related_domain_id": "energy",

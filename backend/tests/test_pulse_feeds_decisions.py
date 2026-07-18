@@ -1,11 +1,11 @@
 """Tests for the Pulse engine, feed transparency and decision register."""
 from fastapi.testclient import TestClient
 
-from helm.api.main import app
-from helm.core.cache import cache_clear, cache_get, cache_set
-from helm.decisions import build_decision_register
-from helm.feeds import build_feeds_report
-from helm.pulse import build_city_pulse
+from striops.api.main import app
+from striops.core.cache import cache_clear, cache_get, cache_set
+from striops.decisions import build_decision_register
+from striops.feeds import build_feeds_report
+from striops.pulse import build_city_pulse
 
 client = TestClient(app)
 

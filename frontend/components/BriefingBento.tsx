@@ -13,10 +13,10 @@ function HealthTile({
   return (
     <Link
       href="/health"
-      className="kpi-tile kpi-health-tile group flex flex-col border-helm-accent/35 bg-gradient-to-br from-helm-accent/10 via-ink-950/80 to-ink-900/90 hover:border-helm-accent/55 hover:shadow-glow md:h-full"
+      className="kpi-tile kpi-health-tile group flex flex-col border-striops-accent/35 bg-gradient-to-br from-striops-accent/10 via-ink-950/80 to-ink-900/90 hover:border-striops-accent/55 hover:shadow-glow md:h-full"
       aria-label={`Strategic health score ${score} out of 100 — open breakdown`}
     >
-      <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-helm-accent/90">
+      <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-striops-accent/90">
         Strategic health
       </p>
       <div className="my-auto">
@@ -25,7 +25,7 @@ function HealthTile({
       <p className="line-clamp-3 text-center text-xs leading-relaxed text-white/55">
         {narrative || "Active risks weighed against redeployable opportunities."}
       </p>
-      <p className="mt-2 text-center text-[11px] text-helm-accent/80 group-hover:text-helm-accent">
+      <p className="mt-2 text-center text-[11px] text-striops-accent/80 group-hover:text-striops-accent">
         Open breakdown →
       </p>
     </Link>
@@ -35,12 +35,12 @@ function HealthTile({
 function KpiTile({ k }: { k: HeroKPI }) {
   const border =
     k.tone === "good"
-      ? "border-helm-good/25 hover:border-helm-good/45"
+      ? "border-striops-good/25 hover:border-striops-good/45"
       : k.tone === "warn"
-        ? "border-helm-warn/25 hover:border-helm-warn/45"
+        ? "border-striops-warn/25 hover:border-striops-warn/45"
         : k.tone === "bad"
-          ? "border-helm-bad/25 hover:border-helm-bad/45"
-          : "border-white/10 hover:border-helm-sky/35";
+          ? "border-striops-bad/25 hover:border-striops-bad/45"
+          : "border-white/10 hover:border-striops-sky/35";
 
   const inner = (
     <>

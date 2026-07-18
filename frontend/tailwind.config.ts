@@ -12,7 +12,7 @@ const config: Config = {
           800: "#102636",
           700: "#1a3a4d",
         },
-        helm: {
+        striops: {
           ocean: "#0d9488",
           oceanDeep: "#0f766e",
           sky: "#38bdf8",
@@ -27,7 +27,7 @@ const config: Config = {
         },
       },
       fontFamily: {
-        display: ["var(--font-display)", "Georgia", "serif"],
+        display: ["var(--font-display)", "ui-sans-serif", "system-ui", "sans-serif"],
         sans: ["var(--font-sans)", "ui-sans-serif", "system-ui", "sans-serif"],
         mono: ["ui-monospace", "SF Mono", "Menlo", "monospace"],
       },

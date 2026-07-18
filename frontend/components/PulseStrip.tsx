@@ -6,13 +6,13 @@ const DIRECTION_META: Record<
   { badge: string; dot: string; label: string }
 > = {
   worsening: {
-    badge: "bg-helm-bad/15 text-helm-bad border border-helm-bad/30",
-    dot: "bg-helm-bad",
+    badge: "bg-striops-bad/15 text-striops-bad border border-striops-bad/30",
+    dot: "bg-striops-bad",
     label: "Worsening",
   },
   improving: {
-    badge: "bg-helm-good/15 text-helm-good border border-helm-good/30",
-    dot: "bg-helm-good",
+    badge: "bg-striops-good/15 text-striops-good border border-striops-good/30",
+    dot: "bg-striops-good",
     label: "Improving",
   },
   flat: {
@@ -34,8 +34,8 @@ export default function PulseStrip({ pulse }: { pulse: CityPulse }) {
         <div className="flex flex-col gap-0.5 sm:flex-row sm:items-center sm:gap-2.5">
           <span className="flex items-center gap-2.5">
             <span className="relative flex h-2.5 w-2.5">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-helm-accent opacity-60" />
-              <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-helm-accent" />
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-striops-accent opacity-60" />
+              <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-striops-accent" />
             </span>
             <span className="text-sm font-semibold text-white/85">City Pulse</span>
           </span>
@@ -44,9 +44,9 @@ export default function PulseStrip({ pulse }: { pulse: CityPulse }) {
           </span>
         </div>
         <div className="flex items-center gap-3 text-xs">
-          <span className="text-helm-bad">{pulse.worsening_count} worsening</span>
+          <span className="text-striops-bad">{pulse.worsening_count} worsening</span>
           <span className="text-white/25">·</span>
-          <span className="text-helm-good">{pulse.improving_count} improving</span>
+          <span className="text-striops-good">{pulse.improving_count} improving</span>
         </div>
       </div>
       <ul className="divide-y divide-white/[0.06]">

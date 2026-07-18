@@ -1,6 +1,6 @@
 {
   "municipality": "CPT",
-  "note": "Place dossiers for Ask Helm. Metro facts that name an area, plus honest gaps when ward-level series are missing.",
+  "note": "Place dossiers for Ask Striops. Metro facts that name an area, plus honest gaps when ward-level series are missing.",
   "places": [
     {
       "id": "khayelitsha",
@@ -11,7 +11,7 @@
       "population_estimate": 400000,
       "population_unit": "residents",
       "population_confidence": 0.35,
-      "summary": "Khayelitsha sits on the Cape Flats growth edge. MyCiTi Cape Flats expansion is funded in the 2026/27 MTREF (R3.2–R3.3bn; Mitchells Plain / Khayelitsha named). City of Hope R40bn infrastructure is protected for 2026/27–2028/29. Safety budget R6.8bn (2026/27). Helm does not yet hold Khayelitsha-only clinic, EMS, or SAPS precinct time series.",
+      "summary": "Khayelitsha sits on the Cape Flats growth edge. MyCiTi Cape Flats expansion is funded in the 2026/27 MTREF (R3.2–R3.3bn; Mitchells Plain / Khayelitsha named). City of Hope R40bn infrastructure is protected for 2026/27–2028/29. Safety budget R6.8bn (2026/27). Striops does not yet hold Khayelitsha-only clinic, EMS, or SAPS precinct time series.",
       "related_win_ids": ["win-myciti-expansion", "win-safety-capacity", "win-city-of-hope-capex"],
       "related_domain_ids": ["transport", "housing_population", "safety_policing", "health", "water"],
       "related_sector_ids": ["transport", "housing", "safety", "health", "water"],
@@ -28,7 +28,7 @@
         "Housing backlog not yet split to Khayelitsha wards",
         "Ward → place mapping incomplete in seed (sample wards only)"
       ],
-      "ask_prompt": "Summarise what Helm knows about Khayelitsha — transport, housing, safety, health — and what is still missing."
+      "ask_prompt": "Summarise what Striops knows about Khayelitsha — transport, housing, safety, health — and what is still missing."
     },
     {
       "id": "mitchells-plain",
@@ -44,7 +44,7 @@
       "related_sector_ids": ["transport", "safety", "housing"],
       "themes": ["MyCiTi Cape Flats expansion corridor"],
       "gaps": ["Place-level ops series not yet wired"],
-      "ask_prompt": "What does Helm know about Mitchells Plain?"
+      "ask_prompt": "What does Striops know about Mitchells Plain?"
     },
     {
       "id": "cape-flats",
@@ -59,8 +59,8 @@
       "related_domain_ids": ["transport", "housing_population", "safety_policing", "health"],
       "related_sector_ids": ["transport", "housing", "safety", "health"],
       "themes": ["Cape Flats mobility investment", "Housing and safety pressure corridor"],
-      "gaps": ["Helm metro series are not yet rolled up by Cape Flats sub-region"],
-      "ask_prompt": "Summarise Cape Flats issues Helm can evidence today."
+      "gaps": ["Striops metro series are not yet rolled up by Cape Flats sub-region"],
+      "ask_prompt": "Summarise Cape Flats issues Striops can evidence today."
     }
   ]
 }

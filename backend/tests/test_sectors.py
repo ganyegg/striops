@@ -1,14 +1,14 @@
 """Critical sectors spine + demographics."""
 from fastapi.testclient import TestClient
 
-from helm.api.main import app
-from helm.core.cache import cache_clear
-from helm.demographics import attach_affected, clear_affected_cache
-from helm.persistence import get_repository
-from helm.pulse import build_city_pulse
-from helm.risk_engine import assess_risks
-from helm.sectors import build_sectors_report
-from helm.valuation import attach_valuations
+from striops.api.main import app
+from striops.core.cache import cache_clear
+from striops.demographics import attach_affected, clear_affected_cache
+from striops.persistence import get_repository
+from striops.pulse import build_city_pulse
+from striops.risk_engine import assess_risks
+from striops.sectors import build_sectors_report
+from striops.valuation import attach_valuations
 
 client = TestClient(app)
 
@@ -63,7 +63,7 @@ def test_ask_hospital_gap_protocol():
 
 
 def test_normalize_smashed_ask_markdown():
-    from helm.ask.service import normalize_answer_markdown
+    from striops.ask.service import normalize_answer_markdown
 
     smashed = (
         "### Snapshot Khayelitsha, with an estimated 400,000 residents, is a focus. "
@@ -81,7 +81,7 @@ def test_normalize_smashed_ask_markdown():
 
 def test_ask_khayelitsha_place_dossier():
     cache_clear()
-    from helm.places import clear_places_cache, detect_places
+    from striops.places import clear_places_cache, detect_places
 
     clear_places_cache()
     assert detect_places("Khayelitsha")

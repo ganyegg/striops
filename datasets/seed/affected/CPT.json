@@ -30,7 +30,7 @@
       "source_label": "City of Cape Town population estimate",
       "source_url": "https://www.capetown.gov.za/",
       "as_of": "Census 2022 + City estimate",
-      "gaps": ["P1 call volumes by district not yet in Helm facts store"],
+      "gaps": ["P1 call volumes by district not yet in Striops facts store"],
       "vulnerability_notes": ["Minutes above urban benchmark raise outcome risk on life-threatening calls"]
     },
     "non_revenue_water_pct": {
@@ -66,7 +66,7 @@
       "source_label": "Urban Mobility backlog series",
       "source_url": "https://www.capetown.gov.za/",
       "as_of": "2026 operational series",
-      "gaps": ["Ward-level backlog km not yet published into Helm"],
+      "gaps": ["Ward-level backlog km not yet published into Striops"],
       "vulnerability_notes": ["Public-transport dependent residents absorb delays and safety risk on degraded corridors"]
     },
     "refuse_service_requests": {
@@ -116,7 +116,7 @@
       "source_label": "IDP 2022–2027 housing database (confirm)",
       "source_url": "https://www.capetown.gov.za/",
       "as_of": "IDP cycle — needs verification",
-      "gaps": ["Monthly delivery vs budgeted units not yet a time series in Helm"],
+      "gaps": ["Monthly delivery vs budgeted units not yet a time series in Striops"],
       "vulnerability_notes": ["Backlog households are the clearest housing demographic denominator"]
     },
     "safety_policing": {

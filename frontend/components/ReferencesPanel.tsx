@@ -24,7 +24,7 @@ export default function ReferencesPanel({ references }: { references: ReferenceL
                 href={r.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex-none text-xs text-helm-accent hover:underline"
+                className="flex-none text-xs text-striops-accent hover:underline"
               >
                 Open ↗
               </a>

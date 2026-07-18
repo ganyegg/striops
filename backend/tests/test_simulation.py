@@ -1,7 +1,7 @@
 import pytest
 
-from helm.reasoning import MockProvider
-from helm.simulation import list_scenarios, simulate
+from striops.reasoning import MockProvider
+from striops.simulation import list_scenarios, simulate
 
 
 def test_scenarios_listed(repo):

@@ -18,7 +18,7 @@ export default function PageChrome({
           <div className="flex min-w-0 flex-wrap items-center gap-2 text-white/50">{crumbs}</div>
         ) : null}
       </div>
-      <Link href={backHref} className="text-xs text-helm-accent hover:underline">
+      <Link href={backHref} className="text-xs text-striops-accent hover:underline">
         {backLabel}
       </Link>
     </header>

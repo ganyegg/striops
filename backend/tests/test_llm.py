@@ -1,4 +1,4 @@
-from helm.reasoning import MockProvider
+from striops.reasoning import MockProvider
 
 
 def test_mock_is_deterministic():

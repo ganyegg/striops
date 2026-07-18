@@ -56,7 +56,7 @@ export const dynamic = "force-dynamic";
 function BackendDown({ message }: { message: string }) {
   return (
     <main className="mx-auto max-w-3xl px-6 py-24">
-      <h1 className="font-display text-2xl font-semibold text-white">Helm is waking up</h1>
+      <h1 className="font-display text-2xl font-semibold text-white">Striops is waking up</h1>
       <p className="mt-3 text-white/60">
         The reasoning core is not reachable yet. Start the backend and refresh.
       </p>
@@ -124,14 +124,11 @@ export default async function Home() {
           <div className="mx-auto max-w-6xl">
             <SiteHeader dataThrough={dataThrough} briefRefreshed={briefRefreshed} />
             <div className="mt-8 max-w-2xl">
-              <p className="text-xs font-medium uppercase tracking-[0.28em] text-helm-sand/80">
+              <p className="text-xs font-medium uppercase tracking-[0.28em] text-striops-sand/80">
                 {snapshot.greeting}
               </p>
-              <h1 className="mt-2 font-display text-3xl font-semibold tracking-tight text-white md:text-4xl">
-                Cape Town command
-              </h1>
               <p className="mt-2 text-sm text-white/55">
-                Health {brief.health_score}/100 · Data through {dataThrough} · Brief {briefRefreshed}
+                Cape Town · Health {brief.health_score}/100 · Data through {dataThrough}
               </p>
             </div>
           </div>
@@ -166,7 +163,7 @@ export default async function Home() {
           step="02"
           eyebrow="Briefing"
           title="Today's strategic read"
-          lead="Snapshot, pressure, redeploy, and watch — scannable like Ask Helm."
+          lead="Snapshot, pressure, redeploy, and watch — scannable like Ask Striops."
         >
           <StrategicRead brief={brief} />
         </StorySection>
@@ -206,15 +203,15 @@ export default async function Home() {
               <Link
                 key={pack.id}
                 href={`/compare#${pack.id}`}
-                className="card group block p-5 transition hover:border-helm-accent/40 hover:shadow-glow"
+                className="card group block p-5 transition hover:border-striops-accent/40 hover:shadow-glow"
               >
-                <p className="text-[11px] uppercase tracking-[0.16em] text-helm-accent/80">
+                <p className="text-[11px] uppercase tracking-[0.16em] text-striops-accent/80">
                   {pack.eyebrow}
                 </p>
                 <h3 className="mt-1 font-display text-lg font-semibold text-white">{pack.title}</h3>
                 <p className="mt-2 line-clamp-2 text-sm text-white/55">{pack.why_it_matters}</p>
                 {pack.ratio ? (
-                  <p className="mt-3 font-display text-2xl font-semibold text-helm-sand">
+                  <p className="mt-3 font-display text-2xl font-semibold text-striops-sand">
                     {pack.ratio.value}
                     <span className="ml-2 font-sans text-xs font-normal text-white/40">
                       {pack.ratio.label}
@@ -225,14 +222,14 @@ export default async function Home() {
                     {pack.series.map((s) => s.label).join(" · ")}
                   </p>
                 )}
-                <p className="mt-2 text-[11px] text-helm-accent opacity-80 group-hover:opacity-100">
+                <p className="mt-2 text-[11px] text-striops-accent opacity-80 group-hover:opacity-100">
                   Open chart →
                 </p>
               </Link>
             ))}
           </div>
           <p className="mt-3 text-xs text-white/35">
-            Helm is dynamic — new metrics show up after ingest. Use{" "}
+            Striops is dynamic — new metrics show up after ingest. Use{" "}
             <strong className="text-white/50">Refresh now</strong> in the header when you need data
             immediately.
           </p>
@@ -243,7 +240,7 @@ export default async function Home() {
           id="ask"
           step="06"
           eyebrow="Interrogate the twin"
-          title="Ask Helm"
+          title="Ask Striops"
           lead="Natural language over retrieved facts. Engines own the numbers; AI writes the answer."
         >
           <AskPanel />
@@ -310,7 +307,7 @@ export default async function Home() {
             step="11"
             eyebrow="Prove the ROI"
             title="Value delivered"
-            lead="What Helm surfaced → what happened → what it was worth."
+            lead="What Striops surfaced → what happened → what it was worth."
           >
             <ValueLedgerPanel ledger={ledger} />
           </StorySection>
@@ -376,7 +373,7 @@ export default async function Home() {
         </StorySection>
 
         <footer className="border-t border-white/10 pt-8 text-xs text-white/35">
-          Helm · Strategic Intelligence Operating System · {brief.generated_for} · Data through{" "}
+          Striops · Strategic Intelligence Operating System · {brief.generated_for} · Data through{" "}
           {dataThrough} · Brief {briefRefreshed}
         </footer>
       </div>

@@ -92,11 +92,11 @@ export default function BudgetSpendChart({
     <div className="card overflow-hidden p-4">
       <div className="flex items-start justify-between gap-3">
         <div>
-          <p className="text-[11px] uppercase tracking-[0.18em] text-helm-accent/80">Fiscal pulse</p>
+          <p className="text-[11px] uppercase tracking-[0.18em] text-striops-accent/80">Fiscal pulse</p>
           <h3 className="mt-1 font-display text-base font-semibold text-white">Budget vs unspent</h3>
         </div>
         <div className="text-right">
-          <p className="font-display text-lg font-semibold tabular-nums text-helm-sand">
+          <p className="font-display text-lg font-semibold tabular-nums text-striops-sand">
             {formatZAR(totalUnspent)}
           </p>
           <p className="text-[10px] uppercase tracking-wide text-white/40">

@@ -17,7 +17,7 @@ export default function StorySection({
 }) {
   const border =
     variant === "accent"
-      ? "border-l-2 border-helm-accent pl-5"
+      ? "border-l-2 border-striops-accent pl-5"
       : variant === "muted"
         ? "border-l-2 border-white/10 pl-5"
         : "";
@@ -27,7 +27,7 @@ export default function StorySection({
       <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
         <div>
           {step ? (
-            <p className="mb-1 font-mono text-[11px] uppercase tracking-[0.3em] text-helm-accent/80">
+            <p className="mb-1 font-mono text-[11px] uppercase tracking-[0.3em] text-striops-accent/80">
               {step}
             </p>
           ) : null}

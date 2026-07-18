@@ -14,30 +14,30 @@ export default function RiskCard({
   return (
     <Link
       href={`/risks/${encodeURIComponent(risk.id)}`}
-      className="card-risk block p-5 transition hover:border-helm-bad/40 hover:shadow-glow"
+      className="card-risk block p-5 transition hover:border-striops-bad/40 hover:shadow-glow"
     >
       <div className="flex items-start justify-between gap-3">
         <h3 className="font-display text-[17px] font-semibold text-white">{risk.title}</h3>
         <span className={`pill ${priorityColor(risk.priority)}`}>{risk.priority}</span>
       </div>
       {glossary ? (
-        <p className="mt-2 rounded-lg border border-white/10 bg-ink-950/40 px-3 py-2 text-xs leading-relaxed text-helm-sand/80">
-          <span className="font-semibold text-helm-sky">{glossary.term}: </span>
+        <p className="mt-2 rounded-lg border border-white/10 bg-ink-950/40 px-3 py-2 text-xs leading-relaxed text-striops-sand/80">
+          <span className="font-semibold text-striops-sky">{glossary.term}: </span>
           {glossary.in_one_line}
         </p>
       ) : null}
       <div className="mt-3 flex items-center gap-3">
-        <span className="font-display text-3xl font-bold tabular-nums text-helm-bad">{risk.score}</span>
+        <span className="font-display text-3xl font-bold tabular-nums text-striops-bad">{risk.score}</span>
         <span className="text-[11px] uppercase tracking-wide text-white/40">risk score</span>
-        <span className="ml-auto text-[11px] text-helm-accent">Open report →</span>
+        <span className="ml-auto text-[11px] text-striops-accent">Open report →</span>
       </div>
       <p className="mt-2 text-sm leading-relaxed text-white/65">{risk.reason}</p>
       {risk.cost_estimate ? (
-        <div className="mt-3 rounded-lg border border-helm-bad/20 bg-helm-bad/10 px-3 py-2">
-          <p className="text-[11px] font-medium uppercase tracking-wide text-helm-bad">
+        <div className="mt-3 rounded-lg border border-striops-bad/20 bg-striops-bad/10 px-3 py-2">
+          <p className="text-[11px] font-medium uppercase tracking-wide text-striops-bad">
             Estimated annual cost
           </p>
-          <p className="mt-0.5 font-display text-xl font-semibold text-helm-bad">
+          <p className="mt-0.5 font-display text-xl font-semibold text-striops-bad">
             {formatZAR(risk.cost_estimate.amount_zar)}
             <span className="ml-2 font-sans text-xs font-normal text-white/45">
               {risk.cost_estimate.unit_note}
@@ -46,8 +46,8 @@ export default function RiskCard({
         </div>
       ) : null}
       {risk.affected ? (
-        <div className="mt-3 rounded-lg border border-helm-sky/20 bg-helm-sky/5 px-3 py-2">
-          <p className="text-[11px] font-medium uppercase tracking-wide text-helm-sky">Who is affected</p>
+        <div className="mt-3 rounded-lg border border-striops-sky/20 bg-striops-sky/5 px-3 py-2">
+          <p className="text-[11px] font-medium uppercase tracking-wide text-striops-sky">Who is affected</p>
           {risk.affected.population_estimate != null ? (
             <p className="mt-0.5 font-display text-lg font-semibold text-white">
               ~{risk.affected.population_estimate.toLocaleString("en-ZA")}{" "}
@@ -62,8 +62,8 @@ export default function RiskCard({
           ) : null}
         </div>
       ) : null}
-      <div className="mt-3 rounded-lg bg-helm-accent/10 p-3 text-sm text-white/75">
-        <span className="text-[11px] font-medium uppercase tracking-wide text-helm-accent">
+      <div className="mt-3 rounded-lg bg-striops-accent/10 p-3 text-sm text-white/75">
+        <span className="text-[11px] font-medium uppercase tracking-wide text-striops-accent">
           Mitigation
         </span>
         <p className="mt-0.5">{risk.mitigation}</p>

@@ -6,7 +6,7 @@ function TrendGlyph({ trend }: { trend: Indicator["trend"] }) {
   if (trend === "na") return null;
   const map = { up: "↑", down: "↓", flat: "→" } as const;
   const color =
-    trend === "up" ? "text-helm-bad" : trend === "down" ? "text-helm-good" : "text-white/40";
+    trend === "up" ? "text-striops-bad" : trend === "down" ? "text-striops-good" : "text-white/40";
   return (
     <span className={`text-xs ${color}`} title={`Trend: ${trend}`}>
       {map[trend]}
@@ -44,9 +44,9 @@ export default function IndicatorRow({
       <div className="mt-3 flex items-center justify-between border-t border-white/5 pt-2 text-[11px]">
         <span className="text-white/35">{source?.publisher ?? "Source"}</span>
         {href ? (
-          <span className="text-helm-accent">Open report →</span>
+          <span className="text-striops-accent">Open report →</span>
         ) : source ? (
-          <span className="text-helm-accent">Verify ↗</span>
+          <span className="text-striops-accent">Verify ↗</span>
         ) : null}
       </div>
     </>
@@ -56,7 +56,7 @@ export default function IndicatorRow({
     return (
       <Link
         href={href}
-        className="card block p-4 transition hover:border-helm-accent/30 hover:bg-white/[0.05]"
+        className="card block p-4 transition hover:border-striops-accent/30 hover:bg-white/[0.05]"
       >
         {body}
       </Link>
@@ -69,7 +69,7 @@ export default function IndicatorRow({
         href={source.url}
         target="_blank"
         rel="noopener noreferrer"
-        className="card block p-4 transition hover:border-helm-accent/30"
+        className="card block p-4 transition hover:border-striops-accent/30"
       >
         {body}
       </a>

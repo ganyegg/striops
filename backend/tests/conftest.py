@@ -10,8 +10,8 @@ os.environ.setdefault("GEMINI_API_KEY", "")
 os.environ.setdefault("POSTGRES_HOST", "127.0.0.1")
 os.environ.setdefault("POSTGRES_PORT", "1")  # unreachable -> seed fallback
 
-from helm.core.config import get_settings  # noqa: E402
-from helm.persistence import Repository  # noqa: E402
+from striops.core.config import get_settings  # noqa: E402
+from striops.persistence import Repository  # noqa: E402
 
 
 @pytest.fixture

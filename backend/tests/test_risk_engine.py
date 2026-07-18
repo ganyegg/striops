@@ -1,4 +1,4 @@
-from helm.risk_engine import assess_risks
+from striops.risk_engine import assess_risks
 
 
 def test_seed_produces_ranked_risks(seed_data):

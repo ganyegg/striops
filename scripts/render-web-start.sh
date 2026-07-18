@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Render.com — Helm web (Next.js on $PORT)
+# Render.com — Striops web (Next.js on $PORT)
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT/frontend"

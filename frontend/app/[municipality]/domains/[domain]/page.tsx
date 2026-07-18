@@ -18,7 +18,7 @@ export const dynamic = "force-dynamic";
 function ErrorState({ code, message }: { code: string; message: string }) {
   return (
     <main className="mx-auto max-w-3xl px-6 py-24">
-      <Link href="/" className="text-sm text-helm-accent hover:underline">
+      <Link href="/" className="text-sm text-striops-accent hover:underline">
         ← Back to briefing
       </Link>
       <h1 className="mt-6 text-2xl font-semibold text-white/90">Domain unavailable</h1>
@@ -58,7 +58,7 @@ export default async function DomainPage({
         crumbs={
           <>
             <Link href="/" className="font-semibold text-white/80 hover:text-white">
-              Helm
+              Striops
             </Link>
             <span className="text-white/25">/</span>
             <span className="text-white/50">{muni.name}</span>
@@ -74,7 +74,7 @@ export default async function DomainPage({
         <p className="mt-3 max-w-3xl text-[15px] leading-relaxed text-white/65">{profile.summary}</p>
         <div className="mt-3 flex flex-wrap items-center gap-3 text-xs text-white/40">
           {profile.last_updated ? <span>Updated {profile.last_updated}</span> : null}
-          <span className="pill bg-helm-good/10 text-helm-good">
+          <span className="pill bg-striops-good/10 text-striops-good">
             {verifiedCount}/{profile.indicators.length} indicators verified
           </span>
         </div>
@@ -117,7 +117,7 @@ export default async function DomainPage({
           <ul className="space-y-2">
             {profile.watchpoints.map((w, i) => (
               <li key={i} className="flex gap-2 text-sm text-white/65">
-                <span className="text-helm-warn">•</span>
+                <span className="text-striops-warn">•</span>
                 {w}
               </li>
             ))}

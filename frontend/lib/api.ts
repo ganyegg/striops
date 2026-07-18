@@ -1,4 +1,4 @@
-// Typed client for the Helm backend.
+// Typed client for the Striops backend.
 
 export type Priority = "critical" | "high" | "medium" | "low";
 
@@ -174,11 +174,11 @@ export function formatZAR(value: number): string {
 export function priorityColor(p: Priority): string {
   switch (p) {
     case "critical":
-      return "bg-helm-bad/15 text-helm-bad border border-helm-bad/30";
+      return "bg-striops-bad/15 text-striops-bad border border-striops-bad/30";
     case "high":
       return "bg-orange-400/15 text-orange-300 border border-orange-400/30";
     case "medium":
-      return "bg-helm-warn/15 text-helm-warn border border-helm-warn/30";
+      return "bg-striops-warn/15 text-striops-warn border border-striops-warn/30";
     default:
       return "bg-white/5 text-white/60 border border-white/10";
   }
@@ -294,11 +294,11 @@ export async function getDomainProfile(
 export function verificationMeta(v: VerificationStatus): { label: string; className: string } {
   switch (v) {
     case "verified":
-      return { label: "Verified", className: "bg-helm-good/15 text-helm-good border border-helm-good/30" };
+      return { label: "Verified", className: "bg-striops-good/15 text-striops-good border border-striops-good/30" };
     case "estimate":
-      return { label: "Estimate", className: "bg-helm-accent/15 text-helm-accent border border-helm-accent/30" };
+      return { label: "Estimate", className: "bg-striops-accent/15 text-striops-accent border border-striops-accent/30" };
     default:
-      return { label: "Needs verification", className: "bg-helm-warn/15 text-helm-warn border border-helm-warn/30" };
+      return { label: "Needs verification", className: "bg-striops-warn/15 text-striops-warn border border-striops-warn/30" };
   }
 }
 
@@ -725,13 +725,13 @@ export function glossaryForRisk(riskId: string, glossary: Record<string, Glossar
 export function toneClass(tone: string): string {
   switch (tone) {
     case "good":
-      return "text-helm-good";
+      return "text-striops-good";
     case "warn":
-      return "text-helm-warn";
+      return "text-striops-warn";
     case "bad":
-      return "text-helm-bad";
+      return "text-striops-bad";
     default:
-      return "text-helm-sky";
+      return "text-striops-sky";
   }
 }
 
@@ -902,7 +902,7 @@ export async function getComparatives(): Promise<ComparativesReport> {
   return res.json();
 }
 
-export async function askHelm(
+export async function askStriops(
   question: string,
   mode: "answer" | "report" = "answer",
 ): Promise<AskResponse> {
@@ -915,7 +915,7 @@ export async function askHelm(
   return res.json();
 }
 
-export async function refreshHelm(runIngest = true): Promise<RefreshResult> {
+export async function refreshStriops(runIngest = true): Promise<RefreshResult> {
   const res = await fetch(`${CLIENT_BASE}/refresh?run_ingest=${runIngest}`, {
     method: "POST",
   });

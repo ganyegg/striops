@@ -21,11 +21,11 @@ body {
 }
 
 .card-win {
-  @apply rounded-2xl border border-helm-ocean/25 bg-gradient-to-br from-helm-ocean/15 via-ink-900/80 to-ink-900/90 shadow-card backdrop-blur-md;
+  @apply rounded-2xl border border-striops-ocean/25 bg-gradient-to-br from-striops-ocean/15 via-ink-900/80 to-ink-900/90 shadow-card backdrop-blur-md;
 }
 
 .card-risk {
-  @apply rounded-2xl border border-helm-bad/20 bg-gradient-to-br from-helm-bad/10 via-ink-900/80 to-ink-900/90 shadow-card backdrop-blur-md;
+  @apply rounded-2xl border border-striops-bad/20 bg-gradient-to-br from-striops-bad/10 via-ink-900/80 to-ink-900/90 shadow-card backdrop-blur-md;
 }
 
 .pill {
@@ -33,7 +33,7 @@ body {
 }
 
 .kpi-tile {
-  @apply relative overflow-hidden rounded-2xl border border-white/10 bg-ink-800/80 p-4 shadow-card transition hover:border-helm-accent/40 hover:shadow-glow;
+  @apply relative overflow-hidden rounded-2xl border border-white/10 bg-ink-800/80 p-4 shadow-card transition hover:border-striops-accent/40 hover:shadow-glow;
 }
 
 .kpi-tile::after {

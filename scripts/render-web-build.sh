@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Render.com — Helm web build (Next.js)
+# Render.com — Striops web build (Next.js)
 # Keep install able to see devDependencies even when NODE_ENV=production.
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"

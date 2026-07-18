@@ -58,7 +58,7 @@ export default function HealthGauge({
     <div className={`relative w-full ${compact ? "h-44" : "h-56"}`}>
       <ReactECharts option={option} style={{ height: "100%", width: "100%" }} />
       {!compact ? (
-        <div className="pointer-events-none absolute inset-x-0 bottom-6 text-center text-xs uppercase tracking-[0.2em] text-helm-sand/70">
+        <div className="pointer-events-none absolute inset-x-0 bottom-6 text-center text-xs uppercase tracking-[0.2em] text-striops-sand/70">
           Strategic Health
         </div>
       ) : null}

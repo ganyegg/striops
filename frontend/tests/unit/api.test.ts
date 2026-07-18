@@ -15,7 +15,7 @@ describe("formatZAR", () => {
 
 describe("priorityColor", () => {
   it("maps critical to the danger palette", () => {
-    expect(priorityColor("critical")).toContain("helm-bad");
+    expect(priorityColor("critical")).toContain("striops-bad");
   });
   it("maps low to a muted palette", () => {
     expect(priorityColor("low")).toContain("white/60");

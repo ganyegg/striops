@@ -12,7 +12,7 @@ export default async function ComparePage() {
   } catch (e) {
     return (
       <main className="mx-auto max-w-3xl px-6 py-24">
-        <Link href="/" className="text-sm text-helm-accent hover:underline">
+        <Link href="/" className="text-sm text-striops-accent hover:underline">
           ← Back to briefing
         </Link>
         <h1 className="mt-6 font-display text-2xl font-semibold text-white">Comparatives unavailable</h1>
@@ -27,7 +27,7 @@ export default async function ComparePage() {
         crumbs={
           <>
             <Link href="/" className="font-display font-semibold text-white/80 hover:text-white">
-              Helm
+              Striops
             </Link>
             <span className="text-white/25">/</span>
             <span className="text-white/80">Compare</span>
@@ -48,10 +48,10 @@ export default async function ComparePage() {
       <div className="mt-10 space-y-10">
         {report.packs.map((pack) => (
           <section key={pack.id} id={pack.id} className="card scroll-mt-24 p-6">
-            <p className="text-[11px] uppercase tracking-[0.18em] text-helm-accent/80">{pack.eyebrow}</p>
+            <p className="text-[11px] uppercase tracking-[0.18em] text-striops-accent/80">{pack.eyebrow}</p>
             <h2 className="mt-1 font-display text-2xl font-semibold text-white">{pack.title}</h2>
             <p className="mt-2 text-sm text-white/55">{pack.why_it_matters}</p>
-            <p className="mt-2 text-sm text-helm-sand/80">
+            <p className="mt-2 text-sm text-striops-sand/80">
               <span className="text-white/40">Decision: </span>
               {pack.decision_anchor}
             </p>
@@ -65,7 +65,7 @@ export default async function ComparePage() {
                 <Link
                   key={`${s.entity_id}-${s.metric}`}
                   href={s.href}
-                  className="rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2 text-xs transition hover:border-helm-accent/40"
+                  className="rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2 text-xs transition hover:border-striops-accent/40"
                 >
                   <span className="block text-white/45">{s.label}</span>
                   <span className="font-display text-lg text-white">
@@ -83,8 +83,8 @@ export default async function ComparePage() {
             </div>
 
             {pack.ratio ? (
-              <div className="mt-5 rounded-xl border border-helm-accent/25 bg-helm-accent/5 p-4">
-                <p className="text-[11px] uppercase tracking-wide text-helm-accent/90">
+              <div className="mt-5 rounded-xl border border-striops-accent/25 bg-striops-accent/5 p-4">
+                <p className="text-[11px] uppercase tracking-wide text-striops-accent/90">
                   Strategic ratio · {pack.ratio.label}
                 </p>
                 <p className="mt-1 font-display text-3xl font-semibold text-white">

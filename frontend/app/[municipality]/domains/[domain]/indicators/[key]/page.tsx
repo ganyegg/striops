@@ -27,7 +27,7 @@ export default async function IndicatorReportPage({
   } catch (e) {
     return (
       <main className="mx-auto max-w-3xl px-6 py-24">
-        <Link href={`/${code}/domains/${domainId}`} className="text-sm text-helm-accent hover:underline">
+        <Link href={`/${code}/domains/${domainId}`} className="text-sm text-striops-accent hover:underline">
           ← Back to domain
         </Link>
         <h1 className="mt-6 text-2xl font-semibold text-white/90">Indicator unavailable</h1>
@@ -58,7 +58,7 @@ export default async function IndicatorReportPage({
         crumbs={
           <>
             <Link href="/" className="font-semibold text-white/80 hover:text-white">
-              Helm
+              Striops
             </Link>
             <span className="text-white/25">/</span>
             <Link href={`/${code}/domains/${domainId}`} className="text-white/50 hover:text-white/80">
@@ -90,7 +90,7 @@ export default async function IndicatorReportPage({
             href={report.source.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-3 inline-block text-sm text-helm-accent hover:underline"
+            className="mt-3 inline-block text-sm text-striops-accent hover:underline"
           >
             Verify primary source ↗ · {report.source.publisher}
           </a>
@@ -108,7 +108,7 @@ export default async function IndicatorReportPage({
             <h2 className="text-lg font-semibold text-white/90">Related time series</h2>
             <Link
               href={`/metrics/${metricReport.entity_id}/${metricReport.metric}`}
-              className="text-xs text-helm-accent hover:underline"
+              className="text-xs text-striops-accent hover:underline"
             >
               Full metric report ↗
             </Link>
@@ -130,7 +130,7 @@ export default async function IndicatorReportPage({
               <Link
                 key={id}
                 href={`/risks/${id}`}
-                className="pill border border-helm-bad/30 bg-helm-bad/10 text-helm-bad hover:underline"
+                className="pill border border-striops-bad/30 bg-striops-bad/10 text-striops-bad hover:underline"
               >
                 {id.replace(/^risk-/, "").replace(/-/g, " ")} ↗
               </Link>
@@ -147,7 +147,7 @@ export default async function IndicatorReportPage({
               <Link
                 key={ri.key}
                 href={`/${code}/domains/${domainId}/indicators/${ri.key}`}
-                className="card p-4 transition hover:border-helm-accent/30"
+                className="card p-4 transition hover:border-striops-accent/30"
               >
                 <p className="text-sm text-white/50">{ri.label}</p>
                 <p className="mt-1 text-lg font-semibold text-white/90">{ri.value}</p>
@@ -163,7 +163,7 @@ export default async function IndicatorReportPage({
           <ul className="space-y-2">
             {report.watchpoints.map((w, i) => (
               <li key={i} className="flex gap-2 text-sm text-white/65">
-                <span className="text-helm-warn">•</span>
+                <span className="text-striops-warn">•</span>
                 {w}
               </li>
             ))}

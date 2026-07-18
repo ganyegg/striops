@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { DM_Sans, Fraunces } from "next/font/google";
+import { DM_Sans, Space_Grotesk } from "next/font/google";
 import ScrollToTop from "@/components/ScrollToTop";
 import "./globals.css";
 
@@ -9,15 +9,16 @@ const sans = DM_Sans({
   weight: ["400", "500", "600", "700"],
 });
 
-const display = Fraunces({
+const display = Space_Grotesk({
   subsets: ["latin"],
   variable: "--font-display",
   weight: ["500", "600", "700"],
 });
 
 export const metadata: Metadata = {
-  title: "Helm — Trusted with foresight",
-  description: "Strategic Intelligence Operating System · Strategic Twin for Cities",
+  title: "Striops — Trusted with foresight",
+  description:
+    "Strategic Intelligence Operating System — the strategic twin for cities. Trusted with foresight.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

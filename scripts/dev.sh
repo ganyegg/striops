@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Helm AI local dev helper.
+# Striops local dev helper.
 #   ./scripts/dev.sh up       -> docker compose up --build
 #   ./scripts/dev.sh ingest   -> run the ingestion pipeline
 #   ./scripts/dev.sh backend  -> run FastAPI locally (needs venv + deps)
@@ -13,7 +13,7 @@ cmd="${1:-up}"
 case "$cmd" in
   up)       docker compose up --build ;;
   ingest)   docker compose run --rm ingest ;;
-  backend)  cd backend && uvicorn helm.api.main:app --reload ;;
+  backend)  cd backend && uvicorn striops.api.main:app --reload ;;
   frontend) cd frontend && npm run dev ;;
   test)     cd backend && python -m pytest -q ;;
   *) echo "unknown command: $cmd" >&2; exit 1 ;;

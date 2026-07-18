@@ -1,4 +1,4 @@
-from helm.opportunity_engine import find_opportunities
+from striops.opportunity_engine import find_opportunities
 
 
 def test_underspend_detected(seed_data):

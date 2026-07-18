@@ -5,15 +5,15 @@ import { formatZAR } from "@/lib/api";
 const STATUS_META: Record<string, { label: string; className: string }> = {
   overdue: {
     label: "Overdue",
-    className: "bg-helm-bad/15 text-helm-bad border border-helm-bad/30",
+    className: "bg-striops-bad/15 text-striops-bad border border-striops-bad/30",
   },
   assigned: {
     label: "Assigned",
-    className: "bg-helm-warn/15 text-helm-warn border border-helm-warn/30",
+    className: "bg-striops-warn/15 text-striops-warn border border-striops-warn/30",
   },
   in_progress: {
     label: "In progress",
-    className: "bg-helm-accent/15 text-helm-accent border border-helm-accent/30",
+    className: "bg-striops-accent/15 text-striops-accent border border-striops-accent/30",
   },
   proposed: {
     label: "Proposed",
@@ -21,7 +21,7 @@ const STATUS_META: Record<string, { label: string; className: string }> = {
   },
   done: {
     label: "Done",
-    className: "bg-helm-good/15 text-helm-good border border-helm-good/30",
+    className: "bg-striops-good/15 text-striops-good border border-striops-good/30",
   },
 };
 
@@ -51,14 +51,14 @@ function ActionCard({ action }: { action: Action }) {
       ) : null}
       <div className="mt-3 flex flex-wrap items-center gap-2 text-xs">
         {action.expected_impact_zar != null ? (
-          <span className="rounded-full border border-helm-accent/30 bg-helm-accent/10 px-2.5 py-0.5 text-helm-accent">
+          <span className="rounded-full border border-striops-accent/30 bg-striops-accent/10 px-2.5 py-0.5 text-striops-accent">
             {formatZAR(action.expected_impact_zar)} expected
           </span>
         ) : null}
         {href ? (
           <Link
             href={href}
-            className="rounded-full border border-white/15 bg-white/5 px-2.5 py-0.5 text-white/55 hover:border-helm-sky/40 hover:text-helm-sky"
+            className="rounded-full border border-white/15 bg-white/5 px-2.5 py-0.5 text-white/55 hover:border-striops-sky/40 hover:text-striops-sky"
           >
             Source {action.source_type} →
           </Link>
@@ -67,7 +67,7 @@ function ActionCard({ action }: { action: Action }) {
         )}
       </div>
       {action.outcome ? (
-        <p className="mt-2 text-xs text-helm-good/80">Outcome: {action.outcome}</p>
+        <p className="mt-2 text-xs text-striops-good/80">Outcome: {action.outcome}</p>
       ) : null}
     </div>
   );
@@ -81,11 +81,11 @@ export default function ActionTracker({ register }: { register: ActionRegister }
           {register.open_count} open
         </span>
         {register.overdue_count > 0 ? (
-          <span className="rounded-full border border-helm-bad/30 bg-helm-bad/10 px-3 py-1 text-helm-bad">
+          <span className="rounded-full border border-striops-bad/30 bg-striops-bad/10 px-3 py-1 text-striops-bad">
             {register.overdue_count} overdue
           </span>
         ) : null}
-        <span className="rounded-full border border-helm-good/30 bg-helm-good/10 px-3 py-1 text-helm-good">
+        <span className="rounded-full border border-striops-good/30 bg-striops-good/10 px-3 py-1 text-striops-good">
           {register.done_count} done
         </span>
         {register.total_expected_impact_zar > 0 ? (

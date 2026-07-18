@@ -2,8 +2,8 @@ import Link from "next/link";
 import type { CityPulse } from "@/lib/api";
 
 const DOT: Record<string, string> = {
-  worsening: "bg-helm-bad",
-  improving: "bg-helm-good",
+  worsening: "bg-striops-bad",
+  improving: "bg-striops-good",
   flat: "bg-white/30",
 };
 
@@ -19,12 +19,12 @@ export default function PulseCompact({ pulse }: { pulse: CityPulse }) {
       <div className="flex items-center justify-between border-b border-white/10 bg-white/[0.03] px-4 py-3">
         <div className="flex items-center gap-2">
           <span className="relative flex h-2 w-2">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-helm-accent opacity-60" />
-            <span className="relative inline-flex h-2 w-2 rounded-full bg-helm-accent" />
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-striops-accent opacity-60" />
+            <span className="relative inline-flex h-2 w-2 rounded-full bg-striops-accent" />
           </span>
           <span className="text-sm font-semibold text-white/85">City Pulse</span>
         </div>
-        <a href="#pulse" className="text-[11px] text-helm-accent hover:underline">
+        <a href="#pulse" className="text-[11px] text-striops-accent hover:underline">
           Full pulse →
         </a>
       </div>

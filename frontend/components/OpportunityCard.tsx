@@ -8,7 +8,7 @@ export default function OpportunityCard({ opp }: { opp: Opportunity }) {
   return (
     <Link
       href={opportunityHref(opp.id)}
-      className="card block p-5 transition hover:border-helm-good/40 hover:bg-white/[0.05]"
+      className="card block p-5 transition hover:border-striops-good/40 hover:bg-white/[0.05]"
     >
       <div className="flex items-start justify-between gap-3">
         <h3 className="text-[15px] font-semibold text-white/90">{opp.title}</h3>
@@ -16,24 +16,24 @@ export default function OpportunityCard({ opp }: { opp: Opportunity }) {
       </div>
       {opp.unit === "ZAR" && opp.value_estimate > 0 ? (
         <div className="mt-2 flex items-center gap-3">
-          <span className="text-2xl font-bold tabular-nums text-helm-good">
+          <span className="text-2xl font-bold tabular-nums text-striops-good">
             {formatZAR(opp.value_estimate)}
           </span>
           <span className="text-[11px] uppercase tracking-wide text-white/40">estimated value</span>
-          <span className="ml-auto text-[11px] text-helm-accent">Open report →</span>
+          <span className="ml-auto text-[11px] text-striops-accent">Open report →</span>
         </div>
       ) : (
         <div className="mt-2 flex justify-end">
-          <span className="text-[11px] text-helm-accent">Open report →</span>
+          <span className="text-[11px] text-striops-accent">Open report →</span>
         </div>
       )}
       <p className="mt-2 text-sm leading-relaxed text-white/60">{opp.reason}</p>
       {opp.gain_estimate ? (
-        <div className="mt-3 rounded-lg border border-helm-good/20 bg-helm-good/10 px-3 py-2">
-          <p className="text-[11px] font-medium uppercase tracking-wide text-helm-good">
+        <div className="mt-3 rounded-lg border border-striops-good/20 bg-striops-good/10 px-3 py-2">
+          <p className="text-[11px] font-medium uppercase tracking-wide text-striops-good">
             Captureable gain
           </p>
-          <p className="mt-0.5 font-display text-xl font-semibold text-helm-good">
+          <p className="mt-0.5 font-display text-xl font-semibold text-striops-good">
             {formatZAR(opp.gain_estimate.amount_zar)}
             {opp.gain_estimate.unit_note ? (
               <span className="ml-2 font-sans text-xs font-normal text-white/45">
@@ -43,8 +43,8 @@ export default function OpportunityCard({ opp }: { opp: Opportunity }) {
           </p>
         </div>
       ) : null}
-      <div className="mt-3 rounded-lg bg-helm-good/5 p-3 text-sm text-white/70">
-        <span className="text-[11px] font-medium uppercase tracking-wide text-helm-good">Action</span>
+      <div className="mt-3 rounded-lg bg-striops-good/5 p-3 text-sm text-white/70">
+        <span className="text-[11px] font-medium uppercase tracking-wide text-striops-good">Action</span>
         <p className="mt-0.5">{opp.action}</p>
       </div>
       <div className="mt-3 flex items-center justify-between">

@@ -1,7 +1,7 @@
 [project]
-name = "helm-ai-backend"
+name = "striops-backend"
 version = "0.1.0"
-description = "Helm AI — Strategic Intelligence Operating System (backend)"
+description = "Striops — Strategic Intelligence Operating System (backend)"
 requires-python = ">=3.12"
 
 [tool.pytest.ini_options]

@@ -1,7 +1,7 @@
 from fastapi.testclient import TestClient
 
-from helm.api.main import app
-from helm.executive_brief import build_executive_brief
+from striops.api.main import app
+from striops.executive_brief import build_executive_brief
 
 client = TestClient(app)
 

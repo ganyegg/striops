@@ -168,13 +168,13 @@
     "last_updated": "2026-07-17",
     "coverage_note": "Operational series are seed/illustrative order-of-magnitude pending official City Health monthly extracts. Budget line from adopted budget where cited.",
     "indicators": [
-      {"key": "clinic_wait", "label": "Median clinic waiting days", "value": "26.3 days", "numeric": 26.3, "unit": "days", "as_of": "Feb 2026", "trend": "up", "trend_note": "Worsening — longer queues", "verification": "needs_verification", "source_id": "src-city-health", "confidence": 0.55, "method": "Seed series aligned to Helm monthly ops; replace with City Health official PHC waiting-time extract."},
+      {"key": "clinic_wait", "label": "Median clinic waiting days", "value": "26.3 days", "numeric": 26.3, "unit": "days", "as_of": "Feb 2026", "trend": "up", "trend_note": "Worsening — longer queues", "verification": "needs_verification", "source_id": "src-city-health", "confidence": 0.55, "method": "Seed series aligned to Striops monthly ops; replace with City Health official PHC waiting-time extract."},
       {"key": "ems_response", "label": "EMS average response", "value": "18.2 min", "numeric": 18.2, "unit": "minutes", "as_of": "Feb 2026", "trend": "up", "trend_note": "Above 15-min urban benchmark", "verification": "needs_verification", "source_id": "src-city-health", "confidence": 0.55},
       {"key": "health_budget", "label": "Health function (budget)", "value": "Confirm line in MTREF", "as_of": "2026/27 budget", "trend": "na", "verification": "needs_verification", "source_id": "src-budget-2627", "confidence": 0.4, "method": "Attach the adopted Health vote from the budget book."},
       {"key": "env_health", "label": "Environmental health inspections", "value": "Programme active (confirm clearance rate)", "as_of": "current", "trend": "na", "verification": "needs_verification", "source_id": "src-city-health", "confidence": 0.35}
     ],
     "watchpoints": [
-      "Publish official PHC waiting-time and EMS P1 response by district monthly into Helm.",
+      "Publish official PHC waiting-time and EMS P1 response by district monthly into Striops.",
       "Watch clinic waits and EMS together — dual worsening is an access crisis, not two unrelated KPIs.",
       "Confirm environmental health inspection clearance against outbreak risk."
     ],
@@ -210,7 +210,7 @@
     "municipality": "City of Cape Town",
     "summary": "Refuse service requests are climbing month-on-month — a live signal that collection capacity is lagging household demand in parts of the metro.",
     "last_updated": "2026-07-17",
-    "coverage_note": "Operational refuse series from Helm seed/ops; C3 open-data join still to be hardened.",
+    "coverage_note": "Operational refuse series from Striops seed/ops; C3 open-data join still to be hardened.",
     "indicators": [
       {"key": "refuse_requests", "label": "Refuse service requests", "value": "11,980 / month", "numeric": 11980, "unit": "requests/month", "as_of": "Feb 2026", "trend": "up", "verification": "verified", "source_id": "src-odp", "confidence": 0.7},
       {"key": "collection", "label": "Collection coverage", "value": "Confirm ward gaps", "as_of": "current", "trend": "na", "verification": "needs_verification", "source_id": "src-odp", "confidence": 0.35}

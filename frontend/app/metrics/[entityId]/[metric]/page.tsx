@@ -19,7 +19,7 @@ export default async function MetricReportPage({
   } catch (e) {
     return (
       <main className="mx-auto max-w-3xl px-6 py-24">
-        <Link href="/" className="text-sm text-helm-accent hover:underline">
+        <Link href="/" className="text-sm text-striops-accent hover:underline">
           ← Back to briefing
         </Link>
         <h1 className="mt-6 text-2xl font-semibold text-white/90">Metric unavailable</h1>
@@ -36,7 +36,7 @@ export default async function MetricReportPage({
         crumbs={
           <>
             <Link href="/" className="font-semibold text-white/80 hover:text-white">
-              Helm
+              Striops
             </Link>
             <span className="text-white/25">/</span>
             <span className="text-white/50">Metric report</span>
@@ -61,7 +61,7 @@ export default async function MetricReportPage({
           {report.related_risk_id ? (
             <Link
               href={`/risks/${report.related_risk_id}`}
-              className="text-helm-accent hover:underline"
+              className="text-striops-accent hover:underline"
             >
               Related risk report ↗
             </Link>
@@ -69,7 +69,7 @@ export default async function MetricReportPage({
           {report.related_domain_id ? (
             <Link
               href={`/CPT/domains/${report.related_domain_id}`}
-              className="text-helm-accent hover:underline"
+              className="text-striops-accent hover:underline"
             >
               Domain deep dive ↗
             </Link>

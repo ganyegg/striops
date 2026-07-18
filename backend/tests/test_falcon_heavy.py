@@ -1,11 +1,11 @@
 """Provenance, comparatives, ask, refresh, and health-sector coverage."""
 from fastapi.testclient import TestClient
 
-from helm.api.main import app
-from helm.comparatives import build_comparatives
-from helm.core.cache import cache_clear
-from helm.health_score import build_health_breakdown, compute_health_breakdown
-from helm.core.models import Opportunity, Priority, Risk
+from striops.api.main import app
+from striops.comparatives import build_comparatives
+from striops.core.cache import cache_clear
+from striops.health_score import build_health_breakdown, compute_health_breakdown
+from striops.core.models import Opportunity, Priority, Risk
 
 client = TestClient(app)
 

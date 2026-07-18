@@ -3,7 +3,7 @@ FROM python:3.12-slim
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
     PIP_NO_CACHE_DIR=1 \
-    HELM_DATASETS_DIR=/app/datasets
+    STRIOPS_DATASETS_DIR=/app/datasets
 
 WORKDIR /app
 
@@ -19,4 +19,4 @@ COPY datasets/ ./datasets/
 
 EXPOSE 8000
 
-CMD ["uvicorn", "helm.api.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "striops.api.main:app", "--host", "0.0.0.0", "--port", "8000"]

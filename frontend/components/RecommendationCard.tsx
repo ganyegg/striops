@@ -13,9 +13,9 @@ export default function RecommendationCard({
   return (
     <Link
       href={recommendationHref(rec)}
-      className="card flex gap-4 p-5 transition hover:border-helm-gold/40 hover:bg-white/[0.05]"
+      className="card flex gap-4 p-5 transition hover:border-striops-gold/40 hover:bg-white/[0.05]"
     >
-      <div className="flex h-8 w-8 flex-none items-center justify-center rounded-full bg-helm-gold/15 text-sm font-bold text-helm-gold">
+      <div className="flex h-8 w-8 flex-none items-center justify-center rounded-full bg-striops-gold/15 text-sm font-bold text-striops-gold">
         {index + 1}
       </div>
       <div className="min-w-0 flex-1">
@@ -25,12 +25,12 @@ export default function RecommendationCard({
         </div>
         <p className="mt-2 text-sm leading-relaxed text-white/60">{rec.rationale}</p>
         <p className="mt-2 text-sm text-white/50">
-          <span className="text-helm-gold">Expected impact: </span>
+          <span className="text-striops-gold">Expected impact: </span>
           {rec.expected_impact}
         </p>
         <div className="mt-3 flex items-center justify-between">
           <ConfidenceBar value={rec.confidence} />
-          <span className="text-[11px] text-helm-accent">Open report →</span>
+          <span className="text-[11px] text-striops-accent">Open report →</span>
         </div>
       </div>
     </Link>

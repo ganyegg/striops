@@ -1,16 +1,16 @@
 import pytest
 from fastapi.testclient import TestClient
 
-from helm.api.main import app
-from helm.core.models import VerificationStatus
-from helm.domains import (
+from striops.api.main import app
+from striops.core.models import VerificationStatus
+from striops.domains import (
     domain_catalog,
     get_domain,
     get_municipality,
     list_domains,
     list_municipalities,
 )
-from helm.domains.service import _profiles
+from striops.domains.service import _profiles
 
 client = TestClient(app)
 
@@ -36,8 +36,8 @@ def test_cpt_domains_availability():
     available = {r["id"] for r in rows if r["available"]}
     assert "budget" in available and "fiscal" in available and "safety_policing" in available
     # A roadmap domain is listed but not available for CPT yet.
-    transport = next(r for r in rows if r["id"] == "transport")
-    assert transport["available"] is False
+    economy = next(r for r in rows if r["id"] == "economy_jobs")
+    assert economy["available"] is False
 
 
 def test_every_indicator_resolves_to_a_source():
@@ -70,7 +70,7 @@ def test_budget_profile_is_mostly_verified():
 
 def test_get_unavailable_domain_raises():
     with pytest.raises(KeyError):
-        get_domain("CPT", "transport")
+        get_domain("CPT", "economy_jobs")
 
 
 def test_api_municipalities():
@@ -99,4 +99,4 @@ def test_api_unknown_municipality_404():
 
 
 def test_api_unavailable_domain_404():
-    assert client.get("/municipalities/CPT/domains/transport").status_code == 404
+    assert client.get("/municipalities/CPT/domains/economy_jobs").status_code == 404

@@ -1,19 +1,19 @@
-name: helm-ai
+name: striops
 
 services:
   postgres:
     image: pgvector/pgvector:pg16
     environment:
-      POSTGRES_DB: ${POSTGRES_DB:-helm}
-      POSTGRES_USER: ${POSTGRES_USER:-helm}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-helm}
+      POSTGRES_DB: ${POSTGRES_DB:-striops}
+      POSTGRES_USER: ${POSTGRES_USER:-striops}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-striops}
     ports:
       - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
       - ./docker/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-helm} -d ${POSTGRES_DB:-helm}"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-striops} -d ${POSTGRES_DB:-striops}"]
       interval: 5s
       timeout: 5s
       retries: 10
@@ -21,7 +21,7 @@ services:
   neo4j:
     image: neo4j:5-community
     environment:
-      NEO4J_AUTH: ${NEO4J_USER:-neo4j}/${NEO4J_PASSWORD:-helm-strategic-twin}
+      NEO4J_AUTH: ${NEO4J_USER:-neo4j}/${NEO4J_PASSWORD:-striops-strategic-twin}
       NEO4J_PLUGINS: '["apoc"]'
     ports:
       - "7474:7474"
@@ -49,7 +49,7 @@ services:
         condition: service_healthy
       neo4j:
         condition: service_healthy
-    command: uvicorn helm.api.main:app --host 0.0.0.0 --port 8000
+    command: uvicorn striops.api.main:app --host 0.0.0.0 --port 8000
 
   ingest:
     build:
@@ -66,7 +66,7 @@ services:
         condition: service_healthy
     volumes:
       - ./datasets:/app/datasets
-    command: python -m helm.ingestion.pipeline
+    command: python -m striops.ingestion.pipeline
     restart: "no"
 
   frontend:

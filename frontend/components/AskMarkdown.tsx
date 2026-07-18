@@ -91,7 +91,7 @@ export default function AskMarkdown({ content }: { content: string }) {
           key={section.heading}
           className="rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3"
         >
-          <h3 className="font-display text-[12px] font-semibold uppercase tracking-[0.16em] text-helm-sand">
+          <h3 className="font-display text-[12px] font-semibold uppercase tracking-[0.16em] text-striops-sand">
             {section.heading}
           </h3>
           {section.paragraphs.length > 0 ? (
@@ -108,7 +108,7 @@ export default function AskMarkdown({ content }: { content: string }) {
               {section.bullets.map((b, i) => (
                 <li
                   key={i}
-                  className="relative pl-3.5 text-sm leading-relaxed text-white/75 before:absolute before:left-0 before:top-[0.55em] before:h-1.5 before:w-1.5 before:rounded-full before:bg-helm-accent"
+                  className="relative pl-3.5 text-sm leading-relaxed text-white/75 before:absolute before:left-0 before:top-[0.55em] before:h-1.5 before:w-1.5 before:rounded-full before:bg-striops-accent"
                 >
                   <RichLine text={b} />
                 </li>

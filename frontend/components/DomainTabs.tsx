@@ -19,7 +19,7 @@ export default function DomainTabs({
             href={`/${code}/domains/${d.id}`}
             className={`pill border transition ${
               d.id === active
-                ? "border-helm-accent/50 bg-helm-accent/10 text-helm-accent"
+                ? "border-striops-accent/50 bg-striops-accent/10 text-striops-accent"
                 : "border-white/10 bg-white/5 text-white/60 hover:text-white/90"
             }`}
           >

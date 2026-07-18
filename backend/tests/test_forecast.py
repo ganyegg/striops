@@ -1,7 +1,7 @@
 from datetime import date
 
-from helm.core.models import MetricPoint, MetricSeries, Trend
-from helm.forecasting import forecast_series
+from striops.core.models import MetricPoint, MetricSeries, Trend
+from striops.forecasting import forecast_series
 
 
 def _series(metric: str, values: list[float]) -> MetricSeries:
