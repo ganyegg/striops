@@ -29,11 +29,11 @@ jobs:
           (async () => {
             const browser = await puppeteer.launch({args:['--no-sandbox','--disable-setuid-sandbox']});
             const page = await browser.newPage();
-            const filePath = 'file://' + path.resolve('docs/pitch/helm-pitch.html');
+            const filePath = 'file://' + path.resolve('docs/pitch/striops-pitch.html');
             await page.goto(filePath, {waitUntil: 'networkidle0'});
-            await page.pdf({path:'docs/pitch/helm-pitch.pdf', format:'A4', landscape:true, printBackground:true});
+            await page.pdf({path:'docs/pitch/striops-pitch.pdf', format:'A4', landscape:true, printBackground:true});
             await browser.close();
-            console.log('PDF written to docs/pitch/helm-pitch.pdf');
+            console.log('PDF written to docs/pitch/striops-pitch.pdf');
           })().catch(err => { console.error(err); process.exit(1); });
           EOF
 
@@ -44,10 +44,11 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add docs/pitch/helm-pitch.pdf || true
+          git rm -f --ignore-unmatch docs/pitch/helm-pitch.pdf || true
+          git add docs/pitch/striops-pitch.pdf || true
           if git diff --cached --quiet; then
             echo "No changes to commit"
           else
-            git commit -m "chore: generate docs/pitch/helm-pitch.pdf from helm-pitch.html (CI)"
+            git commit -m "chore: generate docs/pitch/striops-pitch.pdf from striops-pitch.html (CI)"
             git push
           fi
