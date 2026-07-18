@@ -5,38 +5,71 @@
     "unit": "requests/month",
     "points": [
       {
+        "period": "2025-03-01",
+        "value": 10936.0
+      },
+      {
+        "period": "2025-04-01",
+        "value": 10329.0
+      },
+      {
+        "period": "2025-05-01",
+        "value": 10085.0
+      },
+      {
+        "period": "2025-06-01",
+        "value": 8394.0
+      },
+      {
         "period": "2025-07-01",
-        "value": 8100
+        "value": 8645.0
       },
       {
         "period": "2025-08-01",
-        "value": 8450
+        "value": 8971.0
       },
       {
         "period": "2025-09-01",
-        "value": 8720
+        "value": 336.0
       },
       {
         "period": "2025-10-01",
-        "value": 9210
+        "value": 10484.0
       },
       {
         "period": "2025-11-01",
-        "value": 9880
+        "value": 9945.0
       },
       {
         "period": "2025-12-01",
-        "value": 10540
+        "value": 10930.0
       },
       {
         "period": "2026-01-01",
-        "value": 11230
+        "value": 12068.0
       },
       {
         "period": "2026-02-01",
-        "value": 11980
+        "value": 11453.0
+      },
+      {
+        "period": "2026-03-01",
+        "value": 11605.0
+      },
+      {
+        "period": "2026-04-01",
+        "value": 9738.0
+      },
+      {
+        "period": "2026-05-01",
+        "value": 13518.0
+      },
+      {
+        "period": "2026-06-01",
+        "value": 28604.0
       }
-    ]
+    ],
+    "source": "src-coct-odp"
   },
   {
     "entity_id": "svc-water",
@@ -122,38 +155,71 @@
     "unit": "faults/month",
     "points": [
       {
+        "period": "2025-03-01",
+        "value": 9960.0
+      },
+      {
+        "period": "2025-04-01",
+        "value": 9982.0
+      },
+      {
+        "period": "2025-05-01",
+        "value": 12766.0
+      },
+      {
+        "period": "2025-06-01",
+        "value": 9929.0
+      },
+      {
         "period": "2025-07-01",
-        "value": 640
+        "value": 9360.0
       },
       {
         "period": "2025-08-01",
-        "value": 610
+        "value": 8129.0
       },
       {
         "period": "2025-09-01",
-        "value": 590
+        "value": 375.0
       },
       {
         "period": "2025-10-01",
-        "value": 560
+        "value": 7345.0
       },
       {
         "period": "2025-11-01",
-        "value": 545
+        "value": 7920.0
       },
       {
         "period": "2025-12-01",
-        "value": 520
+        "value": 8349.0
       },
       {
         "period": "2026-01-01",
-        "value": 505
+        "value": 7976.0
       },
       {
         "period": "2026-02-01",
-        "value": 498
+        "value": 8934.0
+      },
+      {
+        "period": "2026-03-01",
+        "value": 9780.0
+      },
+      {
+        "period": "2026-04-01",
+        "value": 11247.0
+      },
+      {
+        "period": "2026-05-01",
+        "value": 20154.0
+      },
+      {
+        "period": "2026-06-01",
+        "value": 43588.0
       }
-    ]
+    ],
+    "source": "src-coct-odp"
   },
   {
     "entity_id": "svc-libraries",

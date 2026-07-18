@@ -138,6 +138,68 @@ def _fetch_grouped_sum(
         return []
 
 
+def _count_by_month(
+    service: str,
+    date_field: str,
+    *,
+    extra_where: str,
+    months_back: int = 15,
+    layer: int = 0,
+    timeout: float = 25.0,
+    use_cache: bool = True,
+) -> list[MetricPoint]:
+    """Monthly counts via per-month ``returnCountOnly`` (cheap even on huge tables).
+
+    Avoids pulling millions of rows: one tiny count request per month window.
+    """
+    cache_key = extra_where.replace(" ", "").replace("'", "")[:40]
+    cache_path = cache_dir() / f"coct_{service}_{layer}_count_{cache_key}.json"
+    url = f"{COCT_ORG}/{service}/FeatureServer/{layer}/query"
+    today = datetime.now(UTC).date()
+    # Start from the previous month: the current calendar month is partial and
+    # would understate the count (misleading dip). Only count complete months.
+    y, m = (today.year - 1, 12) if today.month == 1 else (today.year, today.month - 1)
+    months: list[date] = []
+    for _ in range(months_back + 1):
+        months.append(date(y, m, 1))
+        m -= 1
+        if m == 0:
+            m = 12
+            y -= 1
+    months.reverse()
+    points: list[MetricPoint] = []
+    try:
+        with httpx.Client(timeout=timeout) as client:
+            for start in months:
+                ny, nm = (start.year + 1, 1) if start.month == 12 else (start.year, start.month + 1)
+                end = date(ny, nm, 1)
+                where = (
+                    f"{date_field} >= DATE '{start.isoformat()}' "
+                    f"AND {date_field} < DATE '{end.isoformat()}' AND ({extra_where})"
+                )
+                resp = client.get(
+                    url, params={"where": where, "returnCountOnly": "true", "f": "json"}
+                )
+                resp.raise_for_status()
+                data = resp.json()
+                if "error" in data:
+                    raise RuntimeError(str(data["error"]))
+                count = int(data.get("count", 0))
+                if count > 0:
+                    points.append(MetricPoint(period=start.isoformat(), value=float(count)))
+        cache_path.write_text(json.dumps([{"period": p.period.isoformat(), "value": p.value} for p in points]))
+        return points
+    except Exception as exc:
+        log.warning(
+            "coct odp count failed, trying cache",
+            extra={"context": {"service": service, "error": str(exc)}},
+        )
+        if use_cache and cache_path.exists():
+            raw = json.loads(cache_path.read_text())
+            return [MetricPoint(period=r["period"], value=r["value"]) for r in raw]
+        return []
+
+
 def _first_of_month(d: date) -> str:
     return date(d.year, d.month, 1).isoformat()
 
@@ -263,12 +325,42 @@ def electricity_billed_series() -> MetricSeries | None:
     return MetricSeries(entity_id="svc-energy", metric="electricity_billed_kwh", unit="kWh", points=points)
 
 
+_SR_SERVICE = "Service_Requests_2023_until_20_May_2026"
+
+
+def public_lighting_series() -> MetricSeries | None:
+    """Streetlight faults reported per month (real C3 service requests)."""
+    where = "C3_Complaint_Type LIKE 'Street Lights%'"
+    points = _count_by_month(_SR_SERVICE, "Created_On_Date", extra_where=where)
+    if len(points) < 2:
+        return None
+    return MetricSeries(
+        entity_id="svc-lighting", metric="public_lighting_outages", unit="faults/month", points=points
+    )
+
+
+def refuse_requests_series() -> MetricSeries | None:
+    """Waste-related service requests per month (bins, illegal dumping)."""
+    where = (
+        "C3_Complaint_Type LIKE '%Bin%' OR C3_Complaint_Type LIKE '%Dumping%' "
+        "OR C3_Complaint_Type LIKE '%Refuse%' OR C3_Complaint_Type LIKE '%Waste%'"
+    )
+    points = _count_by_month(_SR_SERVICE, "Created_On_Date", extra_where=where)
+    if len(points) < 2:
+        return None
+    return MetricSeries(
+        entity_id="svc-solid-waste", metric="refuse_service_requests", unit="requests/month", points=points
+    )
+
+
 # Registry of live series transformers. Add new feeds here.
 _TRANSFORMERS = (
     dam_storage_series,
     system_energy_series,
     municipal_arrears_series,
     electricity_billed_series,
+    public_lighting_series,
+    refuse_requests_series,
 )
 
 

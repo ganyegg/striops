@@ -42,8 +42,12 @@ Striops now pulls **real, live public data** from the **City of Cape Town Open D
 - **System energy sent out** — monthly kWh across the City network, from *System Energy*.
 - **Electricity billed** — monthly kWh billed, aggregated from *Suburb Level Electricity Billing*.
 - **Municipal arrears** — monthly total overdue balances (ZAR), aggregated from *Municipal Arrears by Suburb and Service Type* (a fiscal-distress signal).
+- **Public lighting outages** — monthly streetlight-fault requests, from *Service Requests* (C3).
+- **Refuse service requests** — monthly waste requests (bins, illegal dumping), from *Service Requests* (C3).
 
-Large multi-row datasets are aggregated **server-side** (ArcGIS `outStatistics`) so ingestion stays fast and light rather than pulling every row.
+Large multi-row datasets are aggregated **server-side** (ArcGIS `outStatistics` / per-month `returnCountOnly`) so ingestion stays fast and light rather than pulling millions of rows. The current (incomplete) calendar month is excluded from counts so a partial month never shows as a dip.
+
+**Still demonstration seed** (no public feed yet — need departmental extracts, lever 3): non-revenue water, road-maintenance backlog, clinic waiting days, EMS response, library visits. These are labelled and dated (they read "February 2026") until their feeds are wired.
 
 That advances headline freshness from the old "February 2026" seed to **~May 2026** (whatever the freshest published month is), and every ingest advances it automatically. `data_through` is computed as the newest period across **all** series, so the freshest feed always wins.
 
