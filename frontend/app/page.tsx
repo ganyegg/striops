@@ -120,10 +120,10 @@ export default async function Home() {
     <main className="pb-24">
       {/* ── Hero (brand + orientation only) ── */}
       <div className="hero-band">
-        <div className="hero-band-overlay px-6 pb-10 pt-6">
+        <div className="hero-band-overlay px-6 pb-8 pt-6">
           <div className="mx-auto max-w-6xl">
             <SiteHeader dataThrough={dataThrough} briefRefreshed={briefRefreshed} />
-            <div className="mt-8 max-w-2xl">
+            <div className="mt-6 max-w-2xl">
               <p className="text-xs font-medium uppercase tracking-[0.28em] text-striops-sand/80">
                 {snapshot.greeting}
               </p>
@@ -135,32 +135,47 @@ export default async function Home() {
         </div>
       </div>
 
-      <div className="mx-auto max-w-6xl space-y-12 px-6 pt-8">
+      <div className="mx-auto max-w-6xl space-y-10 px-6 pt-8">
         {/* ── Command + Simulator (side) ── */}
-        <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_340px]">
-          <StorySection
-            step="01"
-            eyebrow="Start here"
-            title="Command centre"
-            lead="Strategic health and headline KPIs — each tile opens evidence or a breakdown."
-          >
-            <BriefingBento
-              kpis={snapshot.kpis}
-              healthScore={brief.health_score}
-              healthNarrative={snapshot.health_narrative || brief.health_narrative}
-            />
-            <p className="mt-4 text-xs leading-relaxed text-white/38">{snapshot.confidence_note}</p>
-          </StorySection>
+        <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_380px]">
+          <div className="space-y-6">
+            <StorySection
+              step="01"
+              eyebrow="Start here"
+              title="Command centre"
+              lead="Strategic health and headline KPIs — each tile opens evidence or a breakdown."
+            >
+              <BriefingBento
+                kpis={snapshot.kpis}
+                healthScore={brief.health_score}
+                healthNarrative={snapshot.health_narrative || brief.health_narrative}
+              />
+              <p className="mt-4 text-xs leading-relaxed text-white/38">{snapshot.confidence_note}</p>
+            </StorySection>
 
-          <aside className="space-y-4 lg:sticky lg:top-20">
+            {/* Fiscal pulse now leads the money story (replaces the adopted-budget tile) */}
+            <BudgetSpendChart scenarios={scenarios} />
+          </div>
+
+          <aside className="lg:sticky lg:top-20">
             <SimulationPanel scenarios={scenarios} compact />
-            <BudgetSpendChart scenarios={scenarios} compact />
           </aside>
         </div>
 
+        {/* ── Ask (moved up: easily accessible) ── */}
+        <StorySection
+          id="ask"
+          step="02"
+          eyebrow="Interrogate the twin"
+          title="Ask Striops"
+          lead="Natural language over retrieved facts — ask before you scroll. Engines own the numbers; AI writes the answer."
+        >
+          <AskPanel />
+        </StorySection>
+
         {/* ── Strategic read ── */}
         <StorySection
-          step="02"
+          step="03"
           eyebrow="Briefing"
           title="Today's strategic read"
           lead="Snapshot, pressure, redeploy, and watch — scannable like Ask Striops."
@@ -171,7 +186,7 @@ export default async function Home() {
         {/* ── Critical sectors ── */}
         <StorySection
           id="sectors"
-          step="03"
+          step="04"
           eyebrow="Mayor spine"
           title="Critical sectors"
           lead="Health, water, safety, housing, energy first — libraries stay secondary. Empty means the data request, not silence."
@@ -182,7 +197,7 @@ export default async function Home() {
         {/* ── City pulse ── */}
         <StorySection
           id="pulse"
-          step="04"
+          step="05"
           eyebrow="What moved"
           title="City pulse"
           lead={`${pulse.data_through} vs ${pulse.previous_period} — every line opens a metric report.`}
@@ -193,7 +208,7 @@ export default async function Home() {
         {/* ── Compare ── */}
         <StorySection
           id="compare"
-          step="05"
+          step="06"
           eyebrow="Contrast to decide"
           title="Headline contrasts"
           lead="Only complementary pairs — dams vs losses, clinics vs EMS. Each opens the full chart."
@@ -233,17 +248,6 @@ export default async function Home() {
             <strong className="text-white/50">Refresh now</strong> in the header when you need data
             immediately.
           </p>
-        </StorySection>
-
-        {/* ── Ask ── */}
-        <StorySection
-          id="ask"
-          step="06"
-          eyebrow="Interrogate the twin"
-          title="Ask Striops"
-          lead="Natural language over retrieved facts. Engines own the numbers; AI writes the answer."
-        >
-          <AskPanel />
         </StorySection>
 
         {/* ── Wins ── */}
@@ -293,7 +297,7 @@ export default async function Home() {
         </StorySection>
 
         {/* ── Accountability ── */}
-        <div id="act" className="grid scroll-mt-24 gap-14 lg:grid-cols-2 lg:gap-8">
+        <div id="act" className="grid scroll-mt-24 gap-10 lg:grid-cols-2 lg:gap-8">
           <StorySection
             step="10"
             eyebrow="Assign & track"

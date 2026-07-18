@@ -15,6 +15,37 @@ This document is the single source of truth for what Striops is, how it works, w
 
 ---
 
+## 0. The 60-second answer (say this out loud)
+
+**"What exactly is this system?"**
+Striops is a **Strategic Intelligence Operating System** — a private web application that keeps a continuously-updated, source-linked model of the city (money, water, roads, safety, services) and runs reasoning engines over it (forecast, risk, opportunity, simulation) to produce a **daily executive brief with recommended decisions**. Every number carries its source; the AI writes the prose, never the arithmetic. It is not a dashboard, not a consultancy report, not a chatbot on a data lake.
+
+**"What platform does it sit on?"**
+A standard cloud web stack, deployable **inside the City's own cloud tenancy** (CoCT Azure/Entra) or a **South-Africa-region managed cloud**:
+- **Frontend:** Next.js executive web app (browser — desktop/tablet).
+- **Backend:** FastAPI (Python) reasoning API.
+- **Data:** PostgreSQL + pgvector (facts) and Neo4j (the strategic twin); seed fallback so it always runs.
+- **AI layer:** Google Gemini behind a swappable provider (kill the key → deterministic mock, every figure still stands).
+- **Hosting postures:** (A) City tenancy, (B) SA-region managed cloud, (C) hybrid. See §4.2.
+
+**"How will the client access it and connect their systems?"**
+- **Access:** a private HTTPS URL (e.g. `https://striops.capetown.gov.za`), **SSO via City Entra/AD (OIDC)**, role-gated (Executive / Analyst / Admin). No public exposure of internal data. See §4.3.
+- **Connect:** Striops **pulls**, it does not touch source systems live. Public feeds (Treasury s71, Open Data ArcGIS, DWS dam levels, SAPS) need **no MOU**; internal systems (SAP Finance, water NRW telemetry, C3) connect via a **scheduled aggregate extract** (monthly→daily CSV/Parquet) under a **data-access MOU** — never raw citizen PII, never direct DB credentials. See §3.3 and §4.5.
+
+**One line for the mayor:** *"It's a secure app in our own cloud that reads our public and departmental data every day and tells us what's changing, what's at risk, and what to decide — with every number traceable to its source."*
+
+### 0.1 "Why are my numbers stale (only to Feb), and how do we get last-month numbers?"
+
+Today the operational series are **demonstration seed data that ends February 2026**, so Striops honestly reports *"Data through February 2026"* rather than faking currency. Freshness is purely a **data-wiring** problem, not a product one — the engines already re-run on whatever is loaded. Three levers, cheapest first:
+
+1. **Public feeds now (days, no MOU):** automate Treasury s71 (monthly), DWS dam levels (weekly), SAPS (quarterly), and Open Data ArcGIS. This alone moves several indicators to within the last publication cycle.
+2. **Curated monthly refresh (interim):** until departmental pipes exist, load the latest published figures each month, each tagged `verified` / `needs_verification` — no invented values.
+3. **Departmental extracts (pilot, the real fix):** a scheduled **aggregate extract** from SAP Finance and Water/NRW telemetry (monthly, target weekly/daily) under MOU. Once wired, `data_through` advances automatically every month and "Refresh now" pulls on demand.
+
+**Bottom line:** to guarantee "at least previous-month" numbers, wire lever 1 immediately and stand up lever 3 for the two pilot departments; the seed then retires. See §2.7 (period semantics), §3.3 (per-source how-to), §3.4 (wire sequence).
+
+---
+
 ## 1. Product definition
 
 ### 1.1 One sentence

@@ -48,7 +48,6 @@ def build_city_snapshot(code: str = "CPT") -> CitySnapshot:
         brief_refreshed = now
 
     # Pull verified budget / water headline figures from domain profiles.
-    budget_total = "R87.79bn"
     infra = "R40bn"
     water_capex = "R16.7bn"
     safety = "R6.8bn"
@@ -56,7 +55,6 @@ def build_city_snapshot(code: str = "CPT") -> CitySnapshot:
     try:
         budget = get_domain(code, "budget")
         by_key = {i.key: i for i in budget.indicators}
-        budget_total = by_key.get("total", budget.indicators[0]).value
         infra = by_key["infra_3yr"].value.split("(")[0].strip() if "infra_3yr" in by_key else infra
         water_capex = by_key["water_capital"].value if "water_capital" in by_key else water_capex
     except Exception:
@@ -94,15 +92,6 @@ def build_city_snapshot(code: str = "CPT") -> CitySnapshot:
 
     # Health is rendered as the centred hero tile — not duplicated in the strip.
     kpis = [
-        HeroKPI(
-            key="budget",
-            label="Adopted budget",
-            value=budget_total,
-            hint="2026/27",
-            tone="neutral",
-            href=f"/{code}/domains/budget/indicators/total",
-            plain_language="Total City of Hope budget adopted by Council.",
-        ),
         HeroKPI(
             key="infra",
             label="3-yr infrastructure",

@@ -46,10 +46,10 @@ export default function SiteHeader({
           <nav className="hidden items-center gap-1 text-xs md:flex">
             {[
               ["#command", "Brief"],
+              ["#ask", "Ask"],
               ["#sectors", "Sectors"],
               ["#pulse", "Pulse"],
               ["#compare", "Compare"],
-              ["#ask", "Ask"],
               ["#wins", "Wins"],
               ["#risks", "Risks"],
               ["#act", "Actions"],

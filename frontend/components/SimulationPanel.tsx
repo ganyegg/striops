@@ -50,7 +50,7 @@ export default function SimulationPanel({
 
   return (
     <div
-      className={`card relative flex flex-col overflow-hidden ${compact ? "h-[460px] p-4" : "p-6"}`}
+      className={`card relative flex flex-col overflow-hidden ${compact ? "h-[540px] p-5" : "p-6"}`}
     >
       <div
         className="pointer-events-none absolute -right-8 -top-10 h-32 w-32 rounded-full bg-striops-accent/10 blur-2xl"
@@ -136,7 +136,7 @@ export default function SimulationPanel({
                   </p>
                   <p className="mt-0.5 text-sm font-semibold text-white/90">{sc.name}</p>
                   <div className="mt-2 space-y-1.5">
-                    {sc.impacts.slice(0, compact ? 3 : undefined).map((im, i) => (
+                    {sc.impacts.slice(0, compact ? 5 : undefined).map((im, i) => (
                       <div key={i} className="text-xs">
                         <div className="flex items-center justify-between gap-2">
                           <span className="text-white/50">
@@ -158,9 +158,7 @@ export default function SimulationPanel({
                 </span>
               </div>
               <p className="mt-1 text-sm font-semibold text-white/90">{result.recommended}</p>
-              {!compact ? (
-                <p className="mt-1 text-sm text-white/60">{result.recommendation_detail}</p>
-              ) : null}
+              <p className="mt-1 text-sm text-white/60">{result.recommendation_detail}</p>
             </div>
           </div>
         ) : null}
