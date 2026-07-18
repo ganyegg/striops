@@ -42,6 +42,7 @@ class Repository:
         self.settings = settings or get_settings()
         self._conn = None
         self._use_pg = False
+        self._has_embedding = False
         self._connect()
 
     # ---- connection -----------------------------------------------------
@@ -55,6 +56,12 @@ class Repository:
                 exists = cur.fetchone()[0]
             self._use_pg = exists is not None
             if self._use_pg:
+                with self._conn.cursor() as cur:
+                    cur.execute(
+                        "SELECT 1 FROM information_schema.columns "
+                        "WHERE table_name = 'entities' AND column_name = 'embedding'"
+                    )
+                    self._has_embedding = cur.fetchone() is not None
                 log.info("repository using postgres")
         except Exception as exc:
             log.warning("postgres unavailable, using seed data", extra={"context": {"error": str(exc)}})
@@ -156,22 +163,28 @@ class Repository:
     def upsert_entity(self, entity: Entity, embedding: list[float] | None = None) -> None:
         if not self._use_pg:
             return
-        self._exec(
-            """
-            INSERT INTO entities (id, entity_type, name, properties, embedding, updated_at)
-            VALUES (%s, %s, %s, %s, %s, now())
-            ON CONFLICT (id) DO UPDATE
-              SET name = EXCLUDED.name, properties = EXCLUDED.properties,
-                  embedding = EXCLUDED.embedding, updated_at = now()
-            """,
-            (
-                entity.id,
-                entity.type.value,
-                entity.name,
-                json.dumps(entity.properties),
-                embedding,
-            ),
-        )
+        if self._has_embedding:
+            emb = None if embedding is None else "[" + ",".join(str(float(x)) for x in embedding) + "]"
+            self._exec(
+                """
+                INSERT INTO entities (id, entity_type, name, properties, embedding, updated_at)
+                VALUES (%s, %s, %s, %s, %s::vector, now())
+                ON CONFLICT (id) DO UPDATE
+                  SET name = EXCLUDED.name, properties = EXCLUDED.properties,
+                      embedding = EXCLUDED.embedding, updated_at = now()
+                """,
+                (entity.id, entity.type.value, entity.name, json.dumps(entity.properties), emb),
+            )
+        else:
+            self._exec(
+                """
+                INSERT INTO entities (id, entity_type, name, properties, updated_at)
+                VALUES (%s, %s, %s, %s, now())
+                ON CONFLICT (id) DO UPDATE
+                  SET name = EXCLUDED.name, properties = EXCLUDED.properties, updated_at = now()
+                """,
+                (entity.id, entity.type.value, entity.name, json.dumps(entity.properties)),
+            )
 
     def upsert_metric(self, series: MetricSeries) -> None:
         if not self._use_pg:

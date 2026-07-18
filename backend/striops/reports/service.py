@@ -143,6 +143,40 @@ _METRIC_META: dict[str, dict] = {
             },
         ],
     },
+    "dam_storage": {
+        "label": "Dam storage",
+        "domain": "water",
+        "budget_function": "Water and Sanitation",
+        "references": [
+            {
+                "label": "Dam Levels from 2000 (measured)",
+                "publisher": "City of Cape Town Open Data Portal",
+                "url": "https://odp-cctegis.opendata.arcgis.com/datasets/cctegis::dam-levels-from-2000",
+                "as_of": "live",
+                "note": "Big-6 storage % — pulled directly by Striops.",
+            },
+            {
+                "label": "Western Cape dam levels (weekly)",
+                "publisher": "Dept. of Water & Sanitation",
+                "url": "https://www.dws.gov.za/Hydrology/Weekly/ProvinceWeek.aspx?region=WC",
+                "as_of": "weekly",
+            },
+        ],
+    },
+    "system_energy_kwh": {
+        "label": "System energy sent out",
+        "domain": "energy",
+        "budget_function": "Electricity",
+        "references": [
+            {
+                "label": "System Energy (monthly)",
+                "publisher": "City of Cape Town Open Data Portal",
+                "url": "https://odp-cctegis.opendata.arcgis.com/datasets/cctegis::system-energy-2017-to-2026",
+                "as_of": "live",
+                "note": "Total system energy sent out (kWh) — pulled directly by Striops.",
+            },
+        ],
+    },
 }
 
 

@@ -22,10 +22,12 @@ def test_format_month():
 
 def test_pulse_has_explicit_periods():
     pulse = build_city_pulse()
-    assert pulse.data_through == "February 2026"
-    assert pulse.previous_period == "January 2026"
-    assert "February 2026" in pulse.period_note
-    assert "January 2026" in pulse.period_note
+    # Freshness is data-driven (advances as live feeds ingest); assert it is a
+    # well-formed, present, and internally-consistent pair rather than a fixed month.
+    assert pulse.data_through and pulse.previous_period
+    assert pulse.data_through != pulse.previous_period
+    assert pulse.data_through in pulse.period_note
+    assert pulse.previous_period in pulse.period_note
     assert pulse.cadence == "monthly"
 
 
@@ -35,7 +37,7 @@ def test_snapshot_has_no_duplicate_health_kpi():
     keys = [k.key for k in snap.kpis]
     assert "health" not in keys
     assert snap.health_score >= 0
-    assert snap.data_through == "February 2026"
+    assert snap.data_through  # data-driven freshness; present + well-formed
     assert snap.brief_refreshed_at
 
 

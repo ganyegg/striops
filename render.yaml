@@ -24,11 +24,28 @@ services:
         value: CPT
       - key: GEMINI_MODEL
         value: gemini-2.5-flash
-      # Force seed fallback (no Render Postgres in this blueprint)
+      # Managed Postgres — facts store Striops reads from (schema auto-bootstraps).
       - key: POSTGRES_HOST
-        value: 127.0.0.1
+        fromDatabase:
+          name: striops-db
+          property: host
       - key: POSTGRES_PORT
-        value: "1"
+        fromDatabase:
+          name: striops-db
+          property: port
+      - key: POSTGRES_DB
+        fromDatabase:
+          name: striops-db
+          property: database
+      - key: POSTGRES_USER
+        fromDatabase:
+          name: striops-db
+          property: user
+      - key: POSTGRES_PASSWORD
+        fromDatabase:
+          name: striops-db
+          property: password
+      # No managed Neo4j in this blueprint — graph uses the in-memory twin.
       - key: NEO4J_URI
         value: bolt://127.0.0.1:1
       # Set in Render Dashboard (Environment) — never commit secrets:
@@ -65,3 +82,13 @@ services:
           type: web
           name: striops-api
           envVarKey: RENDER_EXTERNAL_URL
+
+databases:
+  # Facts store (entities, metrics, budget_lines). Schema is created
+  # automatically by striops.persistence.schema.ensure_schema() on first
+  # ingest/startup. pgvector is enabled when the plan supports it.
+  - name: striops-db
+    plan: free
+    region: frankfurt
+    postgresMajorVersion: "16"
+    ipAllowList: []  # reachable only from Render services, not the public internet

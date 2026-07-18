@@ -69,6 +69,16 @@ app = FastAPI(
     version=__version__,
 )
 
+# Best-effort: create the Postgres schema on boot so a freshly-provisioned
+# managed database is immediately readable/writable (falls back to seed if
+# Postgres is unavailable — never blocks startup).
+try:
+    from striops.persistence.schema import ensure_schema
+
+    ensure_schema(settings)
+except Exception as exc:  # pragma: no cover
+    log.warning("startup schema bootstrap skipped", extra={"context": {"error": str(exc)}})
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],

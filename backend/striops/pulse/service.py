@@ -26,6 +26,7 @@ _HIGHER_IS_WORSE: dict[str, bool] = {
     "dam_storage": False,
     "clinic_waiting_days": True,
     "ems_response_minutes": True,
+    "system_energy_kwh": False,  # demand signal, not inherently good/bad
 }
 
 _LABELS: dict[str, str] = {
@@ -37,6 +38,7 @@ _LABELS: dict[str, str] = {
     "dam_storage": "Dam storage",
     "clinic_waiting_days": "Clinic waiting days",
     "ems_response_minutes": "EMS response time",
+    "system_energy_kwh": "System energy sent out",
 }
 
 
@@ -81,17 +83,16 @@ def build_city_pulse(
     repo = repo or get_repository(settings)
 
     items: list[PulseItem] = []
-    latest_date = None
-    previous_date = None
+    # Freshness is the newest period across ALL series (not the last one iterated).
+    all_periods: set = set()
 
     for series in repo.metric_series():
         points = sorted(series.points, key=lambda p: p.period)
+        all_periods.update(p.period for p in points)
         if len(points) < 2:
             continue
         prev_pt, last_pt = points[-2], points[-1]
         prev, last = prev_pt.value, last_pt.value
-        latest_date = last_pt.period
-        previous_date = prev_pt.period
         change = last - prev
         change_pct = (change / prev * 100) if prev else 0.0
 
@@ -155,6 +156,9 @@ def build_city_pulse(
         )
     )
 
+    ordered_periods = sorted(all_periods)
+    latest_date = ordered_periods[-1] if ordered_periods else None
+    previous_date = ordered_periods[-2] if len(ordered_periods) >= 2 else None
     data_through = format_month(latest_date)
     previous_period = format_month(previous_date)
     if data_through and previous_period:

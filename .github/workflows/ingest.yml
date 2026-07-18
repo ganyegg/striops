@@ -1,0 +1,30 @@
+name: Scheduled ingest (public feeds -> Postgres)
+
+# Pulls the latest public feeds into the Striops database on a schedule by
+# triggering the deployed API's refresh+ingest endpoint. Free (no Render cron).
+#
+# Setup: add a repo secret STRIOPS_API_URL = https://<your-striops-api>.onrender.com
+# (Settings -> Secrets and variables -> Actions). Runs daily at 02:00 UTC and
+# can be run manually from the Actions tab.
+
+on:
+  schedule:
+    - cron: "0 2 * * *"
+  workflow_dispatch:
+
+jobs:
+  ingest:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger refresh + ingest
+        env:
+          API_URL: ${{ secrets.STRIOPS_API_URL }}
+        run: |
+          if [ -z "$API_URL" ]; then
+            echo "STRIOPS_API_URL secret not set — skipping."; exit 0
+          fi
+          echo "Triggering ingest at $API_URL/refresh?run_ingest=true"
+          code=$(curl -sS -m 280 -o /tmp/ingest.json -w "%{http_code}" \
+            -X POST "$API_URL/refresh?run_ingest=true" || echo "000")
+          echo "HTTP $code"; cat /tmp/ingest.json || true
+          test "$code" = "200"

@@ -34,15 +34,46 @@ A standard cloud web stack, deployable **inside the City's own cloud tenancy** (
 
 **One line for the mayor:** *"It's a secure app in our own cloud that reads our public and departmental data every day and tells us what's changing, what's at risk, and what to decide — with every number traceable to its source."*
 
-### 0.1 "Why are my numbers stale (only to Feb), and how do we get last-month numbers?"
+### 0.1 Data freshness — where we are now, and how we go live
 
-Today the operational series are **demonstration seed data that ends February 2026**, so Striops honestly reports *"Data through February 2026"* rather than faking currency. Freshness is purely a **data-wiring** problem, not a product one — the engines already re-run on whatever is loaded. Three levers, cheapest first:
+Striops now pulls **real, live public data** from the **City of Cape Town Open Data Portal** (`odp-cctegis.opendata.arcgis.com`). As of the current build, two operational series are measured (not seed):
 
-1. **Public feeds now (days, no MOU):** automate Treasury s71 (monthly), DWS dam levels (weekly), SAPS (quarterly), and Open Data ArcGIS. This alone moves several indicators to within the last publication cycle.
+- **Dam storage** — Big-6 storage %, from *Dam Levels from 2000* (measured).
+- **System energy sent out** — monthly kWh across the City network, from *System Energy*.
+
+That advances headline freshness from the old "February 2026" seed to **~May 2026** (whatever the freshest published month is), and every ingest advances it automatically. `data_through` is computed as the newest period across **all** series, so the freshest feed always wins.
+
+The remaining operational series (NRW, roads backlog, refuse requests, clinic wait, EMS, libraries) are still **demonstration seed** and are labelled as such until their feeds are wired. Three levers, cheapest first:
+
+1. **Public feeds (live now / days):** CoCT Open Data Portal is wired (dam storage, system energy) with more ODP datasets ready to add (service requests, water/electricity billing, arrears). Treasury Municipal Money (s71) and DWS weekly dam levels are next — no MOU required.
 2. **Curated monthly refresh (interim):** until departmental pipes exist, load the latest published figures each month, each tagged `verified` / `needs_verification` — no invented values.
-3. **Departmental extracts (pilot, the real fix):** a scheduled **aggregate extract** from SAP Finance and Water/NRW telemetry (monthly, target weekly/daily) under MOU. Once wired, `data_through` advances automatically every month and "Refresh now" pulls on demand.
+3. **Departmental extracts (pilot, the real fix):** a scheduled **aggregate extract** from SAP Finance and Water/NRW telemetry (monthly, target weekly/daily) under MOU. Once wired, `data_through` advances automatically and "Refresh now" pulls on demand.
 
-**Bottom line:** to guarantee "at least previous-month" numbers, wire lever 1 immediately and stand up lever 3 for the two pilot departments; the seed then retires. See §2.7 (period semantics), §3.3 (per-source how-to), §3.4 (wire sequence).
+**Bottom line:** live public feeds are running today; to guarantee "at least previous-month" numbers across every indicator, keep adding ODP/Treasury datasets and stand up lever 3 for the two pilot departments. The seed retires series-by-series as real feeds come online.
+
+### 0.2 Architecture: a database Striops reads from
+
+Facts live in **Postgres** (`entities`, `metrics`, `budget_lines`); the reasoning engines read from it and fall back to committed seed JSON only when the database is empty or unreachable — so Striops always renders.
+
+- **Ingestion** (`striops.ingestion.pipeline`) pulls public feeds and **upserts** into Postgres on the composite key `(entity_id, metric, period)` — re-runs are idempotent.
+- **Schema** bootstraps itself (`striops.persistence.schema.ensure_schema`) on API startup and before every ingest, so a freshly-provisioned managed Postgres is immediately usable (pgvector enabled when the plan supports it).
+- **Deployment** (`render.yaml`) provisions a managed `striops-db` (Postgres, Frankfurt region, private — not exposed to the internet). The API reads it; a scheduled GitHub Action (`.github/workflows/ingest.yml`) triggers `POST /refresh?run_ingest=true` daily to keep it current (free; no paid cron needed).
+
+### 0.3 How we mitigate the risk of connecting to live data
+
+Live data is where the value is — but it must not become an attack surface or a source of bad numbers. The design mitigates this by construction:
+
+| Risk | Mitigation (in code / architecture) |
+|------|--------------------------------------|
+| Touching City systems live / write-back | Striops is **pull-only**. It reads **public, aggregate** endpoints on a schedule; it never opens a connection into a source system and never writes back. |
+| Exposing citizen PII | Only **aggregate** series are ingested (dam %, monthly kWh, counts) — **no personal records**. Departmental feeds (lever 3) are contractually **aggregate extracts**, never raw PII, never direct DB credentials. |
+| A feed going down breaks the app | Every connector has a **bounded timeout**, **paginates safely**, **caches the raw pull**, and **falls back to the last cache** — and the repository falls back to **seed**. Ingestion never hard-fails; the UI always renders. |
+| A feed returns garbage / poisons the model | Values are **parsed, type-checked, normalised, and bucketed to clean monthly points** before upsert; one bad feed can't break the batch (each transformer is isolated). Engines are **deterministic** over the stored facts — the LLM only narrates. |
+| Silent staleness | `data_through` is shown on the face of the product and derived from the newest stored period; provenance badges mark each figure `verified` / `needs_verification` / `estimate`. |
+| Secrets / exposure | The database is **private to the platform** (no public IP allow-list); API keys are set in the dashboard, never committed; the UI is identity-gated. |
+| Auditability | Raw pulls are cached and every fact carries a `source`; the connector, dataset URL, and retrieval are traceable for council/AGSA scrutiny. |
+
+See §2.7 (period semantics), §3.3 (per-source how-to), §3.4 (wire sequence).
 
 ---
 

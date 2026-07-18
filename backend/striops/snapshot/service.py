@@ -21,16 +21,14 @@ def _greeting(city: str) -> str:
 
 
 def _metric_periods(code: str) -> tuple[str | None, str | None]:
+    """Freshness = newest period across ALL series, so the latest live feed wins."""
     repo = get_repository()
-    latest = previous = None
+    periods: set = set()
     for series in repo.metric_series():
-        points = sorted(series.points, key=lambda p: p.period)
-        if len(points) >= 2:
-            previous = points[-2].period
-            latest = points[-1].period
-            break
-        if points:
-            latest = points[-1].period
+        periods.update(p.period for p in series.points)
+    ordered = sorted(periods)
+    latest = ordered[-1] if ordered else None
+    previous = ordered[-2] if len(ordered) >= 2 else None
     return format_month(latest), format_month(previous)
 
 

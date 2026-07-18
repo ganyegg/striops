@@ -11,9 +11,11 @@ from striops.core.logging import configure_logging, get_logger
 from striops.core.models import Entity, EntityType, MetricPoint, MetricSeries
 from striops.core.paths import seed_dir
 from striops.ingestion.arcgis import ARCGIS_LAYERS, fetch_layer
+from striops.ingestion.coct_opendata import fetch_live_series
 from striops.ingestion.treasury import fetch_budget_lines
 from striops.knowledge_graph import get_graph_store
 from striops.persistence import get_repository
+from striops.persistence.schema import ensure_schema
 from striops.reasoning import get_llm
 
 log = get_logger("striops.ingestion.pipeline")
@@ -58,6 +60,9 @@ def _ward_entities() -> list[Entity]:
 def run() -> dict:
     settings = get_settings()
     configure_logging(settings.striops_log_level)
+    # Create the schema first so a freshly-provisioned managed Postgres is
+    # writable (otherwise the repository stays on seed and writes no-op).
+    ensure_schema(settings)
     repo = get_repository(settings)
     graph = get_graph_store(settings)
     llm = get_llm(settings)
@@ -82,7 +87,8 @@ def run() -> dict:
         _upsert(repo, graph, llm, ent)
         counts["service_areas"] += 1
 
-    # 3) Metrics
+    # 3) Metrics — seed baseline first, then overlay live public feeds so the
+    #    freshest measured values win (same (entity,metric,period) key upserts).
     for d in _load_seed("metrics.json"):
         series = MetricSeries(
             entity_id=d["entity_id"],
@@ -92,6 +98,17 @@ def run() -> dict:
         )
         repo.upsert_metric(series)
         counts["metrics"] += 1
+
+    # 3b) Live public feeds (City of Cape Town Open Data Portal). Best-effort:
+    #     each connector falls back to its cache and never breaks ingestion.
+    counts["live_series"] = 0
+    for series in fetch_live_series():
+        repo.upsert_metric(series)
+        counts["live_series"] += 1
+        log.info(
+            "live series ingested",
+            extra={"context": {"metric": f"{series.entity_id}/{series.metric}", "points": len(series.points)}},
+        )
 
     # 4) Budget lines + BudgetItem entities, related to their service area.
     for line in fetch_budget_lines(settings.striops_municipality):

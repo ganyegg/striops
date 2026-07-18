@@ -58,6 +58,15 @@ GLOSSARY: dict[str, dict[str, str]] = {
         ),
         "in_one_line": "How full Cape Town’s major dams are.",
     },
+    "system_energy_kwh": {
+        "term": "System energy sent out",
+        "definition": (
+            "Total electricity (kWh) delivered across the City’s network in the month — "
+            "Eskom supply plus own generation, net of losses. It tracks demand, economic "
+            "activity, and the load the grid must carry through peak season."
+        ),
+        "in_one_line": "How much electricity the City moved this month.",
+    },
     "clinic_waiting_days": {
         "term": "Clinic waiting days",
         "definition": (
