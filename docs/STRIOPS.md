@@ -36,10 +36,14 @@ A standard cloud web stack, deployable **inside the City's own cloud tenancy** (
 
 ### 0.1 Data freshness — where we are now, and how we go live
 
-Striops now pulls **real, live public data** from the **City of Cape Town Open Data Portal** (`odp-cctegis.opendata.arcgis.com`). As of the current build, two operational series are measured (not seed):
+Striops now pulls **real, live public data** from the **City of Cape Town Open Data Portal** (`odp-cctegis.opendata.arcgis.com`). As of the current build, these operational series are measured (not seed):
 
 - **Dam storage** — Big-6 storage %, from *Dam Levels from 2000* (measured).
 - **System energy sent out** — monthly kWh across the City network, from *System Energy*.
+- **Electricity billed** — monthly kWh billed, aggregated from *Suburb Level Electricity Billing*.
+- **Municipal arrears** — monthly total overdue balances (ZAR), aggregated from *Municipal Arrears by Suburb and Service Type* (a fiscal-distress signal).
+
+Large multi-row datasets are aggregated **server-side** (ArcGIS `outStatistics`) so ingestion stays fast and light rather than pulling every row.
 
 That advances headline freshness from the old "February 2026" seed to **~May 2026** (whatever the freshest published month is), and every ingest advances it automatically. `data_through` is computed as the newest period across **all** series, so the freshest feed always wins.
 

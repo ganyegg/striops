@@ -90,6 +90,54 @@ def _fetch_features(
         return []
 
 
+def _fetch_grouped_sum(
+    service: str,
+    value_field: str,
+    group_field: str,
+    *,
+    layer: int = 0,
+    timeout: float = 25.0,
+    use_cache: bool = True,
+) -> list[dict]:
+    """Server-side monthly aggregation via ArcGIS outStatistics (one request).
+
+    Returns rows like ``{group_field: <date>, "value": <sum>}`` — far lighter than
+    pulling every suburb/row and summing client-side.
+    """
+    cache_path = cache_dir() / f"coct_{service}_{layer}_sum_{value_field}.json"
+    url = f"{COCT_ORG}/{service}/FeatureServer/{layer}/query"
+    stats = json.dumps(
+        [{"statisticType": "sum", "onStatisticField": value_field, "outStatisticFieldName": "value"}]
+    )
+    try:
+        with httpx.Client(timeout=timeout) as client:
+            resp = client.get(
+                url,
+                params={
+                    "where": "1=1",
+                    "outStatistics": stats,
+                    "groupByFieldsForStatistics": group_field,
+                    "f": "json",
+                },
+            )
+            resp.raise_for_status()
+            data = resp.json()
+            if "error" in data:
+                raise RuntimeError(str(data["error"]))
+        rows = [f.get("attributes", {}) for f in data.get("features", [])]
+        cache_path.write_text(json.dumps(rows))
+        log.info("coct odp aggregated", extra={"context": {"service": service, "groups": len(rows)}})
+        return rows
+    except Exception as exc:
+        log.warning(
+            "coct odp aggregate failed, trying cache",
+            extra={"context": {"service": service, "error": str(exc)}},
+        )
+        if use_cache and cache_path.exists():
+            return json.loads(cache_path.read_text())
+        return []
+
+
 def _first_of_month(d: date) -> str:
     return date(d.year, d.month, 1).isoformat()
 
@@ -163,8 +211,65 @@ def system_energy_series() -> MetricSeries | None:
     return MetricSeries(entity_id="svc-energy", metric="system_energy_kwh", unit="kWh", points=points)
 
 
+def municipal_arrears_series() -> MetricSeries | None:
+    """Total municipal debtors / arrears (ZAR) per month.
+
+    Dataset: 'Municipal Arrears Suburbs and Service Type' — sum of the ``Result``
+    column grouped by month. A rising trend is a fiscal-distress signal.
+    """
+    rows = _fetch_grouped_sum(
+        "Municipal_Arrears_Suburbs_and_Service_Type_2025_to_Mar2026", "Result", "Date"
+    )
+    pairs: list[tuple[date, float]] = []
+    for r in rows:
+        total = _to_float(r.get("value"))
+        raw = r.get("Date")
+        if total is None or not raw:
+            continue
+        try:
+            d = datetime.strptime(str(raw).split(",")[0].strip(), "%d/%m/%Y").date()
+        except ValueError:
+            continue
+        pairs.append((d, total))
+    points = _monthly_last(pairs)
+    if not points:
+        return None
+    return MetricSeries(entity_id="svc-finance", metric="municipal_arrears_zar", unit="ZAR", points=points)
+
+
+def electricity_billed_series() -> MetricSeries | None:
+    """Electricity billed (kWh) per month across the City.
+
+    Dataset: 'Suburb Level Electricity Billing' — sum of ``Quantity`` grouped by
+    month. Zero/blank months (not yet billed) are dropped so we never plot a false 0.
+    """
+    rows = _fetch_grouped_sum(
+        "Suburb_Level_Electricity_Billing_2021_to_March_2026", "Quantity", "Date"
+    )
+    pairs: list[tuple[date, float]] = []
+    for r in rows:
+        kwh = _to_float(r.get("value"))
+        ms = r.get("Date")
+        if not kwh or kwh <= 0 or ms is None:
+            continue
+        try:
+            d = datetime.fromtimestamp(int(ms) / 1000, tz=UTC).date()
+        except (ValueError, OverflowError, OSError):
+            continue
+        pairs.append((d, kwh))
+    points = _monthly_last(pairs)
+    if not points:
+        return None
+    return MetricSeries(entity_id="svc-energy", metric="electricity_billed_kwh", unit="kWh", points=points)
+
+
 # Registry of live series transformers. Add new feeds here.
-_TRANSFORMERS = (dam_storage_series, system_energy_series)
+_TRANSFORMERS = (
+    dam_storage_series,
+    system_energy_series,
+    municipal_arrears_series,
+    electricity_billed_series,
+)
 
 
 def fetch_live_series() -> list[MetricSeries]:

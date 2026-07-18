@@ -177,6 +177,40 @@ _METRIC_META: dict[str, dict] = {
             },
         ],
     },
+    "electricity_billed_kwh": {
+        "label": "Electricity billed",
+        "domain": "energy",
+        "budget_function": "Electricity",
+        "references": [
+            {
+                "label": "Suburb Level Electricity Billing (monthly)",
+                "publisher": "City of Cape Town Open Data Portal",
+                "url": "https://odp-cctegis.opendata.arcgis.com/datasets/cctegis::suburb-level-electricity-billing",
+                "as_of": "live",
+                "note": "Sum of billed quantity (kWh) by month — aggregated by Striops.",
+            },
+        ],
+    },
+    "municipal_arrears_zar": {
+        "label": "Municipal arrears",
+        "domain": "fiscal",
+        "budget_function": "Finance",
+        "references": [
+            {
+                "label": "Municipal Arrears by Suburb and Service Type (monthly)",
+                "publisher": "City of Cape Town Open Data Portal",
+                "url": "https://odp-cctegis.opendata.arcgis.com/datasets/cctegis::municipal-arrears-suburbs-and-service-type",
+                "as_of": "live",
+                "note": "Total overdue balances (ZAR) by month — aggregated by Striops.",
+            },
+            {
+                "label": "Municipal Money — Cape Town (CPT)",
+                "publisher": "National Treasury",
+                "url": "https://municipaldata.treasury.gov.za/profiles/municipality-CPT-city-of-cape-town/",
+                "as_of": "live",
+            },
+        ],
+    },
 }
 
 

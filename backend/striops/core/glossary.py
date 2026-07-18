@@ -67,6 +67,24 @@ GLOSSARY: dict[str, dict[str, str]] = {
         ),
         "in_one_line": "How much electricity the City moved this month.",
     },
+    "electricity_billed_kwh": {
+        "term": "Electricity billed",
+        "definition": (
+            "Total electricity (kWh) billed to customers across suburbs in the month. "
+            "Read against system energy sent out, the gap hints at losses, non-payment, "
+            "or metering issues; it is also a revenue and economic-activity signal."
+        ),
+        "in_one_line": "How much electricity the City billed for this month.",
+    },
+    "municipal_arrears_zar": {
+        "term": "Municipal arrears",
+        "definition": (
+            "The total rand value residents and businesses owe the City in overdue "
+            "accounts (rates and services). A rising balance strains cash flow and is a "
+            "leading indicator of affordability stress and collection risk."
+        ),
+        "in_one_line": "How much money is owed to the City in overdue bills.",
+    },
     "clinic_waiting_days": {
         "term": "Clinic waiting days",
         "definition": (

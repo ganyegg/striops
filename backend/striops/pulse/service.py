@@ -27,6 +27,8 @@ _HIGHER_IS_WORSE: dict[str, bool] = {
     "clinic_waiting_days": True,
     "ems_response_minutes": True,
     "system_energy_kwh": False,  # demand signal, not inherently good/bad
+    "electricity_billed_kwh": False,  # demand/revenue signal
+    "municipal_arrears_zar": True,  # rising debtors = fiscal distress
 }
 
 _LABELS: dict[str, str] = {
@@ -39,6 +41,8 @@ _LABELS: dict[str, str] = {
     "clinic_waiting_days": "Clinic waiting days",
     "ems_response_minutes": "EMS response time",
     "system_energy_kwh": "System energy sent out",
+    "electricity_billed_kwh": "Electricity billed",
+    "municipal_arrears_zar": "Municipal arrears",
 }
 
 

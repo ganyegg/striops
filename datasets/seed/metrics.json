@@ -479,5 +479,81 @@
       }
     ],
     "source": "src-coct-odp"
+  },
+  {
+    "entity_id": "svc-finance",
+    "metric": "municipal_arrears_zar",
+    "unit": "ZAR",
+    "points": [
+      {
+        "period": "2025-01-01",
+        "value": 8147747604.95
+      },
+      {
+        "period": "2025-02-01",
+        "value": 8433913789.17
+      },
+      {
+        "period": "2025-03-01",
+        "value": 8217614672.6
+      },
+      {
+        "period": "2025-05-01",
+        "value": 8252603766.18
+      },
+      {
+        "period": "2025-06-01",
+        "value": 6864880966.76
+      },
+      {
+        "period": "2025-07-01",
+        "value": 7027696286.62
+      },
+      {
+        "period": "2025-09-01",
+        "value": 7429263357.64
+      },
+      {
+        "period": "2025-10-01",
+        "value": 7192508328.76
+      },
+      {
+        "period": "2025-11-01",
+        "value": 7562725425.55
+      },
+      {
+        "period": "2025-12-01",
+        "value": 7304789489.16
+      },
+      {
+        "period": "2026-01-01",
+        "value": 7639657569.05
+      },
+      {
+        "period": "2026-02-01",
+        "value": 7667981111.21
+      },
+      {
+        "period": "2026-03-01",
+        "value": 8947189563.05
+      }
+    ],
+    "source": "src-coct-odp"
+  },
+  {
+    "entity_id": "svc-energy",
+    "metric": "electricity_billed_kwh",
+    "unit": "kWh",
+    "points": [
+      {
+        "period": "2026-04-01",
+        "value": 3870431925.56
+      },
+      {
+        "period": "2026-05-01",
+        "value": 4182671920.79
+      }
+    ],
+    "source": "src-coct-odp"
   }
 ]
