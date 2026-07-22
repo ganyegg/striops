@@ -132,6 +132,8 @@ export interface ScenarioOption {
   function_name: string;
   current_budget: number;
   current_actual: number;
+  financial_year?: number;
+  period_label?: string;
   modelled: boolean;
 }
 
@@ -658,6 +660,51 @@ export interface DecisionRegister {
 export async function getPulse(): Promise<CityPulse> {
   const res = await serverFetch(`${SERVER_BASE}/pulse`, { cache: "no-store" });
   if (!res.ok) throw new Error(`pulse failed: ${res.status}`);
+  return res.json();
+}
+
+export interface ThemeEvidence {
+  label: string;
+  value: string;
+  period?: string | null;
+  provenance: string;
+  href?: string | null;
+}
+
+export interface CityTheme {
+  id: string;
+  name: string;
+  mayor_question: string;
+  city_says: string;
+  striops_adds: string;
+  status: string;
+  readiness: string;
+  evidence: ThemeEvidence[];
+  gap?: string | null;
+  ask_prompt: string;
+}
+
+export interface ValueDifferentiator {
+  title: string;
+  report_does: string;
+  striops_does: string;
+}
+
+export interface ThemesReport {
+  municipality: string;
+  generated_at: string;
+  source_note: string;
+  fiscal_period_note: string;
+  official_anchor: string;
+  themes: CityTheme[];
+  value_over_reports: ValueDifferentiator[];
+  live_theme_count: number;
+  gap_theme_count: number;
+}
+
+export async function getThemes(): Promise<ThemesReport> {
+  const res = await serverFetch(`${SERVER_BASE}/themes`, { cache: "no-store" });
+  if (!res.ok) throw new Error(`themes failed: ${res.status}`);
   return res.json();
 }
 

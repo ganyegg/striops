@@ -47,7 +47,9 @@ def find_opportunities(
                     reason=(
                         f"{fn} used only {bl.utilisation * 100:.0f}% of its "
                         f"R{bl.budget / 1e9:.2f}bn budget, leaving R{bl.variance / 1e9:.2f}bn unspent "
-                        f"while related service demand rises."
+                        f"while related service demand rises "
+                        f"(demonstration full-year financial_year={bl.financial_year}; "
+                        f"not official FY2025/26 mid-year YTD to 31 Dec)."
                     ),
                     value_estimate=round(bl.variance, 0),
                     unit="ZAR",

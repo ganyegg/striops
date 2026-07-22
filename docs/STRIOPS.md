@@ -67,7 +67,25 @@ Facts live in **Postgres** (`entities`, `metrics`, `budget_lines`); the reasonin
 - **Schema** bootstraps itself (`striops.persistence.schema.ensure_schema`) on API startup and before every ingest, so a freshly-provisioned managed Postgres is immediately usable (pgvector enabled when the plan supports it).
 - **Deployment** (`render.yaml`) provisions a managed `striops-db` (Postgres, Frankfurt region, private — not exposed to the internet). The API reads it; a scheduled GitHub Action (`.github/workflows/ingest.yml`) triggers `POST /refresh?run_ingest=true` daily to keep it current (free; no paid cron needed).
 
-### 0.3 How we mitigate the risk of connecting to live data
+### 0.3 City themes vs quarterly reports (value over PDFs)
+
+Striops maps **Mayoral Minute 2025 / City of Hope / S52** priorities onto a **City Themes** spine (`GET /themes`, homepage §Themes):
+
+| Theme | Live today | Still a gap |
+|-------|------------|-------------|
+| Water & sanitation | Dam storage (Open Data) | Live NRW + WWTW project YTD |
+| Energy & grid | System energy, billed kWh, streetlight faults | Own-generation plant KPIs |
+| Safety & policing | Domain headlines | SAPS quarter + Metro Police counts |
+| Housing | Domain gaps stated | Monthly units vs target |
+| Fiscal / revenue | Municipal arrears (Open Data) | Official S52 YTD + SAP Finance |
+| Infrastructure capital | Budget domain headlines | Project-level capital YTD |
+| Waste & public realm | Refuse/dumping C3 counts | — |
+| Roads & mobility | Demo backlog series | Urban Mobility extract |
+
+**What beats a report:** daily cadence, decision→action→value link, Live/Demo honesty, simulation, institutional memory.  
+**Fiscal honesty:** underspend cards use demonstration **full-year** `financial_year=2025` totals — **not** official mid-year YTD for municipal **FY2025/26** (1 Jul 2025 – 30 Jun 2026; S52 to 31 Dec 2025).
+
+### 0.4 How we mitigate the risk of connecting to live data
 
 Live data is where the value is — but it must not become an attack surface or a source of bad numbers. The design mitigates this by construction:
 

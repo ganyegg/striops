@@ -26,6 +26,13 @@ export default function BudgetSpendChart({
     .sort((a, b) => b.current_budget - a.current_budget)
     .slice(0, 5);
 
+  const fy = rows[0]?.financial_year;
+  const periodNote =
+    rows[0]?.period_label ||
+    (fy
+      ? `Demonstration full-year · financial_year=${fy} (not official FY2025/26 mid-year YTD)`
+      : "Demonstration budget lines");
+
   const labels = rows.map((r) => shortName(r.function_name));
   const spent = rows.map((r) => r.current_actual);
   const unspent = rows.map((r) => Math.max(0, r.current_budget - r.current_actual));
@@ -94,6 +101,7 @@ export default function BudgetSpendChart({
         <div>
           <p className="text-[11px] uppercase tracking-[0.18em] text-striops-accent/80">Fiscal pulse</p>
           <h3 className="mt-1 font-display text-base font-semibold text-white">Budget vs unspent</h3>
+          <p className="mt-1 max-w-sm text-[10px] leading-snug text-striops-sand/70">{periodNote}</p>
         </div>
         <div className="text-right">
           <p className="font-display text-lg font-semibold tabular-nums text-striops-sand">
@@ -102,13 +110,17 @@ export default function BudgetSpendChart({
           <p className="text-[10px] uppercase tracking-wide text-white/40">
             idle of {formatZAR(totalBudget)}
           </p>
+          {fy ? (
+            <p className="mt-0.5 text-[10px] text-white/35">FY label {fy} · demo</p>
+          ) : null}
         </div>
       </div>
       <div className={compact ? "mt-1 h-52 w-full" : "mt-1 h-64 w-full"}>
         <ReactECharts option={option} style={{ height: "100%", width: "100%" }} />
       </div>
       <p className="mt-1 text-[11px] leading-snug text-white/40">
-        Latest seed year per function — amber is the redeployable gap the simulator can stress-test.
+        Amber = budget − actual on demonstration full-year lines — not S52 YTD to 31 Dec 2025.
+        Official mid-year: municipal FY2025/26 (1 Jul 2025 – 30 Jun 2026).
       </p>
     </div>
   );

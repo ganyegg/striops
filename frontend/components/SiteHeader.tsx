@@ -47,6 +47,7 @@ export default function SiteHeader({
         <nav className="hidden flex-wrap items-center justify-center gap-1 text-xs md:flex">
             {[
               ["#command", "Brief"],
+              ["#themes", "Themes"],
               ["#pulse", "Pulse"],
               ["#ask", "Ask"],
               ["#sectors", "Sectors"],

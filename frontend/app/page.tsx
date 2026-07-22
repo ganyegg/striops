@@ -2,6 +2,7 @@ import ActionTracker from "@/components/ActionTracker";
 import AskPanel from "@/components/AskPanel";
 import BriefingBento from "@/components/BriefingBento";
 import BudgetSpendChart from "@/components/BudgetSpendChart";
+import CityThemes from "@/components/CityThemes";
 import CriticalSectors from "@/components/CriticalSectors";
 import DecisionLog from "@/components/DecisionLog";
 import DomainGrid from "@/components/DomainGrid";
@@ -31,6 +32,7 @@ import {
   getScenarios,
   getSectors,
   getSnapshot,
+  getThemes,
   getValueLedger,
   getWins,
   glossaryForRisk,
@@ -46,6 +48,7 @@ import {
   type ScenarioOption,
   type SectorsReport,
   type CitySnapshot,
+  type ThemesReport,
   type ValueLedger,
 } from "@/lib/api";
 
@@ -79,6 +82,7 @@ export default async function Home() {
   let ledger: ValueLedger;
   let comparatives: ComparativesReport;
   let sectors: SectorsReport;
+  let themes: ThemesReport;
   try {
     [
       brief,
@@ -94,6 +98,7 @@ export default async function Home() {
       ledger,
       comparatives,
       sectors,
+      themes,
     ] = await Promise.all([
       getBrief(),
       getScenarios(),
@@ -108,6 +113,7 @@ export default async function Home() {
       getValueLedger(),
       getComparatives(),
       getSectors(),
+      getThemes(),
     ]);
   } catch (e) {
     return <BackendDown message={e instanceof Error ? e.message : String(e)} />;
@@ -154,19 +160,8 @@ export default async function Home() {
               <p className="mt-4 text-xs leading-relaxed text-white/38">{snapshot.confidence_note}</p>
             </StorySection>
 
-            {/* Fiscal pulse now leads the money story (replaces the adopted-budget tile) */}
+            {/* Fiscal pulse — period labelled (demo full-year, not S52 mid-year) */}
             <BudgetSpendChart scenarios={scenarios} />
-
-            {/* City Pulse immediately under command — what moved, live first */}
-            <StorySection
-              id="pulse"
-              step="02"
-              eyebrow="What moved"
-              title="City pulse"
-              lead={`${pulse.data_through} vs ${pulse.previous_period} — live Open Data feeds first; demonstration series are labelled.`}
-            >
-              <PulseStrip pulse={pulse} />
-            </StorySection>
           </div>
 
           <aside className="lg:sticky lg:top-20 lg:h-[calc(100vh-7rem)]">
@@ -174,10 +169,32 @@ export default async function Home() {
           </aside>
         </div>
 
+        {/* ── City Themes (Mayoral / City of Hope spine) ── */}
+        <StorySection
+          id="themes"
+          step="02"
+          eyebrow="Mayor's agenda"
+          title="City themes"
+          lead="City of Hope priorities mapped to live evidence — what reports say, what Striops watches continuously, and what still needs an extract."
+        >
+          <CityThemes report={themes} />
+        </StorySection>
+
+        {/* ── City Pulse ── */}
+        <StorySection
+          id="pulse"
+          step="03"
+          eyebrow="What moved"
+          title="City pulse"
+          lead={`${pulse.data_through} vs ${pulse.previous_period} — live Open Data feeds first; demonstration series are labelled.`}
+        >
+          <PulseStrip pulse={pulse} />
+        </StorySection>
+
         {/* ── Ask ── */}
         <StorySection
           id="ask"
-          step="03"
+          step="04"
           eyebrow="Interrogate the twin"
           title="Ask Striops"
           lead="Natural language over retrieved facts. Engines own the numbers; AI narrates — or a deterministic brief if the narrator is unavailable."
@@ -187,7 +204,7 @@ export default async function Home() {
 
         {/* ── Strategic read ── */}
         <StorySection
-          step="04"
+          step="05"
           eyebrow="Briefing"
           title="Today's strategic read"
           lead="Snapshot, pressure, redeploy, and watch — scannable like Ask Striops."
@@ -198,8 +215,8 @@ export default async function Home() {
         {/* ── Critical sectors ── */}
         <StorySection
           id="sectors"
-          step="05"
-          eyebrow="Mayor spine"
+          step="06"
+          eyebrow="Operating spine"
           title="Critical sectors"
           lead="Health, water, safety, housing, energy first — libraries stay secondary. Empty means the data request, not silence."
         >
@@ -209,7 +226,7 @@ export default async function Home() {
         {/* ── Compare ── */}
         <StorySection
           id="compare"
-          step="06"
+          step="07"
           eyebrow="Contrast to decide"
           title="Headline contrasts"
           lead="Only complementary pairs — dams vs losses, clinics vs EMS. Each opens the full chart."

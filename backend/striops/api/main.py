@@ -55,6 +55,7 @@ from striops.risk_engine import assess_risks
 from striops.sectors import SectorsReport, build_sectors_report
 from striops.simulation import list_scenarios, simulate
 from striops.snapshot import build_city_snapshot
+from striops.themes import ThemesReport, build_themes_report
 from striops.valuation import attach_valuations, valuation_catalog
 from striops.value_ledger import ValueLedger, build_value_ledger
 from striops.wins import build_initiative_report, list_initiatives
@@ -200,6 +201,12 @@ def win_report(initiative_id: str) -> InitiativeReport:
 @app.get("/pulse", response_model=CityPulse, tags=["intelligence"])
 def pulse() -> CityPulse:
     return build_city_pulse(repo=get_repository(settings), settings=settings)
+
+
+@app.get("/themes", response_model=ThemesReport, tags=["intelligence"])
+def themes() -> ThemesReport:
+    """Mayoral / City of Hope themes mapped to live evidence and explicit gaps."""
+    return build_themes_report(settings.striops_municipality, settings=settings)
 
 
 @app.get("/feeds", response_model=FeedsReport, tags=["system"])

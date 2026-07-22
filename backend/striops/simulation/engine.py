@@ -68,6 +68,11 @@ def list_scenarios(repo: Repository | None = None) -> list[dict]:
             "function_name": fn,
             "current_budget": bl.budget,
             "current_actual": bl.actual,
+            "financial_year": bl.financial_year,
+            "period_label": (
+                f"Demonstration full-year · financial_year={bl.financial_year} "
+                "(not official FY2025/26 mid-year YTD)"
+            ),
             "modelled": fn in _FUNCTION_MODEL,
         }
         for fn, bl in latest.items()
