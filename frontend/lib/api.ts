@@ -142,16 +142,23 @@ const SERVER_BASE = process.env.API_BASE_URL || "http://localhost:8000";
 export const CLIENT_BASE =
   process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000";
 
-// On Render's free tier the API spins down after inactivity and takes ~50s to
-// wake, returning 502/503 in the meantime. `serverFetch` waits it out with
-// backoff so the first page load renders once the backend is up, instead of
-// showing an error. Used for all server-side (SSR) reads.
+// On Render's free tier the API spins down after inactivity and takes ~50–70s
+// to wake (502/503 meanwhile). Retry briefly so a human page load can succeed,
+// but keep the budget short — long SSR waits made the web *health check*
+// (previously "/") time out and blocked deploys from going live.
 const WAKE_STATUSES = new Set([502, 503, 504]);
+const SSR_RETRIES = Number(process.env.STRIOPS_SSR_RETRIES ?? 4);
+const SSR_DELAY_MS = Number(process.env.STRIOPS_SSR_DELAY_MS ?? 4000);
+const SSR_TIMEOUT_MS = Number(process.env.STRIOPS_SSR_TIMEOUT_MS ?? 15000);
 
 async function serverFetch(
   url: string,
   init: RequestInit = {},
-  { retries = 12, delayMs = 6000, perRequestTimeoutMs = 20000 } = {},
+  {
+    retries = SSR_RETRIES,
+    delayMs = SSR_DELAY_MS,
+    perRequestTimeoutMs = SSR_TIMEOUT_MS,
+  } = {},
 ): Promise<Response> {
   let lastErr: unknown;
   for (let attempt = 0; attempt <= retries; attempt++) {

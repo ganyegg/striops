@@ -60,7 +60,9 @@ services:
     # Build from repo root so ../docs and scripts/ resolve (knowledge page + start scripts)
     buildCommand: bash scripts/render-web-build.sh
     startCommand: bash scripts/render-web-start.sh
-    healthCheckPath: /
+    # Must NOT be "/" — homepage SSR waits on the API (cold start ~60s) and
+    # Render's health check times out, so the deploy never goes live.
+    healthCheckPath: /api/health
     autoDeploy: true
     envVars:
       - key: NODE_VERSION
