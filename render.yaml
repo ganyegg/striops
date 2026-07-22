@@ -62,7 +62,9 @@ services:
     startCommand: bash scripts/render-web-start.sh
     # Must NOT be "/" — homepage SSR waits on the API (cold start ~60s) and
     # Render's health check times out, so the deploy never goes live.
-    healthCheckPath: /api/health
+    # Prefer a static asset (works on current and new builds, no SSR).
+    # /api/health also exists after deploy for explicit monitoring.
+    healthCheckPath: /icon.svg
     autoDeploy: true
     envVars:
       - key: NODE_VERSION
