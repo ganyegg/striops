@@ -140,14 +140,48 @@ const SERVER_BASE = process.env.API_BASE_URL || "http://localhost:8000";
 export const CLIENT_BASE =
   process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000";
 
+// On Render's free tier the API spins down after inactivity and takes ~50s to
+// wake, returning 502/503 in the meantime. `serverFetch` waits it out with
+// backoff so the first page load renders once the backend is up, instead of
+// showing an error. Used for all server-side (SSR) reads.
+const WAKE_STATUSES = new Set([502, 503, 504]);
+
+async function serverFetch(
+  url: string,
+  init: RequestInit = {},
+  { retries = 12, delayMs = 6000, perRequestTimeoutMs = 20000 } = {},
+): Promise<Response> {
+  let lastErr: unknown;
+  for (let attempt = 0; attempt <= retries; attempt++) {
+    try {
+      const ctrl = new AbortController();
+      const t = setTimeout(() => ctrl.abort(), perRequestTimeoutMs);
+      const res = await fetch(url, { cache: "no-store", ...init, signal: ctrl.signal });
+      clearTimeout(t);
+      if (WAKE_STATUSES.has(res.status) && attempt < retries) {
+        await new Promise((r) => setTimeout(r, delayMs));
+        continue;
+      }
+      return res;
+    } catch (err) {
+      lastErr = err; // network error / timeout while the service wakes
+      if (attempt < retries) {
+        await new Promise((r) => setTimeout(r, delayMs));
+        continue;
+      }
+    }
+  }
+  throw lastErr instanceof Error ? lastErr : new Error(`request failed: ${url}`);
+}
+
 export async function getBrief(): Promise<ExecutiveBrief> {
-  const res = await fetch(`${SERVER_BASE}/brief`, { cache: "no-store" });
+  const res = await serverFetch(`${SERVER_BASE}/brief`, { cache: "no-store" });
   if (!res.ok) throw new Error(`brief failed: ${res.status}`);
   return res.json();
 }
 
 export async function getScenarios(): Promise<ScenarioOption[]> {
-  const res = await fetch(`${SERVER_BASE}/simulate/scenarios`, { cache: "no-store" });
+  const res = await serverFetch(`${SERVER_BASE}/simulate/scenarios`, { cache: "no-store" });
   if (!res.ok) throw new Error(`scenarios failed: ${res.status}`);
   return res.json();
 }
@@ -263,19 +297,19 @@ export interface DomainProfile {
 }
 
 export async function getMunicipalities(): Promise<Municipality[]> {
-  const res = await fetch(`${SERVER_BASE}/municipalities`, { cache: "no-store" });
+  const res = await serverFetch(`${SERVER_BASE}/municipalities`, { cache: "no-store" });
   if (!res.ok) throw new Error(`municipalities failed: ${res.status}`);
   return res.json();
 }
 
 export async function getMunicipality(code: string): Promise<Municipality> {
-  const res = await fetch(`${SERVER_BASE}/municipalities/${code}`, { cache: "no-store" });
+  const res = await serverFetch(`${SERVER_BASE}/municipalities/${code}`, { cache: "no-store" });
   if (!res.ok) throw new Error(`municipality failed: ${res.status}`);
   return res.json();
 }
 
 export async function getMunicipalityDomains(code: string): Promise<DomainSummary[]> {
-  const res = await fetch(`${SERVER_BASE}/municipalities/${code}/domains`, { cache: "no-store" });
+  const res = await serverFetch(`${SERVER_BASE}/municipalities/${code}/domains`, { cache: "no-store" });
   if (!res.ok) throw new Error(`domains failed: ${res.status}`);
   return res.json();
 }
@@ -284,7 +318,7 @@ export async function getDomainProfile(
   code: string,
   domainId: string,
 ): Promise<DomainProfile> {
-  const res = await fetch(`${SERVER_BASE}/municipalities/${code}/domains/${domainId}`, {
+  const res = await serverFetch(`${SERVER_BASE}/municipalities/${code}/domains/${domainId}`, {
     cache: "no-store",
   });
   if (!res.ok) throw new Error(`domain profile failed: ${res.status}`);
@@ -392,7 +426,7 @@ export interface IndicatorReport {
 }
 
 export async function getRiskReport(riskId: string): Promise<RiskReport> {
-  const res = await fetch(`${SERVER_BASE}/risks/${encodeURIComponent(riskId)}`, {
+  const res = await serverFetch(`${SERVER_BASE}/risks/${encodeURIComponent(riskId)}`, {
     cache: "no-store",
   });
   if (!res.ok) throw new Error(`risk report failed: ${res.status}`);
@@ -523,25 +557,25 @@ export interface GlossaryEntry {
 }
 
 export async function getSnapshot(): Promise<CitySnapshot> {
-  const res = await fetch(`${SERVER_BASE}/snapshot`, { cache: "no-store" });
+  const res = await serverFetch(`${SERVER_BASE}/snapshot`, { cache: "no-store" });
   if (!res.ok) throw new Error(`snapshot failed: ${res.status}`);
   return res.json();
 }
 
 export async function getWins(): Promise<Initiative[]> {
-  const res = await fetch(`${SERVER_BASE}/wins`, { cache: "no-store" });
+  const res = await serverFetch(`${SERVER_BASE}/wins`, { cache: "no-store" });
   if (!res.ok) throw new Error(`wins failed: ${res.status}`);
   return res.json();
 }
 
 export async function getWinReport(id: string): Promise<InitiativeReport> {
-  const res = await fetch(`${SERVER_BASE}/wins/${encodeURIComponent(id)}`, { cache: "no-store" });
+  const res = await serverFetch(`${SERVER_BASE}/wins/${encodeURIComponent(id)}`, { cache: "no-store" });
   if (!res.ok) throw new Error(`win report failed: ${res.status}`);
   return res.json();
 }
 
 export async function getGlossary(): Promise<Record<string, GlossaryEntry>> {
-  const res = await fetch(`${SERVER_BASE}/glossary`, { cache: "no-store" });
+  const res = await serverFetch(`${SERVER_BASE}/glossary`, { cache: "no-store" });
   if (!res.ok) throw new Error(`glossary failed: ${res.status}`);
   return res.json();
 }
@@ -621,19 +655,19 @@ export interface DecisionRegister {
 }
 
 export async function getPulse(): Promise<CityPulse> {
-  const res = await fetch(`${SERVER_BASE}/pulse`, { cache: "no-store" });
+  const res = await serverFetch(`${SERVER_BASE}/pulse`, { cache: "no-store" });
   if (!res.ok) throw new Error(`pulse failed: ${res.status}`);
   return res.json();
 }
 
 export async function getFeeds(): Promise<FeedsReport> {
-  const res = await fetch(`${SERVER_BASE}/feeds`, { cache: "no-store" });
+  const res = await serverFetch(`${SERVER_BASE}/feeds`, { cache: "no-store" });
   if (!res.ok) throw new Error(`feeds failed: ${res.status}`);
   return res.json();
 }
 
 export async function getDecisions(): Promise<DecisionRegister> {
-  const res = await fetch(`${SERVER_BASE}/decisions`, { cache: "no-store" });
+  const res = await serverFetch(`${SERVER_BASE}/decisions`, { cache: "no-store" });
   if (!res.ok) throw new Error(`decisions failed: ${res.status}`);
   return res.json();
 }
@@ -686,13 +720,13 @@ export interface ValueLedger {
 }
 
 export async function getActions(): Promise<ActionRegister> {
-  const res = await fetch(`${SERVER_BASE}/actions`, { cache: "no-store" });
+  const res = await serverFetch(`${SERVER_BASE}/actions`, { cache: "no-store" });
   if (!res.ok) throw new Error(`actions failed: ${res.status}`);
   return res.json();
 }
 
 export async function getValueLedger(): Promise<ValueLedger> {
-  const res = await fetch(`${SERVER_BASE}/value-ledger`, { cache: "no-store" });
+  const res = await serverFetch(`${SERVER_BASE}/value-ledger`, { cache: "no-store" });
   if (!res.ok) throw new Error(`value-ledger failed: ${res.status}`);
   return res.json();
 }
@@ -873,7 +907,7 @@ export interface SectorsReport {
 }
 
 export async function getSectors(): Promise<SectorsReport> {
-  const res = await fetch(`${SERVER_BASE}/sectors`, { cache: "no-store" });
+  const res = await serverFetch(`${SERVER_BASE}/sectors`, { cache: "no-store" });
   if (!res.ok) throw new Error(`sectors failed: ${res.status}`);
   return res.json();
 }
@@ -891,13 +925,13 @@ export interface RefreshResult {
 }
 
 export async function getHealthBreakdown(): Promise<HealthBreakdown> {
-  const res = await fetch(`${SERVER_BASE}/health-breakdown`, { cache: "no-store" });
+  const res = await serverFetch(`${SERVER_BASE}/health-breakdown`, { cache: "no-store" });
   if (!res.ok) throw new Error(`health-breakdown failed: ${res.status}`);
   return res.json();
 }
 
 export async function getComparatives(): Promise<ComparativesReport> {
-  const res = await fetch(`${SERVER_BASE}/comparatives`, { cache: "no-store" });
+  const res = await serverFetch(`${SERVER_BASE}/comparatives`, { cache: "no-store" });
   if (!res.ok) throw new Error(`comparatives failed: ${res.status}`);
   return res.json();
 }
