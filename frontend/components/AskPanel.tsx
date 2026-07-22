@@ -137,7 +137,14 @@ export default function AskPanel({ compact = false }: { compact?: boolean }) {
             ))}
           </div>
           <p className="text-[11px] text-white/35">
-            {result.ai_role} · model {result.model}
+            {result.ai_role} ·{" "}
+            {result.narrator === "deterministic" ? (
+              <span className="text-striops-sand/80">
+                grounded deterministic brief (Gemini unavailable) · {result.model}
+              </span>
+            ) : (
+              <span>model {result.model}</span>
+            )}
           </p>
         </div>
       ) : null}

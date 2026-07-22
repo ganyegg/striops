@@ -45,17 +45,17 @@ export default function SiteHeader({
         </div>
 
         <nav className="hidden flex-wrap items-center justify-center gap-1 text-xs md:flex">
-          {[
-            ["#command", "Brief"],
-            ["#ask", "Ask"],
-            ["#sectors", "Sectors"],
-            ["#pulse", "Pulse"],
-            ["#compare", "Compare"],
-            ["#wins", "Wins"],
-            ["#risks", "Risks"],
-            ["#act", "Actions"],
-            ["#explore", "Explore"],
-          ].map(([href, label]) => (
+            {[
+              ["#command", "Brief"],
+              ["#pulse", "Pulse"],
+              ["#ask", "Ask"],
+              ["#sectors", "Sectors"],
+              ["#compare", "Compare"],
+              ["#wins", "Wins"],
+              ["#risks", "Risks"],
+              ["#act", "Actions"],
+              ["#explore", "Explore"],
+            ].map(([href, label]) => (
             <a
               key={href}
               href={href}

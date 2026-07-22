@@ -140,6 +140,7 @@ export default async function Home() {
         <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_380px]">
           <div className="space-y-6">
             <StorySection
+              id="command"
               step="01"
               eyebrow="Start here"
               title="Command centre"
@@ -155,6 +156,17 @@ export default async function Home() {
 
             {/* Fiscal pulse now leads the money story (replaces the adopted-budget tile) */}
             <BudgetSpendChart scenarios={scenarios} />
+
+            {/* City Pulse immediately under command — what moved, live first */}
+            <StorySection
+              id="pulse"
+              step="02"
+              eyebrow="What moved"
+              title="City pulse"
+              lead={`${pulse.data_through} vs ${pulse.previous_period} — live Open Data feeds first; demonstration series are labelled.`}
+            >
+              <PulseStrip pulse={pulse} />
+            </StorySection>
           </div>
 
           <aside className="lg:sticky lg:top-20 lg:h-[calc(100vh-7rem)]">
@@ -162,20 +174,20 @@ export default async function Home() {
           </aside>
         </div>
 
-        {/* ── Ask (moved up: easily accessible) ── */}
+        {/* ── Ask ── */}
         <StorySection
           id="ask"
-          step="02"
+          step="03"
           eyebrow="Interrogate the twin"
           title="Ask Striops"
-          lead="Natural language over retrieved facts — ask before you scroll. Engines own the numbers; AI writes the answer."
+          lead="Natural language over retrieved facts. Engines own the numbers; AI narrates — or a deterministic brief if the narrator is unavailable."
         >
           <AskPanel />
         </StorySection>
 
         {/* ── Strategic read ── */}
         <StorySection
-          step="03"
+          step="04"
           eyebrow="Briefing"
           title="Today's strategic read"
           lead="Snapshot, pressure, redeploy, and watch — scannable like Ask Striops."
@@ -186,23 +198,12 @@ export default async function Home() {
         {/* ── Critical sectors ── */}
         <StorySection
           id="sectors"
-          step="04"
+          step="05"
           eyebrow="Mayor spine"
           title="Critical sectors"
           lead="Health, water, safety, housing, energy first — libraries stay secondary. Empty means the data request, not silence."
         >
           <CriticalSectors report={sectors} />
-        </StorySection>
-
-        {/* ── City pulse ── */}
-        <StorySection
-          id="pulse"
-          step="05"
-          eyebrow="What moved"
-          title="City pulse"
-          lead={`${pulse.data_through} vs ${pulse.previous_period} — every line opens a metric report.`}
-        >
-          <PulseStrip pulse={pulse} />
         </StorySection>
 
         {/* ── Compare ── */}

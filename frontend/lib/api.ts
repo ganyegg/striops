@@ -599,6 +599,7 @@ export interface PulseItem {
   href: string;
   latest_period?: string | null;
   previous_period?: string | null;
+  provenance?: "live" | "demonstration";
 }
 
 export interface CityPulse {
@@ -875,6 +876,7 @@ export interface AskResponse {
   data_gaps?: DataGap[];
   ai_role: string;
   model: string;
+  narrator?: "gemini" | "deterministic";
   dynamic_note: string;
 }
 

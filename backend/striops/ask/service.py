@@ -9,13 +9,17 @@ from pydantic import BaseModel, Field
 
 from striops.comparatives import build_comparatives
 from striops.core.config import Settings, get_settings
+from striops.core.logging import get_logger
 from striops.executive_brief import build_executive_brief
 from striops.health_score import build_health_breakdown
 from striops.persistence import get_repository
 from striops.places import detect_places, place_related_evidence
 from striops.pulse import build_city_pulse
 from striops.reasoning import get_llm
+from striops.reasoning.llm import GeminiError
 from striops.sectors import build_sectors_report
+
+log = get_logger("striops.ask")
 
 
 class AskCitation(BaseModel):
@@ -48,6 +52,7 @@ class AskResponse(BaseModel):
         "AI does not invent metrics. Missing data is stated as a gap, not filled in."
     )
     model: str
+    narrator: str = "gemini"  # gemini | deterministic
     dynamic_note: str = (
         "Striops surfaces whatever is in the facts store after each ingest/refresh. "
         "New series, domains, or feeds appear automatically once loaded — "
@@ -509,18 +514,35 @@ def ask_striops(req: AskRequest, settings: Settings | None = None) -> AskRespons
         )
 
     report_md = None
+    narrator = "deterministic"
+    model_label = getattr(llm, "_model_name", None) or llm.name
+
     if llm.name == "mock":
         answer, report_md = _mock_answer(req.question, context_json, req.mode, gaps)
+        model_label = "deterministic (engines + retrieved facts)"
     else:
-        text = llm.generate(prompt, system=_FORMAT_SYSTEM, temperature=0.1)
-        if req.mode == "report":
-            report_md = normalize_answer_markdown(text)
-            parts = re.split(r"\n(?=### )", report_md.strip())
-            answer = parts[0][:700] if parts else report_md[:700]
-            if len(parts) > 1 and "### Evidence" in report_md:
-                answer = "\n\n".join(parts[:2])[:900]
-        else:
-            answer = text.strip()
+        try:
+            text = llm.generate(prompt, system=_FORMAT_SYSTEM, temperature=0.1)
+            # Guard against any provider that still emits the old mock sentinel.
+            if not text or text.lstrip().startswith("[mock:"):
+                raise GeminiError("unusable Gemini response")
+            if req.mode == "report":
+                report_md = normalize_answer_markdown(text)
+                parts = re.split(r"\n(?=### )", report_md.strip())
+                answer = parts[0][:700] if parts else report_md[:700]
+                if len(parts) > 1 and "### Evidence" in report_md:
+                    answer = "\n\n".join(parts[:2])[:900]
+            else:
+                answer = text.strip()
+            narrator = "gemini"
+        except Exception as exc:
+            log.warning(
+                "gemini ask failed; using grounded deterministic answer",
+                extra={"context": {"error": str(exc)}},
+            )
+            answer, report_md = _mock_answer(req.question, context_json, req.mode, gaps)
+            model_label = f"{model_label} · deterministic fallback"
+            narrator = "deterministic"
 
     answer = normalize_answer_markdown(answer)
     if report_md:
@@ -542,5 +564,6 @@ def ask_striops(req: AskRequest, settings: Settings | None = None) -> AskRespons
         citations=uniq[:16],
         used_facts=facts[:60],
         data_gaps=relevant_gaps,
-        model=getattr(llm, "_model_name", None) or llm.name,
+        model=model_label,
+        narrator=narrator,
     )

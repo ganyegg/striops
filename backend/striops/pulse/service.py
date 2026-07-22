@@ -45,6 +45,16 @@ _LABELS: dict[str, str] = {
     "municipal_arrears_zar": "Municipal arrears",
 }
 
+# Metrics wired to live City of Cape Town Open Data (not demonstration seed).
+_LIVE_METRICS: set[str] = {
+    "dam_storage",
+    "system_energy_kwh",
+    "electricity_billed_kwh",
+    "municipal_arrears_zar",
+    "public_lighting_outages",
+    "refuse_service_requests",
+}
+
 
 class PulseItem(BaseModel):
     entity_id: str
@@ -61,6 +71,7 @@ class PulseItem(BaseModel):
     href: str
     latest_period: str | None = None
     previous_period: str | None = None
+    provenance: str = "demonstration"  # live | demonstration
 
 
 class CityPulse(BaseModel):
@@ -137,6 +148,7 @@ def build_city_pulse(
                 href=f"/metrics/{series.entity_id}/{series.metric}",
                 latest_period=latest_label,
                 previous_period=previous_label,
+                provenance="live" if series.metric in _LIVE_METRICS else "demonstration",
             )
         )
 
@@ -154,6 +166,7 @@ def build_city_pulse(
     order = {"worsening": 0, "improving": 1, "flat": 2}
     items.sort(
         key=lambda i: (
+            0 if i.provenance == "live" else 1,  # live feeds first for the executive brief
             _SECTOR_RANK.get(i.metric, 50),
             order[i.direction],
             -abs(i.change_pct),

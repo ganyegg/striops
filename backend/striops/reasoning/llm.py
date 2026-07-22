@@ -1,8 +1,8 @@
 """LLM provider abstraction.
 
-`LLMProvider` defines the contract. `GeminiProvider` calls Google Gemini.
-`MockProvider` returns deterministic text derived from the prompt so tests and
-offline runs are fully reproducible without a network or API key.
+`LLMProvider` defines the contract. `GeminiProvider` calls Google Gemini via the
+current ``google-genai`` SDK (with a legacy ``google-generativeai`` fallback).
+`MockProvider` returns deterministic text for CI / offline runs.
 """
 from __future__ import annotations
 
@@ -35,12 +35,7 @@ class LLMProvider(ABC):
 
 
 class MockProvider(LLMProvider):
-    """Deterministic, offline provider.
-
-    Produces stable, prompt-derived output so the whole platform runs and is
-    testable without any external dependency. Not a fallback of last resort —
-    it is the default in CI and local dev without a key.
-    """
+    """Deterministic, offline provider for CI / local dev without a key."""
 
     name = "mock"
 
@@ -62,7 +57,6 @@ class MockProvider(LLMProvider):
         }
 
     def embed(self, text: str) -> list[float]:
-        # Deterministic pseudo-embedding (768-d) from the text hash.
         seed = int(hashlib.sha256(text.encode()).hexdigest(), 16)
         vec: list[float] = []
         for _ in range(768):
@@ -71,33 +65,87 @@ class MockProvider(LLMProvider):
         return vec
 
 
+class GeminiError(RuntimeError):
+    """Raised when Gemini cannot produce a usable response."""
+
+
 class GeminiProvider(LLMProvider):
-    """Google Gemini-backed provider."""
+    """Google Gemini-backed provider (new SDK preferred, legacy as fallback)."""
 
     name = "gemini"
 
     def __init__(self, settings: Settings) -> None:
-        import google.generativeai as genai  # imported lazily
-
-        genai.configure(api_key=settings.gemini_api_key)
-        self._genai = genai
+        self._api_key = settings.gemini_api_key
         self._model_name = settings.gemini_model
         self._embed_model = settings.gemini_embed_model
-        self._model = genai.GenerativeModel(settings.gemini_model)
+        self._backend = "none"
+        self._client = None
+        self._legacy = None
+
+        # Prefer the current google-genai SDK (supports gemini-2.5-flash cleanly).
+        try:
+            from google import genai
+
+            self._client = genai.Client(api_key=self._api_key)
+            self._backend = "google-genai"
+            log.info("gemini client ready", extra={"context": {"sdk": "google-genai", "model": self._model_name}})
+            return
+        except Exception as exc:
+            log.warning("google-genai unavailable, trying legacy SDK", extra={"context": {"error": str(exc)}})
+
+        # Legacy google-generativeai (older deploys / pinned requirements).
+        try:
+            import google.generativeai as genai_legacy
+
+            genai_legacy.configure(api_key=self._api_key)
+            self._legacy = genai_legacy
+            self._legacy_model = genai_legacy.GenerativeModel(self._model_name)
+            self._backend = "google-generativeai"
+            log.info(
+                "gemini client ready",
+                extra={"context": {"sdk": "google-generativeai", "model": self._model_name}},
+            )
+        except Exception as exc:
+            raise GeminiError(f"no usable Gemini SDK: {exc}") from exc
 
     def generate(self, prompt: str, *, system: str | None = None, temperature: float = 0.2) -> str:
         try:
-            model = self._model
-            if system:
-                model = self._genai.GenerativeModel(self._model_name, system_instruction=system)
-            resp = model.generate_content(
-                prompt,
-                generation_config={"temperature": temperature},
-            )
-            return (resp.text or "").strip()
-        except Exception as exc:  # pragma: no cover - network path
-            log.warning("gemini generate failed, using mock", extra={"context": {"error": str(exc)}})
-            return MockProvider().generate(prompt, system=system, temperature=temperature)
+            if self._backend == "google-genai" and self._client is not None:
+                from google.genai import types
+
+                config = types.GenerateContentConfig(
+                    temperature=temperature,
+                    system_instruction=system or None,
+                )
+                resp = self._client.models.generate_content(
+                    model=self._model_name,
+                    contents=prompt,
+                    config=config,
+                )
+                text = (getattr(resp, "text", None) or "").strip()
+                if not text:
+                    raise GeminiError("empty Gemini response")
+                return text
+
+            if self._legacy is not None:
+                model = self._legacy_model
+                if system:
+                    model = self._legacy.GenerativeModel(self._model_name, system_instruction=system)
+                resp = model.generate_content(
+                    prompt,
+                    generation_config={"temperature": temperature},
+                )
+                text = (getattr(resp, "text", None) or "").strip()
+                if not text:
+                    raise GeminiError("empty Gemini response (legacy SDK)")
+                return text
+
+            raise GeminiError("Gemini provider not initialised")
+        except GeminiError:
+            raise
+        except Exception as exc:
+            log.warning("gemini generate failed", extra={"context": {"error": str(exc), "sdk": self._backend}})
+            raise GeminiError(str(exc)) from exc
 
     def generate_json(self, prompt: str, *, system: str | None = None) -> dict:
         instruction = (system or "") + "\nRespond ONLY with valid minified JSON."
@@ -105,15 +153,32 @@ class GeminiProvider(LLMProvider):
         raw = raw.strip().removeprefix("```json").removeprefix("```").removesuffix("```").strip()
         try:
             return json.loads(raw)
-        except json.JSONDecodeError:
-            log.warning("gemini returned non-JSON, using mock json")
-            return MockProvider().generate_json(prompt, system=system)
+        except json.JSONDecodeError as exc:
+            raise GeminiError(f"non-JSON Gemini response: {raw[:200]}") from exc
 
     def embed(self, text: str) -> list[float]:
         try:
-            resp = self._genai.embed_content(model=self._embed_model, content=text)
-            return list(resp["embedding"])
-        except Exception as exc:  # pragma: no cover - network path
+            if self._backend == "google-genai" and self._client is not None:
+                resp = self._client.models.embed_content(model=self._embed_model, contents=text)
+                # google-genai returns .embeddings[0].values or similar shapes across versions
+                emb = getattr(resp, "embeddings", None) or getattr(resp, "embedding", None)
+                if emb is None and isinstance(resp, dict):
+                    emb = resp.get("embeddings") or resp.get("embedding")
+                if hasattr(emb, "__iter__") and emb is not None:
+                    first = emb[0] if not isinstance(emb, dict) else emb
+                    values = getattr(first, "values", None) or (
+                        first if isinstance(first, list) else None
+                    )
+                    if values:
+                        return list(values)
+                raise GeminiError("unexpected embed response shape")
+
+            if self._legacy is not None:
+                resp = self._legacy.embed_content(model=self._embed_model, content=text)
+                return list(resp["embedding"])
+
+            raise GeminiError("Gemini provider not initialised")
+        except Exception as exc:
             log.warning("gemini embed failed, using mock", extra={"context": {"error": str(exc)}})
             return MockProvider().embed(text)
 
@@ -138,3 +203,9 @@ def get_llm(settings: Settings | None = None) -> LLMProvider:
         _provider = MockProvider()
         log.info("llm provider ready", extra={"context": {"provider": "mock"}})
     return _provider
+
+
+def reset_llm() -> None:
+    """Test helper — clear the process-wide provider."""
+    global _provider
+    _provider = None
