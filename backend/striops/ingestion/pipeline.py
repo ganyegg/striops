@@ -12,6 +12,7 @@ from striops.core.models import Entity, EntityType, MetricPoint, MetricSeries
 from striops.core.paths import seed_dir
 from striops.ingestion.arcgis import ARCGIS_LAYERS, fetch_layer
 from striops.ingestion.coct_opendata import fetch_live_series
+from striops.ingestion.national import apply_national_overlays, fetch_national_series
 from striops.ingestion.treasury import fetch_budget_lines
 from striops.knowledge_graph import get_graph_store
 from striops.persistence import get_repository
@@ -109,6 +110,17 @@ def run() -> dict:
             "live series ingested",
             extra={"context": {"metric": f"{series.entity_id}/{series.metric}", "points": len(series.points)}},
         )
+
+    # 3c) National sources (Treasury-adjacent metrics, SAPS, DWS, Census).
+    counts["national_series"] = 0
+    for series in fetch_national_series(settings.striops_municipality):
+        repo.upsert_metric(series)
+        counts["national_series"] += 1
+        log.info(
+            "national series ingested",
+            extra={"context": {"metric": f"{series.entity_id}/{series.metric}", "points": len(series.points)}},
+        )
+    counts["national_overlays"] = apply_national_overlays(settings.striops_municipality)
 
     # 4) Budget lines + BudgetItem entities, related to their service area.
     for line in fetch_budget_lines(settings.striops_municipality):

@@ -74,6 +74,16 @@ def build_feeds_report(
     wins_seed = seed_dir() / "wins" / f"{muni}.json"
     arcgis_files = list(cache_dir().glob("arcgis_layer_*.json"))
     arcgis_path = max(arcgis_files, key=lambda p: p.stat().st_mtime) if arcgis_files else None
+    saps_path = cache_dir() / f"saps_crime_{muni}.json"
+    if not saps_path.exists():
+        seed_saps = seed_dir() / "national" / f"saps_crime_{muni}.json"
+        saps_path = seed_saps if seed_saps.exists() else saps_path
+    dws_path = cache_dir() / f"dws_system_{muni}.json"
+    census_path = cache_dir() / f"census_{muni}.json"
+    if not census_path.exists():
+        seed_census = seed_dir() / "national" / "census_2022_metros.json"
+        census_path = seed_census if seed_census.exists() else census_path
+    audit_path = cache_dir() / f"audit_opinions_{muni}.json"
 
     if metrics_status == "live":
         metrics_refreshed, metrics_label = None, "Live from Postgres"
@@ -90,6 +100,10 @@ def build_feeds_report(
     arcgis_refreshed, arcgis_label = (
         _mtime_label(arcgis_path, "n/a — seed") if arcgis_path else (None, "n/a — seed")
     )
+    saps_refreshed, saps_label = _mtime_label(saps_path, "n/a — seed extract")
+    dws_refreshed, dws_label = _mtime_label(dws_path, "n/a — not yet fetched")
+    census_refreshed, census_label = _mtime_label(census_path, "n/a — seed")
+    audit_refreshed, audit_label = _mtime_label(audit_path, "n/a — not yet fetched")
 
     feeds = [
         FeedStatus(
@@ -157,6 +171,54 @@ def build_feeds_report(
             unlocks="Risks land on a map: which wards feel a water or roads failure first.",
             last_refreshed=arcgis_refreshed,
             last_refreshed_label=arcgis_label,
+        ),
+        FeedStatus(
+            id="saps",
+            name="Crime statistics (SAPS)",
+            publisher="SAPS quarterly stats (afrith/crime-stats municipal aggregate)",
+            status="cached" if saps_path.exists() else "seed",
+            status_label=_STATUS_LABELS["cached" if saps_path.exists() else "seed"],
+            cadence="Monthly (from quarterly SAPS releases)",
+            description="Murder and contact-crime counts for the metro, rolled up from police stations.",
+            unlocks="Safety theme moves from budget headlines to measured crime trend.",
+            last_refreshed=saps_refreshed,
+            last_refreshed_label=saps_label,
+        ),
+        FeedStatus(
+            id="dws",
+            name="National dam storage (DWS)",
+            publisher="Department of Water and Sanitation",
+            status="cached" if dws_path.exists() else "seed",
+            status_label=_STATUS_LABELS["cached" if dws_path.exists() else "seed"],
+            cadence="Weekly",
+            description="Cape Town water-supply-system storage % from the national weekly dams bulletin.",
+            unlocks="National water pulse alongside City Open Data dam levels.",
+            last_refreshed=dws_refreshed,
+            last_refreshed_label=dws_label,
+        ),
+        FeedStatus(
+            id="census",
+            name="Census baselines (Stats SA)",
+            publisher="Statistics South Africa — Census 2022",
+            status="cached" if census_path.exists() else "seed",
+            status_label=_STATUS_LABELS["cached" if census_path.exists() else "seed"],
+            cadence="Decennial (baselines)",
+            description="Population and household denominators for metros — rates and equity context.",
+            unlocks="Per-100k crime rates and service coverage use official Census denominators.",
+            last_refreshed=census_refreshed,
+            last_refreshed_label=census_label,
+        ),
+        FeedStatus(
+            id="agsa",
+            name="Audit opinions (AGSA)",
+            publisher="Auditor-General via National Treasury Municipal Money",
+            status="cached" if audit_path.exists() else "seed",
+            status_label=_STATUS_LABELS["cached" if audit_path.exists() else "seed"],
+            cadence="Annual (MFMA cycle)",
+            description="Latest municipal audit outcome for the active demarcation code.",
+            unlocks="Fiscal theme shows verified AGSA outcome, not a placeholder.",
+            last_refreshed=audit_refreshed,
+            last_refreshed_label=audit_label,
         ),
     ]
 

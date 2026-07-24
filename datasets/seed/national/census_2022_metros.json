@@ -1,0 +1,64 @@
+{
+  "source": "Statistics South Africa — Census 2022 Municipal Fact Sheet",
+  "source_url": "https://census.statssa.gov.za/",
+  "retrieved_at": "2026-07-24",
+  "note": "Official Census 2022 municipal totals for metros. Households where published in municipal fact sheet / SuperWEB extracts.",
+  "municipalities": [
+    {
+      "code": "CPT",
+      "name": "City of Cape Town",
+      "population": 4772846,
+      "population_2011": 3740026,
+      "households": 1464777
+    },
+    {
+      "code": "JHB",
+      "name": "City of Johannesburg",
+      "population": 4803262,
+      "population_2011": 4434827,
+      "households": 1878530
+    },
+    {
+      "code": "ETH",
+      "name": "eThekwini",
+      "population": 4239901,
+      "population_2011": 3442361,
+      "households": 1257884
+    },
+    {
+      "code": "EKU",
+      "name": "Ekurhuleni",
+      "population": 4066773,
+      "population_2011": 3178470,
+      "households": 1485706
+    },
+    {
+      "code": "TSH",
+      "name": "City of Tshwane",
+      "population": 4039992,
+      "population_2011": 2921488,
+      "households": 1275961
+    },
+    {
+      "code": "NMA",
+      "name": "Nelson Mandela Bay",
+      "population": 1191519,
+      "population_2011": 1152115,
+      "households": 368528
+    },
+    {
+      "code": "BUF",
+      "name": "Buffalo City",
+      "population": 975255,
+      "population_2011": 755200,
+      "households": 287958
+    },
+    {
+      "code": "MAN",
+      "name": "Mangaung",
+      "population": 811431,
+      "population_2011": 747431,
+      "households": 265366
+    }
+  ]
+}

@@ -35,7 +35,9 @@ def test_pulse_endpoint():
 
 def test_feeds_report_is_honest():
     report = build_feeds_report()
-    assert report.total_count == len(report.feeds) == 5
+    assert report.total_count == len(report.feeds) == 9
+    feed_ids = {f.id for f in report.feeds}
+    assert {"treasury", "saps", "dws", "census", "agsa"} <= feed_ids
     statuses = {f.status for f in report.feeds}
     assert statuses <= {"live", "cached", "curated", "seed"}
     assert "Seed" in report.honesty_note
@@ -44,7 +46,7 @@ def test_feeds_report_is_honest():
 def test_feeds_endpoint():
     res = client.get("/feeds")
     assert res.status_code == 200
-    assert res.json()["total_count"] == 5
+    assert res.json()["total_count"] == 9
 
 
 def test_decision_register_orders_overdue_first():

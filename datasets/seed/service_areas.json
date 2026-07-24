@@ -6,5 +6,7 @@
   {"id": "svc-libraries", "name": "Libraries and Community", "department": "Community Services", "budget_function": "Community and Libraries", "owner": "Director: Community Services"},
   {"id": "svc-health", "name": "City Health", "department": "City Health", "budget_function": "Health", "owner": "Director: City Health"},
   {"id": "svc-energy", "name": "Energy", "department": "Energy", "budget_function": "Electricity", "owner": "Director: Energy"},
-  {"id": "svc-finance", "name": "Finance and Revenue", "department": "Finance", "budget_function": "Finance", "owner": "Chief Financial Officer"}
+  {"id": "svc-finance", "name": "Finance and Revenue", "department": "Finance", "budget_function": "Finance", "owner": "Chief Financial Officer"},
+  {"id": "svc-safety", "name": "Safety and Policing", "department": "Safety and Security", "budget_function": "Police Forces, Traffic and Street Parking Control", "owner": "Executive Director: Safety and Security"},
+  {"id": "svc-population", "name": "Population and Households", "department": "Corporate Analytics", "budget_function": "Population (non-budget)", "owner": "Chief Data Officer"}
 ]

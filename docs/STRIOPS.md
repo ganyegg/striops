@@ -36,14 +36,22 @@ A standard cloud web stack, deployable **inside the City's own cloud tenancy** (
 
 ### 0.1 Data freshness — where we are now, and how we go live
 
-Striops now pulls **real, live public data** from the **City of Cape Town Open Data Portal** (`odp-cctegis.opendata.arcgis.com`). As of the current build, these operational series are measured (not seed):
+Striops now pulls **real, live public data** from the **City of Cape Town Open Data Portal** (`odp-cctegis.opendata.arcgis.com`) **and national sources** that work for Cape Town today and other municipalities tomorrow:
 
+**City Open Data (CPT):**
 - **Dam storage** — Big-6 storage %, from *Dam Levels from 2000* (measured).
 - **System energy sent out** — monthly kWh across the City network, from *System Energy*.
 - **Electricity billed** — monthly kWh billed, aggregated from *Suburb Level Electricity Billing*.
 - **Municipal arrears** — monthly total overdue balances (ZAR), aggregated from *Municipal Arrears by Suburb and Service Type* (a fiscal-distress signal).
 - **Public lighting outages** — monthly streetlight-fault requests, from *Service Requests* (C3).
 - **Refuse service requests** — monthly waste requests (bins, illegal dumping), from *Service Requests* (C3).
+
+**National (multi-muni ready — keyed by demarcation code):**
+- **National Treasury Municipal Money** — Section 71 / mSCOA budget vs actual by function (`incexp_v2`).
+- **SAPS crime** — murder + contact crime monthly, stations rolled up to the metro (via [afrith/crime-stats](https://github.com/afrith/crime-stats)).
+- **DWS weekly dams** — Cape Town water-supply-system storage % (`RiverSystems.aspx?river=CT`).
+- **Stats SA Census 2022** — metro population / household baselines.
+- **AGSA audit opinions** — latest MFMA outcome via Treasury `audit_opinions` cube.
 
 Large multi-row datasets are aggregated **server-side** (ArcGIS `outStatistics` / per-month `returnCountOnly`) so ingestion stays fast and light rather than pulling millions of rows. The current (incomplete) calendar month is excluded from counts so a partial month never shows as a dip.
 
@@ -73,11 +81,11 @@ Striops maps **Mayoral Minute 2025 / City of Hope / S52** priorities onto a **Ci
 
 | Theme | Live today | Still a gap |
 |-------|------------|-------------|
-| Water & sanitation | Dam storage (Open Data) | Live NRW + WWTW project YTD |
+| Water & sanitation | Dam storage (Open Data) + DWS system % | Live NRW + WWTW project YTD |
 | Energy & grid | System energy, billed kWh, streetlight faults | Own-generation plant KPIs |
-| Safety & policing | Domain headlines | SAPS quarter + Metro Police counts |
-| Housing | Domain gaps stated | Monthly units vs target |
-| Fiscal / revenue | Municipal arrears (Open Data) | Official S52 YTD + SAP Finance |
+| Safety & policing | SAPS murder + contact crime (metro monthly) | Metro Police / LEAP deployment counts |
+| Housing | Census 2022 population baseline | Monthly units vs target |
+| Fiscal / revenue | Municipal arrears + Treasury s71 + AGSA audit | Official S52 mid-year YTD + SAP Finance |
 | Infrastructure capital | Budget domain headlines | Project-level capital YTD |
 | Waste & public realm | Refuse/dumping C3 counts | — |
 | Roads & mobility | Demo backlog series | Urban Mobility extract |

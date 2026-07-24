@@ -24,11 +24,15 @@ _HIGHER_IS_WORSE: dict[str, bool] = {
     "public_lighting_outages": True,
     "library_visits": False,
     "dam_storage": False,
+    "dws_system_storage": False,
     "clinic_waiting_days": True,
     "ems_response_minutes": True,
     "system_energy_kwh": False,  # demand signal, not inherently good/bad
     "electricity_billed_kwh": False,  # demand/revenue signal
     "municipal_arrears_zar": True,  # rising debtors = fiscal distress
+    "murder_count": True,
+    "contact_crime_count": True,
+    "population": False,
 }
 
 _LABELS: dict[str, str] = {
@@ -37,22 +41,30 @@ _LABELS: dict[str, str] = {
     "road_maintenance_backlog_km": "Road maintenance backlog",
     "public_lighting_outages": "Public lighting outages",
     "library_visits": "Library visits",
-    "dam_storage": "Dam storage",
+    "dam_storage": "Dam storage (City)",
+    "dws_system_storage": "Dam storage (DWS system)",
     "clinic_waiting_days": "Clinic waiting days",
     "ems_response_minutes": "EMS response time",
     "system_energy_kwh": "System energy sent out",
     "electricity_billed_kwh": "Electricity billed",
     "municipal_arrears_zar": "Municipal arrears",
+    "murder_count": "Murders (SAPS)",
+    "contact_crime_count": "Contact crime (SAPS)",
+    "population": "Population (Census)",
 }
 
-# Metrics wired to live City of Cape Town Open Data (not demonstration seed).
+# Metrics wired to live / national public feeds (not demonstration seed).
 _LIVE_METRICS: set[str] = {
     "dam_storage",
+    "dws_system_storage",
     "system_energy_kwh",
     "electricity_billed_kwh",
     "municipal_arrears_zar",
     "public_lighting_outages",
     "refuse_service_requests",
+    "murder_count",
+    "contact_crime_count",
+    "population",
 }
 
 

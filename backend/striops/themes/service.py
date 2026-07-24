@@ -115,6 +115,10 @@ def build_themes_report(
     if "dam_storage" in by_metric:
         water_ev.append(_ev_from_pulse(by_metric["dam_storage"]))
         water_status = by_metric["dam_storage"].direction
+    if "dws_system_storage" in by_metric:
+        water_ev.append(_ev_from_pulse(by_metric["dws_system_storage"]))
+        if water_status == "gap":
+            water_status = by_metric["dws_system_storage"].direction
     if "non_revenue_water_pct" in by_metric:
         water_ev.append(_ev_from_pulse(by_metric["non_revenue_water_pct"]))
         if water_status == "gap":
@@ -136,7 +140,11 @@ def build_themes_report(
                 "loss–storage gap; refuses to invent NRW when the departmental extract is missing."
             ),
             status=water_status if water_ev else "gap",
-            readiness="partial" if "dam_storage" in by_metric else "awaiting_extract",
+            readiness=(
+                "live"
+                if "dam_storage" in by_metric or "dws_system_storage" in by_metric
+                else "awaiting_extract"
+            ),
             evidence=water_ev,
             gap=(
                 None
@@ -191,6 +199,14 @@ def build_themes_report(
     safety_budget, safety_prov = _domain_value(code, "safety_policing", "safety_budget")
     leap, leap_prov = _domain_value(code, "safety_policing", "leap")
     safety_ev: list[ThemeEvidence] = []
+    safety_status = "gap"
+    if "murder_count" in by_metric:
+        safety_ev.append(_ev_from_pulse(by_metric["murder_count"]))
+        safety_status = by_metric["murder_count"].direction
+    if "contact_crime_count" in by_metric:
+        safety_ev.append(_ev_from_pulse(by_metric["contact_crime_count"]))
+        if safety_status == "gap":
+            safety_status = by_metric["contact_crime_count"].direction
     if safety_budget:
         safety_ev.append(
             ThemeEvidence(
@@ -219,21 +235,33 @@ def build_themes_report(
                 "continued push on gang/gun violence and LEAP partnership."
             ),
             striops_adds=(
-                "Keeps the safety theme on the executive spine with provenance badges; "
-                "states SAPS/precinct gaps instead of inventing crime stats."
+                "Rolls SAPS station stats up to the metro monthly (murder + contact crime) "
+                "with Live badges; still flags Metro Police deployment as a gap."
             ),
-            status="gap" if not safety_ev else "watching",
-            readiness="awaiting_extract",
+            status=safety_status if safety_ev else "gap",
+            readiness="live" if "murder_count" in by_metric else "partial",
             evidence=safety_ev,
-            gap="Needs verified SAPS quarterly + precinct lists and Metro Police deployment counts (monthly).",
+            gap="Metro Police / LEAP deployment counts (monthly) still need a City extract.",
             ask_prompt="What do we know on safety & policing — and what is still missing?",
         )
     )
 
     # ── 4. Housing ─────────────────────────────────────────────────────
+    pop_val, pop_prov = _domain_value(code, "housing_population", "population")
     backlog, b_prov = _domain_value(code, "housing_population", "housing_backlog")
     delivery, d_prov = _domain_value(code, "housing_population", "delivery_lag")
     housing_ev: list[ThemeEvidence] = []
+    if "population" in by_metric:
+        housing_ev.append(_ev_from_pulse(by_metric["population"]))
+    elif pop_val:
+        housing_ev.append(
+            ThemeEvidence(
+                label="Population (Census)",
+                value=pop_val,
+                provenance=pop_prov,
+                href=f"/{code}/domains/housing_population",
+            )
+        )
     for label, val, prov in (
         ("Housing backlog", backlog, b_prov),
         ("Delivery lag", delivery, d_prov),
@@ -260,8 +288,8 @@ def build_themes_report(
                 "Surfaces the theme as a mayoral question with an explicit data request — "
                 "empty is a blocker, not silence."
             ),
-            status="gap",
-            readiness="awaiting_extract",
+            status="watching" if housing_ev else "gap",
+            readiness="partial" if pop_val or "population" in by_metric else "awaiting_extract",
             evidence=housing_ev,
             gap="Needs monthly units delivered vs target from Human Settlements (aggregate extract).",
             ask_prompt="Housing backlog and delivery — what is known and what is missing?",
@@ -272,6 +300,16 @@ def build_themes_report(
     fiscal_ev: list[ThemeEvidence] = []
     if "municipal_arrears_zar" in by_metric:
         fiscal_ev.append(_ev_from_pulse(by_metric["municipal_arrears_zar"]))
+    audit_val, audit_prov = _domain_value(code, "fiscal", "audit")
+    if audit_val:
+        fiscal_ev.append(
+            ThemeEvidence(
+                label="Audit outcome (AGSA)",
+                value=audit_val[:80],
+                provenance=audit_prov,
+                href=f"/{code}/domains/fiscal",
+            )
+        )
     cash, cash_prov = _domain_value(code, "fiscal", "collection")
     if cash:
         fiscal_ev.append(
