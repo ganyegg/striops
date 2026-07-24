@@ -55,11 +55,16 @@ export default function SiteHeader({
 
         <nav className="hidden flex-wrap items-center justify-center gap-1 text-xs md:flex">
           {nav.map((item) => {
-            const active = item.href === activeHref;
+            // Pulse + Ask live on the command home — jump to in-page anchors.
+            const href =
+              item.href === "/pulse" ? "/#pulse" : item.href === "/ask" ? "/#ask" : item.href;
+            const active =
+              item.href === activeHref ||
+              (activeHref === "/" && (item.href === "/pulse" || item.href === "/ask"));
             return (
               <Link
                 key={item.href}
-                href={item.href}
+                href={href}
                 className={
                   active
                     ? "rounded-full bg-white/10 px-3 py-1.5 text-white"

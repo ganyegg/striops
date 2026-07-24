@@ -38,3 +38,15 @@ def test_feeds_include_national_ids():
     report = build_feeds_report()
     ids = {f.id for f in report.feeds}
     assert {"saps", "dws", "census", "agsa", "treasury"} <= ids
+
+
+def test_pulse_includes_saps_crime_from_national_seed():
+    from striops.pulse import build_city_pulse
+
+    pulse = build_city_pulse()
+    metrics = {i.metric for i in pulse.items}
+    assert "murder_count" in metrics
+    assert "contact_crime_count" in metrics
+    murder = next(i for i in pulse.items if i.metric == "murder_count")
+    assert murder.provenance == "live"
+    assert murder.latest_period  # has a MoM period label

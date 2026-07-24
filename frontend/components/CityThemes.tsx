@@ -99,7 +99,7 @@ export default function CityThemes({ report }: { report: ThemesReport }) {
             ) : null}
 
             <Link
-              href="/ask"
+              href="/#ask"
               className="mt-auto pt-3 text-[11px] text-striops-accent hover:underline"
             >
               Ask: {t.ask_prompt.slice(0, 64)}

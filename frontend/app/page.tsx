@@ -1,5 +1,7 @@
+import AskPanel from "@/components/AskPanel";
 import BriefingBento from "@/components/BriefingBento";
 import BudgetSpendChart from "@/components/BudgetSpendChart";
+import PulseStrip from "@/components/PulseStrip";
 import SimulationPanel from "@/components/SimulationPanel";
 import SiteHeader from "@/components/SiteHeader";
 import StorySection from "@/components/StorySection";
@@ -8,8 +10,10 @@ import { PRIMARY_NAV } from "@/lib/nav";
 import {
   formatRefreshSAST,
   getBrief,
+  getPulse,
   getScenarios,
   getSnapshot,
+  type CityPulse,
   type CitySnapshot,
   type ExecutiveBrief,
   type ScenarioOption,
@@ -33,15 +37,24 @@ export default async function Home() {
   let brief: ExecutiveBrief;
   let scenarios: ScenarioOption[];
   let snapshot: CitySnapshot;
+  let pulse: CityPulse;
   try {
-    [brief, scenarios, snapshot] = await Promise.all([getBrief(), getScenarios(), getSnapshot()]);
+    [brief, scenarios, snapshot, pulse] = await Promise.all([
+      getBrief(),
+      getScenarios(),
+      getSnapshot(),
+      getPulse(),
+    ]);
   } catch (e) {
     return <BackendDown message={e instanceof Error ? e.message : String(e)} />;
   }
 
-  const dataThrough = snapshot.data_through || "—";
+  const dataThrough = snapshot.data_through || pulse.data_through || "—";
   const briefRefreshed = formatRefreshSAST(snapshot.brief_refreshed_at || snapshot.generated_at);
-  const portal = PRIMARY_NAV.filter((item) => item.href !== "/");
+  // Pulse + Ask stay on the home page — don't duplicate them in the portal grid.
+  const portal = PRIMARY_NAV.filter(
+    (item) => item.href !== "/" && item.href !== "/pulse" && item.href !== "/ask",
+  );
 
   return (
     <main className="pb-24">
@@ -67,7 +80,7 @@ export default async function Home() {
             <StorySection
               eyebrow="Start here"
               title="Command centre"
-              lead="Strategic health and headline KPIs — each tile opens evidence or a breakdown. Everything else lives on its own page."
+              lead="Strategic health and headline KPIs — each tile opens evidence or a breakdown."
             >
               <BriefingBento
                 kpis={snapshot.kpis}
@@ -91,9 +104,27 @@ export default async function Home() {
         </div>
 
         <StorySection
+          id="pulse"
+          eyebrow="What moved"
+          title="City pulse"
+          lead={`${pulse.data_through} vs ${pulse.previous_period} — live feeds first; demonstration series are labelled.`}
+        >
+          <PulseStrip pulse={pulse} />
+        </StorySection>
+
+        <StorySection
+          id="ask"
+          eyebrow="Interrogate the twin"
+          title="Ask Striops"
+          lead="Natural language over retrieved facts. Engines own the numbers; AI narrates — or a deterministic brief if the narrator is unavailable."
+        >
+          <AskPanel />
+        </StorySection>
+
+        <StorySection
           eyebrow="Navigate"
           title="Open a workspace"
-          lead="Themes, pulse, risks, and the rest each have their own page — no more scrolling through the whole briefing."
+          lead="Themes, risks, sectors, and the rest each have their own page."
         >
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {portal.map((item) => (

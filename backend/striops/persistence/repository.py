@@ -31,6 +31,26 @@ def _load_seed(name: str) -> list[dict]:
     return json.loads(path.read_text())
 
 
+def _national_metric_series(municipality: str) -> list[MetricSeries]:
+    """Best-effort national seed/cache series (crime, census) for Pulse & engines."""
+    out: list[MetricSeries] = []
+    try:
+        from striops.ingestion.national.saps_crime import fetch_crime_series
+
+        out.extend(fetch_crime_series(municipality))
+    except Exception as exc:  # pragma: no cover
+        log.warning("national crime series skipped", extra={"context": {"error": str(exc)}})
+    try:
+        from striops.ingestion.national.census_baselines import fetch_census_series
+
+        census = fetch_census_series(municipality)
+        if census is not None:
+            out.append(census)
+    except Exception as exc:  # pragma: no cover
+        log.warning("national census series skipped", extra={"context": {"error": str(exc)}})
+    return out
+
+
 def _parse_period(value) -> date:
     if isinstance(value, date):
         return value
@@ -118,22 +138,20 @@ class Repository:
         ]
 
     def metric_series(self) -> list[MetricSeries]:
+        grouped: dict[tuple[str, str], MetricSeries] = {}
         if self._use_pg:
             rows = self._query(
                 "SELECT entity_id, metric, unit, period, value FROM metrics ORDER BY entity_id, metric, period",
             )
             if rows:
-                grouped: dict[tuple[str, str], MetricSeries] = {}
                 for entity_id, metric, unit, period, value in rows:
                     key = (entity_id, metric)
                     if key not in grouped:
                         grouped[key] = MetricSeries(entity_id=entity_id, metric=metric, unit=unit)
                     grouped[key].points.append(MetricPoint(period=period, value=value))
-                return list(grouped.values())
-        out: list[MetricSeries] = []
-        for d in _load_seed("metrics.json"):
-            out.append(
-                MetricSeries(
+        if not grouped:
+            for d in _load_seed("metrics.json"):
+                series = MetricSeries(
                     entity_id=d["entity_id"],
                     metric=d["metric"],
                     unit=d.get("unit"),
@@ -142,8 +160,17 @@ class Repository:
                         for p in d["points"]
                     ],
                 )
-            )
-        return out
+                grouped[(series.entity_id, series.metric)] = series
+
+        # National extracts (SAPS crime, Census baselines) ship as seed/cache files.
+        # Merge any series that are not already in Postgres so Pulse works offline
+        # and before the first ingest on a fresh DB.
+        for series in _national_metric_series(self.settings.striops_municipality):
+            key = (series.entity_id, series.metric)
+            existing = grouped.get(key)
+            if existing is None or len(existing.points) < 2:
+                grouped[key] = series
+        return list(grouped.values())
 
     def budget_lines(self) -> list[BudgetLine]:
         if self._use_pg:

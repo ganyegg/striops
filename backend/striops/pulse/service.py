@@ -168,11 +168,15 @@ def build_city_pulse(
     _SECTOR_RANK = {
         "clinic_waiting_days": 0,
         "ems_response_minutes": 1,
-        "dam_storage": 2,
-        "non_revenue_water_pct": 3,
-        "road_maintenance_backlog_km": 4,
-        "refuse_service_requests": 5,
-        "public_lighting_outages": 6,
+        "murder_count": 2,
+        "contact_crime_count": 3,
+        "dam_storage": 4,
+        "dws_system_storage": 5,
+        "non_revenue_water_pct": 6,
+        "road_maintenance_backlog_km": 7,
+        "refuse_service_requests": 8,
+        "public_lighting_outages": 9,
+        "population": 80,
         "library_visits": 90,
     }
     order = {"worsening": 0, "improving": 1, "flat": 2}
