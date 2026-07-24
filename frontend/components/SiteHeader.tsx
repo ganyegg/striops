@@ -1,14 +1,24 @@
 import Link from "next/link";
 import CoctLogo from "./CoctLogo";
 import RefreshButton from "./RefreshButton";
+import { PRIMARY_NAV } from "@/lib/nav";
 
 export default function SiteHeader({
   dataThrough,
   briefRefreshed,
+  activeHref = "/",
 }: {
   dataThrough: string;
   briefRefreshed: string;
+  activeHref?: string;
 }) {
+  // Compact nav on the command home — skip the current page's self-link clutter.
+  const nav = PRIMARY_NAV.filter((item) =>
+    ["/", "/themes", "/pulse", "/ask", "/sectors", "/compare", "/wins", "/risks", "/act", "/CPT/domains", "/sources"].includes(
+      item.href,
+    ),
+  );
+
   return (
     <header className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
@@ -18,7 +28,6 @@ export default function SiteHeader({
         <RefreshButton />
       </div>
 
-      {/* Centered brand lockup, next to the Cape Town crest */}
       <div className="flex flex-col items-center gap-5 text-center">
         <div className="flex flex-wrap items-center justify-center gap-5">
           <CoctLogo height={48} href="/" />
@@ -45,26 +54,22 @@ export default function SiteHeader({
         </div>
 
         <nav className="hidden flex-wrap items-center justify-center gap-1 text-xs md:flex">
-            {[
-              ["#command", "Brief"],
-              ["#themes", "Themes"],
-              ["#pulse", "Pulse"],
-              ["#ask", "Ask"],
-              ["#sectors", "Sectors"],
-              ["#compare", "Compare"],
-              ["#wins", "Wins"],
-              ["#risks", "Risks"],
-              ["#act", "Actions"],
-              ["#explore", "Explore"],
-            ].map(([href, label]) => (
-            <a
-              key={href}
-              href={href}
-              className="rounded-full px-3 py-1.5 text-white/50 transition hover:bg-white/5 hover:text-white/80"
-            >
-              {label}
-            </a>
-          ))}
+          {nav.map((item) => {
+            const active = item.href === activeHref;
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={
+                  active
+                    ? "rounded-full bg-white/10 px-3 py-1.5 text-white"
+                    : "rounded-full px-3 py-1.5 text-white/50 transition hover:bg-white/5 hover:text-white/80"
+                }
+              >
+                {item.label}
+              </Link>
+            );
+          })}
         </nav>
 
         <div className="flex flex-wrap items-center justify-center gap-2 text-xs">

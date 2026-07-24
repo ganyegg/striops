@@ -38,7 +38,7 @@ export default async function HealthPage() {
   return (
     <main className="mx-auto max-w-5xl px-6 py-10 pb-24">
       <PageChrome
-        backHref="/#command"
+        backHref="/"
         crumbs={
           <>
             <Link href="/" className="font-display font-semibold text-white/80 hover:text-white">

@@ -14,7 +14,7 @@ export default async function WinReportPage({ params }: { params: { winId: strin
   } catch (e) {
     return (
       <main className="mx-auto max-w-3xl px-6 py-24">
-        <Link href="/#wins" className="text-sm text-striops-accent hover:underline">
+        <Link href="/wins" className="text-sm text-striops-accent hover:underline">
           ← Back to briefing
         </Link>
         <h1 className="mt-6 font-display text-2xl font-semibold">Win report unavailable</h1>
@@ -49,7 +49,7 @@ export default async function WinReportPage({ params }: { params: { winId: strin
                 Striops
               </Link>
               <span className="text-white/25">/</span>
-              <Link href="/#wins" className="text-white/50 hover:text-white/80">
+              <Link href="/wins" className="text-white/50 hover:text-white/80">
                 Wins
               </Link>
             </>
