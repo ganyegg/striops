@@ -20,6 +20,7 @@ from striops.core.models import (
     MetricSeries,
 )
 from striops.core.paths import seed_dir
+from striops.core.periods import drop_future_points
 
 log = get_logger("striops.persistence")
 
@@ -178,7 +179,19 @@ class Repository:
             existing = grouped.get(key)
             if existing is None or len(existing.points) < 2:
                 grouped[key] = series
-        return list(grouped.values())
+
+        # Screened here, at the one read boundary, rather than per consumer.
+        # Some City datasets carry forecast rows for the rest of the financial
+        # year in the same column as actuals, and Postgres still holds rows
+        # ingested before that was filtered at source. Left alone, the snapshot
+        # advertised "Data through December 2026" in August, because freshness is
+        # the newest period across every series.
+        series_list: list[MetricSeries] = []
+        for series in grouped.values():
+            series.points = drop_future_points(series.points)
+            if series.points:
+                series_list.append(series)
+        return series_list
 
     def budget_lines(self) -> list[BudgetLine]:
         if self._use_pg:

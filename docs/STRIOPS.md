@@ -13,9 +13,13 @@ Cape Town pack: [`docs/pitch/index.html`](pitch/index.html) — cover linking bo
 &nbsp;&nbsp;· Mayoral meeting pack: [`docs/pitch/mayor-meeting-pack.html`](pitch/mayor-meeting-pack.html) — what to say, which numbers hold up, which do not, and City contacts  
 Architecture notes: [`docs/architecture.md`](architecture.md)
 
-Both pack documents share one theme. Regenerate their PDFs with `scripts/render-pack-pdf.sh`
-after editing either HTML file — do not export from the browser print dialog, since the page
-geometry is pinned in CSS.
+Both pack documents share one theme, in two palettes. Dark is the default, for screen and
+projection; append `?theme=light` for the light palette, which is what the `-light.pdf` files
+are and what to print on paper. The two palettes live in the same file, so document content is
+never maintained twice.
+
+Regenerate every PDF with `scripts/render-pack-pdf.sh` after editing either HTML file — do not
+export from the browser print dialog, since the page geometry is pinned in CSS.
 
 This document is the single source of truth for what Striops is, how it works, what data it touches, how the 90-day pilot succeeds, why R180,000 is justified, where it sits in the City, and how to answer every hard question in the room.
 

@@ -129,6 +129,42 @@
   .timeline .month h3 { font-size: clamp(15px, 1.6vw, 19px); margin-bottom: 1.2vh; }
   .timeline .month p, .timeline .month li { font-size: clamp(13px, 1.35vw, 15px); color: var(--muted); line-height: 1.5; }
 
+  /* ─────────────── light variant ─────────────── */
+  /* Second palette for printing and for bright rooms / projectors that wash
+     out a dark deck. Selected with ?theme=light. Accents are darkened for
+     contrast on white — #14b8a6 is only ~2.4:1 against white. */
+  html[data-theme="light"] {
+    --ink-950: #ffffff;
+    --ink-900: #f8fafc;
+    --ink-800: #f1f5f9;
+    --teal: #0f766e;
+    --teal-soft: rgba(15, 118, 110, 0.09);
+    --sky: #0369a1;
+    --sunrise: #b45309;
+    --bad: #b91c1c;
+    --good: #047857;
+    --text: #0a1524;
+    --muted: rgba(10, 21, 36, 0.74);
+    --faint: rgba(10, 21, 36, 0.55);
+    --line: rgba(10, 21, 36, 0.14);
+  }
+  /* flat white — the gradient wash is a screen flourish and expensive to print */
+  html[data-theme="light"] .slide { background: #fff; }
+  html[data-theme="light"] .card { background: rgba(10, 21, 36, 0.028); }
+  html[data-theme="light"] .card.accent { background: var(--teal-soft); }
+  html[data-theme="light"] .vs .side.old { border-color: rgba(185, 28, 28, 0.25); background: rgba(185, 28, 28, 0.05); }
+  html[data-theme="light"] .vs .side.new { border-color: rgba(15, 118, 110, 0.35); background: var(--teal-soft); }
+  html[data-theme="light"] .badge.teal { border-color: rgba(15, 118, 110, 0.35); }
+  html[data-theme="light"] .badge.amber { background: rgba(180, 83, 9, 0.1); border-color: rgba(180, 83, 9, 0.3); }
+  html[data-theme="light"] .badge.red { background: rgba(185, 28, 28, 0.1); border-color: rgba(185, 28, 28, 0.28); }
+  html[data-theme="light"] .badge.green { background: rgba(4, 120, 87, 0.1); border-color: rgba(4, 120, 87, 0.28); }
+  /* the crest is dark artwork — it needs no white plate once the slide is white */
+  html[data-theme="light"] .coct-plate { background: transparent; box-shadow: none; padding: 0; }
+  html[data-theme="light"] .hero-mark .mark { filter: none; }
+  html[data-theme="light"] .footer-tag .dot { box-shadow: none; }
+  html[data-theme="light"] .mountain path:nth-child(1) { fill: rgba(15, 118, 110, 0.1); }
+  html[data-theme="light"] .mountain path:nth-child(2) { fill: rgba(3, 105, 161, 0.07); }
+
   @media print {
     .deck { height: auto; overflow: visible; }
     .slide { display: flex !important; position: relative; height: 100vh; break-after: page; }
@@ -139,6 +175,15 @@
   /* Pinned so the exported deck does not depend on print-dialog settings. */
   @page { size: A4 landscape; margin: 0; }
 </style>
+<script>
+  // Runs during head parse, before first paint, so the light variant never
+  // flashes dark. ?theme=light or #light.
+  (function () {
+    var wants = new URLSearchParams(location.search).get("theme") === "light"
+      || location.hash === "#light";
+    if (wants) document.documentElement.setAttribute("data-theme", "light");
+  })();
+</script>
 </head>
 <body>
 <div class="deck" id="deck">

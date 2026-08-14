@@ -68,7 +68,14 @@
   a.doc-card h2 { font-family: var(--display); font-size: clamp(19px, 2.1vw, 26px); font-weight: 600; letter-spacing: -0.02em; line-height: 1.2; }
   a.doc-card p { font-size: clamp(13px, 1.35vw, 15.5px); color: var(--muted); line-height: 1.6; margin-top: 1.4vh; flex: 1; }
   a.doc-card .go { margin-top: 2.4vh; font-size: 13px; color: var(--teal); font-weight: 600; }
-  a.doc-card .go .alt { color: var(--faint); font-weight: 400; }
+
+  .doc-slot { display: flex; flex-direction: column; }
+  /* cards fill the grid row so the link rows below them line up */
+  .doc-slot > a.doc-card { flex: 1; }
+  .doc-links { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 1.6vh; padding: 0 0.4vw; font-size: 12.5px; }
+  .doc-links span { color: var(--faint); }
+  .doc-links a { color: var(--muted); text-decoration: none; border-bottom: 1px solid var(--line); }
+  .doc-links a:hover { color: var(--teal); border-bottom-color: rgba(20, 184, 166, 0.5); }
 
   .aside { margin-top: 6vh; border-top: 1px solid var(--line); padding-top: 3vh; }
   .aside h3 { font-family: var(--display); font-size: 15px; font-weight: 600; margin-bottom: 1.4vh; }
@@ -84,8 +91,46 @@
 
   .mountain { position: absolute; bottom: 0; left: 0; right: 0; height: 22vh; pointer-events: none; opacity: 0.45; z-index: -1; }
 
+  /* ─────────────── light variant ─────────────── */
+  /* Matches the two documents, which each carry the same second palette.
+     Accents are darkened for contrast on white — #14b8a6 is only ~2.4:1. */
+  html[data-theme="light"] {
+    --ink-950: #ffffff;
+    --teal: #0f766e;
+    --teal-soft: rgba(15, 118, 110, 0.09);
+    --sky: #0369a1;
+    --sunrise: #b45309;
+    --good: #047857;
+    --text: #0a1524;
+    --muted: rgba(10, 21, 36, 0.74);
+    --faint: rgba(10, 21, 36, 0.55);
+    --line: rgba(10, 21, 36, 0.14);
+  }
+  html[data-theme="light"] body { background: #fff; }
+  html[data-theme="light"] a.doc-card { background: rgba(10, 21, 36, 0.028); }
+  html[data-theme="light"] a.doc-card:hover { background: var(--teal-soft); border-color: rgba(15, 118, 110, 0.45); }
+  html[data-theme="light"] .doc-links a:hover { border-bottom-color: rgba(15, 118, 110, 0.5); }
+  html[data-theme="light"] .badge.teal { border-color: rgba(15, 118, 110, 0.35); }
+  html[data-theme="light"] .badge.amber { background: rgba(180, 83, 9, 0.1); border-color: rgba(180, 83, 9, 0.3); }
+  html[data-theme="light"] .badge.green { background: rgba(4, 120, 87, 0.1); border-color: rgba(4, 120, 87, 0.28); }
+  /* the crest is dark artwork — it needs no white plate once the page is white */
+  html[data-theme="light"] .coct-plate { background: transparent; box-shadow: none; padding: 0; }
+  html[data-theme="light"] .hero-mark .mark { filter: none; }
+  html[data-theme="light"] .footer-tag .dot { box-shadow: none; }
+  html[data-theme="light"] .mountain path:nth-child(1) { fill: rgba(15, 118, 110, 0.1); }
+  html[data-theme="light"] .mountain path:nth-child(2) { fill: rgba(3, 105, 161, 0.07); }
+
   @media (max-width: 820px) { .docs { grid-template-columns: 1fr; } }
 </style>
+<script>
+  // Runs during head parse, before first paint, so the light variant never
+  // flashes dark. ?theme=light or #light.
+  (function () {
+    var wants = new URLSearchParams(location.search).get("theme") === "light"
+      || location.hash === "#light";
+    if (wants) document.documentElement.setAttribute("data-theme", "light");
+  })();
+</script>
 </head>
 <body>
 <div class="wrap">
@@ -118,19 +163,35 @@
   </div>
 
   <div class="docs">
-    <a class="doc-card" href="striops-pitch.html">
-      <div class="kicker">Document one</div>
-      <h2>The pitch deck</h2>
-      <p>Fifteen slides: why quarterly reporting fails an executive, what Striops is, how the engines work, the price ladder, and the 90-day pilot. Use arrow keys to advance.</p>
-      <div class="go">Open the deck &rarr; <span class="alt">&nbsp;·&nbsp; <span style="text-decoration:underline">PDF</span></span></div>
-    </a>
+    <div class="doc-slot">
+      <a class="doc-card" href="striops-pitch.html">
+        <div class="kicker">Document one</div>
+        <h2>The pitch deck</h2>
+        <p>Fifteen slides: why quarterly reporting fails an executive, what Striops is, how the engines work, the price ladder, and the 90-day pilot. Use arrow keys to advance.</p>
+        <div class="go">Open the deck &rarr;</div>
+      </a>
+      <div class="doc-links">
+        <span>PDF:</span>
+        <a href="striops-pitch.pdf">dark</a>
+        <a href="striops-pitch-light.pdf">light, for print</a>
+        <a href="striops-pitch.html?theme=light">light in browser</a>
+      </div>
+    </div>
 
-    <a class="doc-card" href="mayor-meeting-pack.html">
-      <div class="kicker">Document two</div>
-      <h2>Mayoral meeting pack</h2>
-      <p>The sixty-second answer, nine numbers that hold up with periods and sources, the two data artefacts and how to talk about them, the money case, objection handling, and verified City contacts.</p>
-      <div class="go">Open the pack &rarr; <span class="alt">&nbsp;·&nbsp; <span style="text-decoration:underline">PDF</span></span></div>
-    </a>
+    <div class="doc-slot">
+      <a class="doc-card" href="mayor-meeting-pack.html">
+        <div class="kicker">Document two</div>
+        <h2>Mayoral meeting pack</h2>
+        <p>The sixty-second answer, nine numbers that hold up with periods and sources, the two data artefacts and how to talk about them, the money case, objection handling, and verified City contacts.</p>
+        <div class="go">Open the pack &rarr;</div>
+      </a>
+      <div class="doc-links">
+        <span>PDF:</span>
+        <a href="mayor-meeting-pack.pdf">dark</a>
+        <a href="mayor-meeting-pack-light.pdf">light, for print</a>
+        <a href="mayor-meeting-pack.html?theme=light">light in browser</a>
+      </div>
+    </div>
   </div>
 
   <div class="aside">
@@ -155,17 +216,12 @@
 </div>
 
 <script>
-  // The PDF affordance on each card should open the PDF, not the HTML.
-  document.querySelectorAll("a.doc-card").forEach(function (card) {
-    var alt = card.querySelector(".go .alt span");
-    if (!alt) return;
-    alt.style.cursor = "pointer";
-    alt.addEventListener("click", function (e) {
-      e.preventDefault();
-      e.stopPropagation();
-      window.open(card.getAttribute("href").replace(/\.html$/, ".pdf"), "_blank");
+  // Stay in the palette you arrived in when opening either document.
+  if (document.documentElement.getAttribute("data-theme") === "light") {
+    document.querySelectorAll("a.doc-card").forEach(function (card) {
+      card.setAttribute("href", card.getAttribute("href") + "?theme=light");
     });
-  });
+  }
 
   // Drop the crest rather than showing a broken-image glyph when this page is
   // copied somewhere without its sibling assets/ directory.

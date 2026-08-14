@@ -39,6 +39,89 @@ def test_dropping_is_a_no_op_for_a_clean_series():
     assert drop_future_points(points, as_of=date(2026, 8, 14)) == points
 
 
+def _label_is_future(label: str | None, today: date) -> bool:
+    """Reverse a "%B %Y" label back to a month so it can be range-checked."""
+    if not label:
+        return False
+    for year in (today.year - 1, today.year, today.year + 1, today.year + 2):
+        for month in range(1, 13):
+            if format_month(date(year, month, 1)) == label:
+                return is_future_month(date(year, month, 1), today)
+    return False
+
+
+def test_metric_series_screens_forecast_rows_held_in_the_store(monkeypatch):
+    """The store itself holds forecast rows, so this injects them.
+
+    Postgres still has Sep-Dec 2026 energy rows ingested before the source
+    filter existed. The seed extract is clean, so a test that only reads the
+    seed would pass with the screen removed.
+    """
+    from striops.persistence import repository as repo_module
+
+    today = date.today()
+    this_month = today.replace(day=1)
+    next_year = date(today.year + 1, today.month, 1)
+    monkeypatch.setattr(repo_module, "_national_metric_series", lambda *_: [])
+    monkeypatch.setattr(
+        repo_module,
+        "_load_seed",
+        lambda name: [
+            {
+                "entity_id": "CPT",
+                "metric": "system_energy_kwh",
+                "unit": "kWh",
+                "points": [
+                    {"period": this_month.isoformat(), "value": 808.0},
+                    {"period": next_year.isoformat(), "value": 656.0},
+                ],
+            },
+            {
+                "entity_id": "CPT",
+                "metric": "pure_forecast",
+                "unit": "kWh",
+                "points": [{"period": next_year.isoformat(), "value": 1.0}],
+            },
+        ],
+    )
+
+    repo = repo_module.Repository()
+    repo._use_pg = False  # deterministic regardless of a local Postgres
+    by_metric = {s.metric: s for s in repo.metric_series()}
+
+    assert [p.period for p in by_metric["system_energy_kwh"].points] == [this_month]
+    assert "pure_forecast" not in by_metric, "a series left empty should be dropped"
+
+
+def test_metric_series_never_hands_out_future_points():
+    """The screen sits at the read boundary, so every consumer inherits it."""
+    from striops.persistence import get_repository
+
+    today = date.today()
+    for series in get_repository().metric_series():
+        assert series.points, "an emptied series should be dropped, not returned"
+        for point in series.points:
+            assert not is_future_month(point.period, today), (
+                f"{series.metric} carries future point {point.period}"
+            )
+
+
+def test_snapshot_freshness_is_never_in_the_future():
+    """Regression: the header advertised "Through December 2026" in August 2026.
+
+    Pulse was screened but the snapshot computed freshness straight off the
+    store, so the two disagreed by four months on the same page.
+    """
+    from striops.snapshot.service import build_city_snapshot
+
+    snapshot = build_city_snapshot()
+    today = date.today()
+    assert not _label_is_future(snapshot.data_through, today), (
+        f"snapshot reports future freshness {snapshot.data_through}"
+    )
+    assert not _label_is_future(snapshot.previous_period, today)
+
+
 def test_pulse_never_reports_a_future_period():
     """End-to-end: whatever the store holds, the brief stays in the past."""
     from striops.pulse import build_city_pulse
