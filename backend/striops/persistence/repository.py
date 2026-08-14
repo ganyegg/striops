@@ -32,7 +32,7 @@ def _load_seed(name: str) -> list[dict]:
 
 
 def _national_metric_series(municipality: str) -> list[MetricSeries]:
-    """Best-effort national seed/cache series (crime, census) for Pulse & engines."""
+    """Best-effort national seed/cache series (crime, census, dams) for Pulse & engines."""
     out: list[MetricSeries] = []
     try:
         from striops.ingestion.national.saps_crime import fetch_crime_series
@@ -40,6 +40,14 @@ def _national_metric_series(municipality: str) -> list[MetricSeries]:
         out.extend(fetch_crime_series(municipality))
     except Exception as exc:  # pragma: no cover
         log.warning("national crime series skipped", extra={"context": {"error": str(exc)}})
+    try:
+        from striops.ingestion.national.dws_dams import dws_series_from_cache
+
+        dams = dws_series_from_cache(municipality)
+        if dams is not None:
+            out.append(dams)
+    except Exception as exc:  # pragma: no cover
+        log.warning("national dws series skipped", extra={"context": {"error": str(exc)}})
     try:
         from striops.ingestion.national.census_baselines import fetch_census_series
 

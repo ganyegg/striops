@@ -72,6 +72,38 @@ def _parse_system_page(html: str) -> tuple[date | None, float | None, float | No
     return as_of, this_week, last_week
 
 
+def _series_from_history(history: list[dict]) -> MetricSeries | None:
+    points = [
+        MetricPoint(period=date.fromisoformat(h["period"]), value=float(h["value"]))
+        for h in sorted(history, key=lambda h: h["period"])
+        if h.get("period") and h.get("value") is not None
+    ]
+    if not points:
+        return None
+    return MetricSeries(
+        entity_id="svc-water",
+        metric="dws_system_storage",
+        unit="percent",
+        points=points,
+    )
+
+
+def dws_series_from_cache(municipality: str = "CPT") -> MetricSeries | None:
+    """Read the weekly-storage series from cache only.
+
+    Callable from request paths — ``fetch_dws_dam_series`` hits the network and
+    must stay in the ingest path.
+    """
+    hist_path = cache_dir() / f"dws_system_{municipality.upper()}_history.json"
+    if not hist_path.exists():
+        return None
+    try:
+        return _series_from_history(json.loads(hist_path.read_text()))
+    except Exception as exc:
+        log.warning("dws cache unreadable", extra={"context": {"error": str(exc)}})
+        return None
+
+
 def fetch_dws_dam_series(municipality: str = "CPT", timeout: float = 40.0) -> MetricSeries | None:
     river = _RIVER_BY_MUNI.get(municipality.upper())
     if not river:
@@ -105,12 +137,8 @@ def fetch_dws_dam_series(municipality: str = "CPT", timeout: float = 40.0) -> Me
         last_week = payload.get("last_week_pct")
 
     period = as_of.replace(day=1)
-    points = [MetricPoint(period=period, value=float(this_week))]
-    if last_week is not None:
-        # Approximate previous week as previous month point only when months differ;
-        # otherwise keep a single live point (pulse needs ≥2 — CoCT dam_storage covers that).
-        pass
-    # Build a short series from cache history if present
+    # Weekly readings are folded into a monthly history file so Pulse has the
+    # two points it needs for a month-over-month direction.
     hist_path = cache_dir() / f"dws_system_{municipality.upper()}_history.json"
     history: list[dict] = []
     if hist_path.exists():
@@ -122,15 +150,9 @@ def fetch_dws_dam_series(municipality: str = "CPT", timeout: float = 40.0) -> Me
     history.append({"period": period.isoformat(), "value": float(this_week)})
     history = sorted(history, key=lambda h: h["period"])[-24:]
     hist_path.write_text(json.dumps(history, indent=2))
-    points = [MetricPoint(period=date.fromisoformat(h["period"]), value=float(h["value"])) for h in history]
 
     log.info(
         "dws system storage",
         extra={"context": {"muni": municipality, "pct": this_week, "as_of": as_of.isoformat()}},
     )
-    return MetricSeries(
-        entity_id="svc-water",
-        metric="dws_system_storage",
-        unit="percent",
-        points=points,
-    )
+    return _series_from_history(history)
