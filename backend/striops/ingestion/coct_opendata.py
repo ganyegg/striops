@@ -23,6 +23,7 @@ import httpx
 from striops.core.logging import get_logger
 from striops.core.models import MetricPoint, MetricSeries
 from striops.core.paths import cache_dir
+from striops.core.periods import drop_future_points
 
 log = get_logger("striops.ingestion.coct_opendata")
 
@@ -365,7 +366,12 @@ _TRANSFORMERS = (
 
 
 def fetch_live_series() -> list[MetricSeries]:
-    """Return every live CoCT ODP series we can currently build (best-effort)."""
+    """Return every live CoCT ODP series we can currently build (best-effort).
+
+    Future-dated points are dropped here rather than downstream: the energy
+    dataset carries rows for the remainder of the financial year alongside
+    actuals, and once they are MetricPoints nothing can tell them apart.
+    """
     out: list[MetricSeries] = []
     for fn in _TRANSFORMERS:
         try:
@@ -373,6 +379,20 @@ def fetch_live_series() -> list[MetricSeries]:
         except Exception as exc:  # never let one feed break the batch
             log.warning("coct series failed", extra={"context": {"fn": fn.__name__, "error": str(exc)}})
             series = None
-        if series and series.points:
+        if not series or not series.points:
+            continue
+        kept = drop_future_points(series.points)
+        if len(kept) != len(series.points):
+            log.warning(
+                "future-dated points dropped",
+                extra={
+                    "context": {
+                        "metric": series.metric,
+                        "dropped": len(series.points) - len(kept),
+                    }
+                },
+            )
+        if kept:
+            series.points = kept
             out.append(series)
     return out

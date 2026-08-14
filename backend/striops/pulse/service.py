@@ -14,7 +14,7 @@ from pydantic import BaseModel, Field
 from striops.core.anomaly import describe_break, is_suspect
 from striops.core.config import Settings, get_settings
 from striops.core.glossary import explain
-from striops.core.periods import format_month, format_month_short
+from striops.core.periods import drop_future_points, format_month, format_month_short
 from striops.persistence import Repository, get_repository
 
 # True => a rising value is bad news (losses, backlogs, faults).
@@ -121,7 +121,10 @@ def build_city_pulse(
     all_periods: set = set()
 
     for series in repo.metric_series():
-        points = sorted(series.points, key=lambda p: p.period)
+        # Guard again at read time: points already stored from an earlier ingest
+        # would otherwise keep reporting movements between months that have not
+        # happened yet.
+        points = drop_future_points(sorted(series.points, key=lambda p: p.period))
         all_periods.update(p.period for p in points)
         if len(points) < 2:
             continue
