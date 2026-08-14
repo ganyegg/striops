@@ -447,6 +447,11 @@ class Initiative(BaseModel):
     related_risk_ids: list[str] = Field(default_factory=list)
     related_metric: dict | None = None
     source_ids: list[str] = Field(default_factory=list)
+    # Result of re-testing the curated claim against the live series it cites.
+    # confirmed | contradicted | unverified. A win that its own metric no longer
+    # supports must say so rather than keep asserting the headline.
+    data_check: str | None = None
+    data_check_note: str | None = None
 
 
 class InitiativeReport(BaseModel):

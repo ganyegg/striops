@@ -24,6 +24,7 @@ export default async function WinReportPage({ params }: { params: { winId: strin
   }
 
   const w = report.initiative;
+  const flagged = w.data_check === "contradicted" || w.data_check === "unverified";
 
   return (
     <main className="pb-16">
@@ -65,13 +66,38 @@ export default async function WinReportPage({ params }: { params: { winId: strin
 
         <div className="mt-4 flex flex-wrap items-center gap-2">
           <span className="pill bg-striops-ocean/20 text-striops-accent">{w.category}</span>
-          <span className={`pill ${priorityColor(w.priority)}`}>{w.status}</span>
+          <span
+            className={`pill ${
+              flagged
+                ? "border border-striops-warn/30 bg-striops-warn/15 text-striops-warn"
+                : priorityColor(w.priority)
+            }`}
+          >
+            {flagged ? "Under review" : w.status}
+          </span>
           <span className="text-xs text-white/40">
             Confidence {Math.round(w.confidence * 100)}% · {w.owner}
           </span>
         </div>
 
-        <p className="mt-4 font-display text-xl text-striops-sand">{w.headline}</p>
+        {flagged && w.data_check_note ? (
+          <div className="mt-4 rounded-2xl border border-striops-warn/30 bg-striops-warn/10 p-5">
+            <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-striops-warn">
+              {w.data_check === "contradicted"
+                ? "Claim contradicted by its own metric"
+                : "Claim not currently verifiable"}
+            </p>
+            <p className="mt-2 text-sm leading-relaxed text-white/85">{w.data_check_note}</p>
+          </div>
+        ) : null}
+
+        <p
+          className={`mt-4 font-display text-xl ${
+            flagged ? "text-white/45" : "text-striops-sand"
+          }`}
+        >
+          {w.headline}
+        </p>
 
         <div className="mt-6 rounded-2xl border border-striops-sky/20 bg-striops-sky/10 p-5">
           <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-striops-sky">
@@ -89,7 +115,13 @@ export default async function WinReportPage({ params }: { params: { winId: strin
           {w.metrics.map((m, i) => (
             <div key={i} className="card-win p-4">
               <p className="text-[11px] uppercase tracking-wide text-white/40">{m.label}</p>
-              <p className="mt-1 font-display text-2xl font-semibold text-striops-good">{m.value}</p>
+              <p
+                className={`mt-1 font-display text-2xl font-semibold ${
+                  flagged ? "text-white/45" : "text-striops-good"
+                }`}
+              >
+                {m.value}
+              </p>
               <p className="mt-1 text-xs text-white/35">as of {m.as_of}</p>
             </div>
           ))}

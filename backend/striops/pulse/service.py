@@ -11,6 +11,7 @@ from datetime import UTC, datetime
 
 from pydantic import BaseModel, Field
 
+from striops.core.anomaly import describe_break, is_suspect
 from striops.core.config import Settings, get_settings
 from striops.core.glossary import explain
 from striops.core.periods import format_month, format_month_short
@@ -77,13 +78,18 @@ class PulseItem(BaseModel):
     previous: float
     change: float
     change_pct: float
-    direction: str  # improving | worsening | flat
+    direction: str  # improving | worsening | flat | unverified
     sentence: str
     plain_language: str | None = None
     href: str
     latest_period: str | None = None
     previous_period: str | None = None
     provenance: str = "demonstration"  # live | demonstration
+    # Set when the latest or previous reading breaks out of its own trailing
+    # range. The month-over-month change is then reported as unverified rather
+    # than asserted, because the likely cause is the extract, not the service.
+    needs_verification: bool = False
+    verification_note: str | None = None
 
 
 class CityPulse(BaseModel):
@@ -95,6 +101,7 @@ class CityPulse(BaseModel):
     items: list[PulseItem] = Field(default_factory=list)
     worsening_count: int = 0
     improving_count: int = 0
+    unverified_count: int = 0
 
 
 def _fmt(value: float, unit: str | None) -> str:
@@ -126,22 +133,41 @@ def build_city_pulse(
         label = _LABELS.get(series.metric, series.metric.replace("_", " ").title())
         latest_label = format_month(last_pt.period)
         previous_label = format_month(prev_pt.period)
-        if abs(change_pct) < 0.5:
+
+        # Screen both endpoints of the comparison — a broken previous month
+        # invents a change just as readily as a broken latest one.
+        values = [p.value for p in points]
+        broken = next(
+            (i for i in (len(values) - 1, len(values) - 2) if is_suspect(values, i)),
+            None,
+        )
+        verification_note = describe_break(values, broken) if broken is not None else None
+        needs_verification = verification_note is not None
+
+        if needs_verification:
+            direction = "unverified"
+        elif abs(change_pct) < 0.5:
             direction = "flat"
         else:
             got_worse = (change > 0) == _HIGHER_IS_WORSE.get(series.metric, True)
             direction = "worsening" if got_worse else "improving"
 
-        verb = {
-            "worsening": "up" if change > 0 else "down",
-            "improving": "up" if change > 0 else "down",
-            "flat": "flat",
-        }[direction]
-        sentence = (
-            f"{label} {verb} {abs(change_pct):.1f}% "
-            f"({format_month_short(prev_pt.period)} → {format_month_short(last_pt.period)}: "
-            f"{_fmt(prev, series.unit)} → {_fmt(last, series.unit)})."
-        )
+        if needs_verification:
+            sentence = (
+                f"{label}: {_fmt(last, series.unit)} in {format_month_short(last_pt.period)} "
+                f"— {verification_note}"
+            )
+        else:
+            verb = {
+                "worsening": "up" if change > 0 else "down",
+                "improving": "up" if change > 0 else "down",
+                "flat": "flat",
+            }[direction]
+            sentence = (
+                f"{label} {verb} {abs(change_pct):.1f}% "
+                f"({format_month_short(prev_pt.period)} → {format_month_short(last_pt.period)}: "
+                f"{_fmt(prev, series.unit)} → {_fmt(last, series.unit)})."
+            )
         glossary = explain(series.metric)
 
         items.append(
@@ -161,6 +187,8 @@ def build_city_pulse(
                 latest_period=latest_label,
                 previous_period=previous_label,
                 provenance="live" if series.metric in _LIVE_METRICS else "demonstration",
+                needs_verification=needs_verification,
+                verification_note=verification_note,
             )
         )
 
@@ -179,10 +207,13 @@ def build_city_pulse(
         "population": 80,
         "library_visits": 90,
     }
-    order = {"worsening": 0, "improving": 1, "flat": 2}
+    order = {"worsening": 0, "improving": 1, "flat": 2, "unverified": 3}
     items.sort(
         key=lambda i: (
             0 if i.provenance == "live" else 1,  # live feeds first for the executive brief
+            # Anything awaiting verification sits below the metrics that can
+            # defend themselves — it must never lead the brief.
+            1 if i.needs_verification else 0,
             _SECTOR_RANK.get(i.metric, 50),
             order[i.direction],
             -abs(i.change_pct),
@@ -211,4 +242,5 @@ def build_city_pulse(
         items=items,
         worsening_count=sum(1 for i in items if i.direction == "worsening"),
         improving_count=sum(1 for i in items if i.direction == "improving"),
+        unverified_count=sum(1 for i in items if i.needs_verification),
     )

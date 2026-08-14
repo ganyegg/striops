@@ -14,9 +14,33 @@ def test_pulse_has_direction_per_metric():
     pulse = build_city_pulse()
     assert pulse.items, "seed metrics should yield pulse items"
     for item in pulse.items:
-        assert item.direction in ("improving", "worsening", "flat")
+        assert item.direction in ("improving", "worsening", "flat", "unverified")
         assert item.href.startswith("/metrics/")
-        assert "%" in item.sentence
+        if item.needs_verification:
+            # An unverified item states the break-out ratio instead of claiming
+            # a percentage change it cannot defend.
+            assert item.direction == "unverified"
+            assert item.verification_note
+            assert "verify" in item.sentence.lower()
+        else:
+            assert "%" in item.sentence
+
+
+def test_pulse_flags_extract_artefacts_instead_of_claiming_a_change():
+    """Refuse and lighting both break range in Jun 2026 — neither may lead the brief."""
+    pulse = build_city_pulse()
+    flagged = {i.metric for i in pulse.items if i.needs_verification}
+    assert "refuse_service_requests" in flagged
+    assert "public_lighting_outages" in flagged
+    assert pulse.unverified_count == len(flagged)
+    # Unverified rows are excluded from the headline counts.
+    for item in pulse.items:
+        if item.needs_verification:
+            assert item.direction not in ("worsening", "improving")
+    # ...and they sort below the live metrics that can defend themselves.
+    live = [i for i in pulse.items if i.provenance == "live"]
+    first_flagged = next(n for n, i in enumerate(live) if i.needs_verification)
+    assert all(not i.needs_verification for i in live[:first_flagged])
 
 
 def test_pulse_polarity_library_visits_up_is_improving():

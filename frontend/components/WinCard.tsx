@@ -2,7 +2,10 @@ import Link from "next/link";
 import type { Initiative } from "@/lib/api";
 import { priorityColor } from "@/lib/api";
 
+const UNSUPPORTED = new Set(["contradicted", "unverified"]);
+
 export default function WinCard({ win }: { win: Initiative }) {
+  const flagged = win.data_check ? UNSUPPORTED.has(win.data_check) : false;
   return (
     <Link
       href={`/wins/${encodeURIComponent(win.id)}`}
@@ -25,15 +28,37 @@ export default function WinCard({ win }: { win: Initiative }) {
       <div className="p-5">
         <div className="flex items-start justify-between gap-3">
           <h3 className="font-display text-lg font-semibold text-white">{win.title}</h3>
-          <span className={`pill ${priorityColor(win.priority)}`}>{win.status}</span>
+          <span
+            className={`pill ${
+              flagged
+                ? "border border-striops-warn/30 bg-striops-warn/15 text-striops-warn"
+                : priorityColor(win.priority)
+            }`}
+          >
+            {flagged ? "Under review" : win.status}
+          </span>
         </div>
         <p className="mt-2 text-sm font-medium text-striops-sand/90">{win.headline}</p>
         <p className="mt-2 text-sm leading-relaxed text-white/60">{win.plain_language}</p>
+        {flagged && win.data_check_note ? (
+          <p className="mt-3 rounded-lg border border-striops-warn/25 bg-striops-warn/5 px-3 py-2 text-[11px] text-striops-warn/90">
+            {win.data_check === "contradicted"
+              ? "Claim contradicted by its own metric: "
+              : "Claim not currently verifiable: "}
+            {win.data_check_note}
+          </p>
+        ) : null}
         {win.metrics?.[0] ? (
           <div className="mt-4 flex items-end justify-between border-t border-white/10 pt-3">
             <div>
               <p className="text-[11px] uppercase tracking-wide text-white/40">{win.metrics[0].label}</p>
-              <p className="font-display text-xl font-semibold text-striops-good">{win.metrics[0].value}</p>
+              <p
+                className={`font-display text-xl font-semibold ${
+                  flagged ? "text-white/45 line-through decoration-striops-warn/60" : "text-striops-good"
+                }`}
+              >
+                {win.metrics[0].value}
+              </p>
             </div>
             <span className="text-[11px] text-striops-accent">Open report →</span>
           </div>

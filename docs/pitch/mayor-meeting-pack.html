@@ -137,12 +137,12 @@
   <!-- ============================================================= -->
   <h2><span class="n">01</span>Read this first</h2>
 
-  <p class="lede">The product is in good shape. Two things will lose you the room if you walk in without handling them: the public URL is serving <b>three-week-old code</b>, and the Pulse is currently headlining <b>two service numbers that are data artefacts</b>, not service collapses. Both are covered in sections 05 and 06. Fix them, then the rest of this pack is the meeting.</p>
+  <p class="lede">The product is in good shape and one real risk remains. The two artefact-driven claims that were headlining the Pulse &mdash; refuse complaints and streetlight faults apparently doubling in a month &mdash; are <b>now screened and labelled by the system itself</b>, and the Wins page no longer contradicts the Pulse on streetlights. What is still outstanding is deployment: the public URL serves <b>code from 22 July</b>, so none of it is live yet. Section 06 is the list. Do that, and the rest of this pack is the meeting.</p>
 
   <div class="stats">
     <div class="stat"><div class="v">15</div><div class="k">metrics on the Pulse</div></div>
     <div class="stat"><div class="v">10</div><div class="k">carrying live provenance</div></div>
-    <div class="stat"><div class="v">9</div><div class="k">registered data feeds</div></div>
+    <div class="stat"><div class="v">2</div><div class="k">flagged awaiting verification</div></div>
     <div class="stat"><div class="v">R180k</div><div class="k">90-day pilot, fixed</div></div>
   </div>
 
@@ -276,47 +276,60 @@
   <p>The pilot is deliberately set under the roughly R200,000 competitive-bid threshold under MFMA supply-chain practice, so it can proceed on written quotations where City policy allows. Speed is part of the offer.</p>
 
   <!-- ============================================================= -->
-  <h2><span class="n">05</span>Do not say these numbers</h2>
+  <h2><span class="n">05</span>The artefacts, and how the system now handles them</h2>
 
-  <p>The system is currently surfacing four claims that will not survive contact with the relevant director. Each is a data-quality artefact, not a finding. Read this section before you open the app in front of anyone.</p>
+  <p>Two City service series broke range in June 2026. Until this week the Pulse asserted them as month-on-month findings, which would not have survived contact with the relevant director. The system now screens them and says so. <b>The demo is stronger because of this, not weaker &mdash; lead with it rather than hoping nobody clicks.</b></p>
 
-  <div class="band stop">
-    <h3>1. &ldquo;Refuse complaints are up 112% in a month&rdquo;</h3>
-    <p class="why">Refuse service requests ran between roughly 8,400 and 13,500 a month for fifteen straight months, then June 2026 posts <b>28,604</b>. The same extract also records <b>336</b> for September 2025, which is plainly broken. Two impossible months in one series means the extract changed, not the service. The Director of Urban Waste Management will know complaints did not double.</p>
+  <div class="band">
+    <h3>What the screen does</h3>
+    <p class="why">A reading more than twice &mdash; or less than half &mdash; the median of its own previous six periods is marked <b>awaiting verification</b> instead of being reported as a change. Those rows are dropped from the worsening and improving counts and sorted below the metrics that can defend themselves. The rule is deliberately blunt so you can restate it in one sentence in the room.</p>
+  </div>
+
+  <table>
+    <thead><tr><th>Series</th><th class="num">June 2026</th><th class="num">Median, prior 6</th><th class="num">Break</th><th>Now shown as</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>Refuse service requests</td><td class="num">28,604</td><td class="num">11,529</td><td class="num">2.5x</td>
+        <td><span class="tag t-demo">Awaiting verification</span></td>
+      </tr>
+      <tr>
+        <td>Public lighting outages</td><td class="num">43,588</td><td class="num">9,357</td><td class="num">4.7x</td>
+        <td><span class="tag t-demo">Awaiting verification</span></td>
+      </tr>
+    </tbody>
+    <caption>Both break in the same month, which points at one shared cause &mdash; most likely a change in how C3 service requests are categorised or de-duplicated. The refuse extract also records 336 for September 2025, which is plainly broken and is screened on the same rule.</caption>
+  </table>
+
+  <div class="say">
+    <div class="label">Say this when the flag appears on screen</div>
+    <q>That row is the product refusing to lie to you. Refuse complaints did not treble in June &mdash; the extract changed. A quarterly report would have printed the spike as a service collapse and someone would have spent a month responding to it. Striops flags it, keeps it out of the headline counts, and tells you who to ask.</q>
   </div>
 
   <div class="band stop">
-    <h3>2. &ldquo;Streetlight faults are up 116% in a month&rdquo;</h3>
-    <p class="why">Public lighting outages sat between 7,900 and 11,200 a month through April 2026, then May posts 20,154 and June posts <b>43,588</b> &mdash; a fourfold ramp in two months, in the same two months the refuse series breaks. One shared cause, almost certainly a change in how C3 service requests are categorised or de-duplicated.</p>
-  </div>
-
-  <div class="band stop">
-    <h3>3. The app contradicts itself on streetlights</h3>
-    <p class="why">The Wins page currently reads &ldquo;public lighting outages trending down, faults falling about 2.7% per period &mdash; safer streets at night&rdquo; while the Pulse reads &ldquo;up 116.3%&rdquo;. Both are on screen in the same product. If the Mayor clicks between the two pages, the credibility argument is over. This is the single highest-priority fix.</p>
-  </div>
-
-  <div class="band stop">
-    <h3>4. Two different dam levels, both labelled live</h3>
-    <p class="why">The City series shows <b>61.35% for January 2026</b> and stops there; the DWS weekly series shows <b>78.2% for August 2026</b>. They are seventeen points apart and both are tagged live, because they measure different things over different periods. Present the DWS figure as the current position, and describe the City series as the City's own historical record &mdash; do not show them side by side without that sentence. Note also that the DWS series holds only two months so far, so its &ldquo;flat, 0.0%&rdquo; month-on-month reading establishes currency, not a trend.</p>
-  </div>
-
-  <div class="band warn">
-    <h3>And handle the underspend figures carefully</h3>
-    <p class="why">The R1.21bn Water and Sanitation underspend, and the R0.88bn on Roads and Transport, come from <b>demonstration full-year function totals</b>, not the City's official mid-year year-to-date position for FY2025/26. The system labels them as such and so must you. The correct framing is method, not amount: &ldquo;this is the shape of the analysis &mdash; wire the S52 tables in the pilot and it becomes your number.&rdquo;</p>
+    <h3>Still do not present these two as findings</h3>
+    <p class="why"><b>Two different dam levels, both live.</b> The City series shows 61.35% for January 2026 and stops there; the DWS weekly series shows 78.2% for August 2026. They are seventeen points apart because they measure different things over different periods. Present the DWS figure as the current position and the City series as the City's own historical record &mdash; never side by side without that sentence. The DWS series also holds only two months so far, so its &ldquo;flat&rdquo; month-on-month reading establishes currency, not a trend.</p>
+    <p class="why"><b>The underspend amounts.</b> The R1.21bn on Water and Sanitation and R0.88bn on Roads and Transport come from demonstration full-year function totals, not the City's official mid-year position for FY2025/26. The system labels them and so must you. Sell the method, not the amount: &ldquo;this is the shape of the analysis &mdash; wire the S52 tables in the pilot and it becomes your number.&rdquo;</p>
   </div>
 
   <!-- ============================================================= -->
   <div class="page-break"></div>
   <h2><span class="n">06</span>Fix before you walk in</h2>
 
+  <p><b>One blocker is outstanding, and it is the important one.</b> The code changes below it are done, tested and pushed &mdash; but none of them reach the Mayor until the site deploys.</p>
+
   <ol class="steps">
-    <li><b>Get the live site current.</b> <span class="mono">striops-web.onrender.com</span> and <span class="mono">striops-api.onrender.com</span> are both serving the build from <b>22 July</b>. Everything since is on GitHub but never deployed. Consequences: <span class="mono">/themes</span>, <span class="mono">/pulse</span>, <span class="mono">/sectors</span>, <span class="mono">/risks</span>, <span class="mono">/act</span>, <span class="mono">/sources</span>, <span class="mono">/simulate</span>, <span class="mono">/briefing</span> and <span class="mono">/opportunities</span> all return <b>404</b> in production, the crime and census feeds are absent, and the feed register shows five sources instead of nine. Open the Render dashboard, check why auto-deploy stopped for both services, and redeploy from <span class="mono">main</span>.</li>
-    <li><b>Reconcile the streetlight contradiction.</b> Pulse and Wins must not disagree on screen. Either suppress the artefact months from the trend claim or label them as unverified &mdash; but not both directions at once.</li>
-    <li><b>Guard the refuse and lighting outliers.</b> A point several times outside the trailing range should be flagged for verification rather than headlined as a month-on-month finding.</li>
-    <li><b>Run an ingest against production once it is current,</b> so the deployed database holds the Treasury, SAPS, DWS, Census and AGSA series rather than falling back to seed.</li>
-    <li><b>Clear the two overdue actions or restate their dates.</b> <span class="mono">act-refuse-capacity</span> was due 30 June and <span class="mono">act-pipe-programme-report</span> 31 July. An accountability product that shows its own overdue items is either an honesty asset or an unforced error, depending entirely on whether you raise it first.</li>
-    <li><b>Have a fallback demo ready.</b> If Render cannot be fixed in time, run the current build locally and present that, rather than a stale public URL.</li>
+    <li><b>Get the live site current. This is the whole list.</b> <span class="mono">striops-web.onrender.com</span> and <span class="mono">striops-api.onrender.com</span> are both serving the build from <b>22 July</b>. Everything since is on GitHub but was never deployed. Consequences today: <span class="mono">/themes</span>, <span class="mono">/pulse</span>, <span class="mono">/sectors</span>, <span class="mono">/risks</span>, <span class="mono">/act</span>, <span class="mono">/sources</span>, <span class="mono">/simulate</span>, <span class="mono">/briefing</span> and <span class="mono">/opportunities</span> all return <b>404</b> in production, the crime and census feeds are absent, the feed register shows five sources instead of nine, and the outlier screen is not running. Open the Render dashboard, find why auto-deploy stopped for both services, and redeploy from <span class="mono">main</span>. Both services build clean locally, so this is a platform question, not a code question.</li>
+    <li><b>Run an ingest once production is current,</b> so the deployed database holds the Treasury, SAPS, DWS, Census and AGSA series rather than falling back to seed. The scheduled workflow will do it, or trigger <span class="mono">POST /refresh?run_ingest=true</span> directly.</li>
+    <li><b>Have a fallback demo ready regardless.</b> If Render cannot be fixed in time, run the current build locally and present that. Do not open the public URL as a demo while it is stale.</li>
+    <li><b>Clear the two overdue actions or restate their dates.</b> <span class="mono">act-refuse-capacity</span> was due 30 June and <span class="mono">act-pipe-programme-report</span> 31 July. An accountability product showing its own overdue items is either an honesty asset or an unforced error, depending entirely on whether you raise it first.</li>
   </ol>
+
+  <h3>Already done, pending deployment</h3>
+  <ul>
+    <li><b>Outlier screening.</b> Refuse and lighting are flagged as awaiting verification instead of being reported as month-on-month findings, and excluded from the headline counts.</li>
+    <li><b>The streetlight self-contradiction is resolved.</b> The Wins page claimed &ldquo;faults falling about 2.7% per period&rdquo; from a stale seed series while the Pulse read &ldquo;up 116.3%&rdquo;. Curated wins that cite a metric are now re-tested against that live series on every read; one whose own data no longer supports it is marked <span class="mono">Under review</span> and pushed down the page rather than left asserting the headline.</li>
+    <li><b>Dam storage is current.</b> The DWS weekly reading now reaches the Pulse, moving it from January to August 2026.</li>
+  </ul>
 
   <div class="band">
     <h3>Turn item 5 into an asset</h3>
@@ -390,7 +403,8 @@
       <tr><td>&ldquo;Where does it sit?&rdquo;</td><td>Pilot in South African region or hybrid; production target inside the City tenancy with single sign-on.</td></tr>
       <tr><td>&ldquo;What if you disappear?&rdquo;</td><td>Data in the City tenancy, open exports, continuity clauses, and no proprietary formats holding your facts hostage.</td></tr>
       <tr><td>&ldquo;Your crime data is a year old.&rdquo;</td><td>Correct, and the product says so on the row. That is the national release cycle. Wire the City's precinct extract and it becomes monthly &mdash; which is precisely what the pilot is for.</td></tr>
-      <tr><td>&ldquo;Refuse complaints did not double.&rdquo;</td><td>Agreed &mdash; that is an extract artefact, and the fact that it is visible is the argument for a provenance layer. Here is the trailing range it broke out of.</td></tr>
+      <tr><td>&ldquo;Refuse complaints did not double.&rdquo;</td><td>Correct, and the system already says so &mdash; that row is flagged awaiting verification and excluded from the counts, because the reading is 2.5 times the median of its own previous six months. That is an extract artefact, not a service collapse, and catching it is the argument for the whole provenance layer.</td></tr>
+      <tr><td>&ldquo;So your data is wrong.&rdquo;</td><td>The City's extract changed shape; every consumer of that feed has the same problem. The difference is that we detect it and label it rather than printing it in a report. A number that can flag itself is worth more than one that cannot.</td></tr>
     </tbody>
   </table>
 

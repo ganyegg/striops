@@ -549,6 +549,8 @@ export interface Initiative {
   related_risk_ids: string[];
   related_metric?: { entity_id: string; metric: string } | null;
   source_ids: string[];
+  data_check?: "confirmed" | "contradicted" | "unverified" | null;
+  data_check_note?: string | null;
 }
 
 export interface InitiativeReport {
@@ -602,13 +604,15 @@ export interface PulseItem {
   previous: number;
   change: number;
   change_pct: number;
-  direction: "improving" | "worsening" | "flat";
+  direction: "improving" | "worsening" | "flat" | "unverified";
   sentence: string;
   plain_language?: string | null;
   href: string;
   latest_period?: string | null;
   previous_period?: string | null;
   provenance?: "live" | "demonstration";
+  needs_verification?: boolean;
+  verification_note?: string | null;
 }
 
 export interface CityPulse {
@@ -620,6 +624,7 @@ export interface CityPulse {
   items: PulseItem[];
   worsening_count: number;
   improving_count: number;
+  unverified_count?: number;
 }
 
 export interface FeedStatus {

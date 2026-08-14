@@ -225,6 +225,27 @@ Domain `/CPT/domains/health` with clinic waiting days + EMS response series, **H
 - **Nightly / scheduled ingest** keeps the twin current from public feeds.  
 - **Refresh now** (header button → `POST /refresh`) clears the brief cache, re-runs ingestion, and rebuilds — use when someone needs data immediately.
 
+### 1.5a Being dynamic cuts both ways — the outlier screen
+
+A live feed can change shape without telling us. In June 2026 the C3 extract moved refuse service requests from a ~11,500/month baseline to 28,604 and public lighting faults from ~9,400 to 43,588 in the same month. Presented as month-over-month findings, both would have been wrong in a way any director would catch instantly.
+
+`striops.core.anomaly` screens every series before a claim is made about it:
+
+- A reading **≥2× or ≤½** the median of its own **previous 6 periods** is marked **awaiting verification**.
+- Series with fewer than 6 prior points are never judged — a newly wired feed gets the benefit of the doubt.
+- The baseline is **trailing**, not whole-series, so a steadily-growing series (arrears) and a seasonal one (dam storage) do not trip it.
+
+Consequences downstream:
+
+| Surface | Behaviour when a reading breaks range |
+|---|---|
+| Pulse | `direction: "unverified"`, `needs_verification: true`, sentence states the break-out ratio instead of a % change; excluded from `worsening_count` / `improving_count`; sorted below metrics that can defend themselves; counted in `unverified_count` |
+| Wins | A curated win citing that metric is re-tested on every read — `data_check` becomes `confirmed`, `contradicted`, or `unverified`, and anything unsupported renders as **Under review** and sorts last |
+
+The rule is deliberately blunt (ratio against a trailing median, not a z-score) because operational counts are neither normal nor stationary, and because an executive has to be able to restate it in one sentence.
+
+**Why wins are re-tested:** curated narrative goes stale the moment its feed moves. The lighting win asserted "faults falling ~2.7% per period" from an old seed series while the Pulse read "up 116.3%" — the same product contradicting itself on two pages. Claims that cite a metric now have to keep earning it.
+
 ## 1.6 Ask Striops & how AI is used
 
 | Layer | Who | Role |

@@ -20,6 +20,11 @@ const DIRECTION_META: Record<
     dot: "bg-white/30",
     label: "Flat",
   },
+  unverified: {
+    badge: "bg-striops-warn/15 text-striops-warn border border-striops-warn/30",
+    dot: "bg-striops-warn",
+    label: "Verify",
+  },
 };
 
 export default function PulseStrip({
@@ -63,6 +68,12 @@ export default function PulseStrip({
           <span className="text-striops-bad">{pulse.worsening_count} worsening</span>
           <span className="text-white/25">·</span>
           <span className="text-striops-good">{pulse.improving_count} improving</span>
+          {pulse.unverified_count ? (
+            <>
+              <span className="text-white/25">·</span>
+              <span className="text-striops-warn">{pulse.unverified_count} to verify</span>
+            </>
+          ) : null}
         </div>
       </div>
       <ul className="divide-y divide-white/[0.06]">

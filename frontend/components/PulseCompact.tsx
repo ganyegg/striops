@@ -5,6 +5,7 @@ const DOT: Record<string, string> = {
   worsening: "bg-striops-bad",
   improving: "bg-striops-good",
   flat: "bg-white/30",
+  unverified: "bg-striops-warn",
 };
 
 export default function PulseCompact({ pulse }: { pulse: CityPulse }) {
@@ -41,10 +42,14 @@ export default function PulseCompact({ pulse }: { pulse: CityPulse }) {
               <span className={`mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full ${DOT[item.direction] ?? DOT.flat}`} />
               <span className="min-w-0 flex-1 text-sm leading-snug text-white/75 group-hover:text-white">
                 {item.label}{" "}
-                <span className="text-white/45">
-                  {item.change_pct > 0 ? "+" : ""}
-                  {item.change_pct}%
-                </span>
+                {item.needs_verification ? (
+                  <span className="text-striops-warn">awaiting verification</span>
+                ) : (
+                  <span className="text-white/45">
+                    {item.change_pct > 0 ? "+" : ""}
+                    {item.change_pct}%
+                  </span>
+                )}
               </span>
             </Link>
           </li>
