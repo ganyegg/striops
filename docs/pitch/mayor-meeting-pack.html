@@ -180,7 +180,14 @@
       <tr>
         <td>Dam storage &mdash; Cape Town system</td>
         <td class="num">78.2%</td>
-        <td class="nowrap">Aug 2026</td>
+        <td class="nowrap">Week of 10 Aug 2026</td>
+        <td>DWS weekly State of Dams</td>
+        <td><span class="tag t-live">Live</span></td>
+      </tr>
+      <tr>
+        <td>Dam storage &mdash; same week last year</td>
+        <td class="num">88.1%</td>
+        <td class="nowrap">Aug 2025</td>
         <td>DWS weekly State of Dams</td>
         <td><span class="tag t-live">Live</span></td>
       </tr>
@@ -312,7 +319,7 @@
 
   <div class="band stop">
     <h3>Still do not present these two as findings</h3>
-    <p class="why"><b>Two different dam levels, both live.</b> The City series shows 61.35% for January 2026 and stops there; the DWS weekly series shows 78.2% for August 2026. They are seventeen points apart because they measure different things over different periods. Present the DWS figure as the current position and the City series as the City's own historical record &mdash; never side by side without that sentence. The DWS series also holds only two months so far, so its &ldquo;flat&rdquo; month-on-month reading establishes currency, not a trend.</p>
+    <p class="why"><b>Two different dam levels, both live.</b> The City series shows 61.35% for January 2026 and stops there; the DWS system reading is 78.2% for the week of 10 August 2026. They are seventeen points apart because they measure different things over different periods. Present the DWS figure as the current position and the City series as the City's own historical record &mdash; never side by side without that sentence. The comparison worth making is year-on-year: <b>78.2% now against 88.1% the same week last year</b>, roughly ten percentage points down.</p>
     <p class="why"><b>The underspend amounts.</b> The R1.21bn on Water and Sanitation and R0.88bn on Roads and Transport come from demonstration full-year function totals, not the City's official mid-year position for FY2025/26. The system labels them and so must you. Sell the method, not the amount: &ldquo;this is the shape of the analysis &mdash; wire the S52 tables in the pilot and it becomes your number.&rdquo;</p>
   </div>
 
@@ -334,7 +341,8 @@
     <li><b>Crime is current to March 2026.</b> The previous extract came from a volunteer GitHub project that stopped updating in December 2025, freezing Cape Town crime at September 2025. Striops now reads the station-level sheet inside each SAPS quarterly workbook directly. The new parser reproduces the old extract exactly across all 69 overlapping months, and adds six.</li>
     <li><b>Outlier screening.</b> Refuse and lighting are flagged as awaiting verification instead of being reported as month-on-month findings, and excluded from the headline counts.</li>
     <li><b>The streetlight self-contradiction is resolved.</b> The Wins page claimed &ldquo;faults falling about 2.7% per period&rdquo; from a stale seed series while the Pulse read &ldquo;up 116.3%&rdquo;. Curated wins that cite a metric are now re-tested against that live series on every read; one whose own data no longer supports it is marked <span class="mono">Under review</span> and pushed down the page rather than left asserting the headline.</li>
-    <li><b>Dam storage is current.</b> The DWS weekly reading now reaches the Pulse, moving it from January to August 2026.</li>
+    <li><b>Dam storage is current and comparative.</b> The DWS weekly reading now reaches the Pulse, moving it from January to August 2026, and carries the published year-ago figure so the movement means something.</li>
+    <li><b>No more future-dated numbers.</b> The City's energy dataset carries rows for the rest of the financial year alongside actuals, so the site was reporting &ldquo;system energy down 9.5%, November to December 2026&rdquo; &mdash; in August. Points beyond the current month are now dropped at ingest and again when the Pulse is built.</li>
   </ul>
 
   <div class="band">
