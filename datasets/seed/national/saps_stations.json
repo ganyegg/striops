@@ -1,0 +1,1452 @@
+{
+  "source": "SAPS police station register with Census 2022 population, per municipality",
+  "source_note": "Station-to-municipality mapping and station populations derived from afrith/crime-stats police_stations.csv (Census 2022 police district boundaries). Shipped as seed so ingestion does not depend on that repository, which stopped being updated in December 2025.",
+  "municipalities": {
+    "CPT": {
+      "municipality": "CPT",
+      "station_count": 62,
+      "population_census_2022": 4695766,
+      "stations": [
+        {
+          "code": "PD199035",
+          "name": "Athlone",
+          "key": "athlone"
+        },
+        {
+          "code": "PD199062",
+          "name": "Atlantis",
+          "key": "atlantis"
+        },
+        {
+          "code": "PD199041",
+          "name": "Belhar",
+          "key": "belhar"
+        },
+        {
+          "code": "PD199052",
+          "name": "Bellville",
+          "key": "bellville"
+        },
+        {
+          "code": "PD199047",
+          "name": "Bellville South",
+          "key": "bellville south"
+        },
+        {
+          "code": "PD199037",
+          "name": "Bishop Lavis",
+          "key": "bishop lavis"
+        },
+        {
+          "code": "PD199055",
+          "name": "Bothasig",
+          "key": "bothasig"
+        },
+        {
+          "code": "PD199034",
+          "name": "Camps Bay",
+          "key": "camps bay"
+        },
+        {
+          "code": "PD199043",
+          "name": "Cape Town Central",
+          "key": "cape town central"
+        },
+        {
+          "code": "PD199031",
+          "name": "Claremont",
+          "key": "claremont"
+        },
+        {
+          "code": "PD199033",
+          "name": "Delft",
+          "key": "delft"
+        },
+        {
+          "code": "PD199020",
+          "name": "Dieprivier",
+          "key": "dieprivier"
+        },
+        {
+          "code": "PD199058",
+          "name": "Durbanville",
+          "key": "durbanville"
+        },
+        {
+          "code": "PD199046",
+          "name": "Elsies River",
+          "key": "elsies river"
+        },
+        {
+          "code": "PD199006",
+          "name": "Fish Hoek",
+          "key": "fish hoek"
+        },
+        {
+          "code": "PD199051",
+          "name": "Goodwood",
+          "key": "goodwood"
+        },
+        {
+          "code": "PD199002",
+          "name": "Gordons Bay",
+          "key": "gordons bay"
+        },
+        {
+          "code": "PD199015",
+          "name": "Grassy Park",
+          "key": "grassy park"
+        },
+        {
+          "code": "PD199030",
+          "name": "Gugulethu",
+          "key": "gugulethu"
+        },
+        {
+          "code": "PD199011",
+          "name": "Harare",
+          "key": "harare"
+        },
+        {
+          "code": "PD199019",
+          "name": "Hout Bay",
+          "key": "hout bay"
+        },
+        {
+          "code": "PD199050",
+          "name": "Kensington",
+          "key": "kensington"
+        },
+        {
+          "code": "PD199022",
+          "name": "Khayelitsha",
+          "key": "khayelitsha"
+        },
+        {
+          "code": "PD199010",
+          "name": "Kirstenhof",
+          "key": "kirstenhof"
+        },
+        {
+          "code": "PD199025",
+          "name": "Kleinvlei",
+          "key": "kleinvlei"
+        },
+        {
+          "code": "PD199056",
+          "name": "Kraaifontein",
+          "key": "kraaifontein"
+        },
+        {
+          "code": "PD199042",
+          "name": "Kuilsrivier",
+          "key": "kuilsrivier"
+        },
+        {
+          "code": "PD199040",
+          "name": "Langa",
+          "key": "langa"
+        },
+        {
+          "code": "PD199028",
+          "name": "Lansdowne",
+          "key": "lansdowne"
+        },
+        {
+          "code": "PD199021",
+          "name": "Lentegeur",
+          "key": "lentegeur"
+        },
+        {
+          "code": "PD199017",
+          "name": "Lingelethu-West",
+          "key": "lingelethu west"
+        },
+        {
+          "code": "PD199004",
+          "name": "Lwandle",
+          "key": "lwandle"
+        },
+        {
+          "code": "PD199014",
+          "name": "Macassar",
+          "key": "macassar"
+        },
+        {
+          "code": "PD199048",
+          "name": "Maitland",
+          "key": "maitland"
+        },
+        {
+          "code": "PD199016",
+          "name": "Makhaza",
+          "key": "makhaza"
+        },
+        {
+          "code": "PD199032",
+          "name": "Manenberg",
+          "key": "manenberg"
+        },
+        {
+          "code": "PD199060",
+          "name": "Melkbosstrand",
+          "key": "melkbosstrand"
+        },
+        {
+          "code": "PD199029",
+          "name": "Mfuleni",
+          "key": "mfuleni"
+        },
+        {
+          "code": "PD199054",
+          "name": "Milnerton",
+          "key": "milnerton"
+        },
+        {
+          "code": "PD199013",
+          "name": "Mitchells Plain",
+          "key": "mitchells plain"
+        },
+        {
+          "code": "PD199038",
+          "name": "Mowbray",
+          "key": "mowbray"
+        },
+        {
+          "code": "PD199007",
+          "name": "Muizenberg",
+          "key": "muizenberg"
+        },
+        {
+          "code": "PD199027",
+          "name": "Nyanga",
+          "key": "nyanga"
+        },
+        {
+          "code": "PD199003",
+          "name": "Ocean View",
+          "key": "ocean view"
+        },
+        {
+          "code": "PD199053",
+          "name": "Parow",
+          "key": "parow"
+        },
+        {
+          "code": "PD199061",
+          "name": "Philadelphia",
+          "key": "philadelphia"
+        },
+        {
+          "code": "PD199018",
+          "name": "Philippi",
+          "key": "philippi"
+        },
+        {
+          "code": "PD199024",
+          "name": "Philippi East",
+          "key": "philippi east"
+        },
+        {
+          "code": "PD199045",
+          "name": "Pinelands",
+          "key": "pinelands"
+        },
+        {
+          "code": "PD199039",
+          "name": "Ravensmead",
+          "key": "ravensmead"
+        },
+        {
+          "code": "PD199036",
+          "name": "Rondebosch",
+          "key": "rondebosch"
+        },
+        {
+          "code": "PD199023",
+          "name": "Samora Machel",
+          "key": "samora machel"
+        },
+        {
+          "code": "PD199049",
+          "name": "Sea Point",
+          "key": "sea point"
+        },
+        {
+          "code": "PD199001",
+          "name": "Simon's Town",
+          "key": "simons town"
+        },
+        {
+          "code": "PD199009",
+          "name": "Somerset West",
+          "key": "somerset west"
+        },
+        {
+          "code": "PD199012",
+          "name": "Steenberg",
+          "key": "steenberg"
+        },
+        {
+          "code": "PD199005",
+          "name": "Strand",
+          "key": "strand"
+        },
+        {
+          "code": "PD199008",
+          "name": "Strandfontein",
+          "key": "strandfontein"
+        },
+        {
+          "code": "PD199059",
+          "name": "Table Bay Harbour",
+          "key": "table bay harbour"
+        },
+        {
+          "code": "PD199057",
+          "name": "Table View",
+          "key": "table view"
+        },
+        {
+          "code": "PD199044",
+          "name": "Woodstock",
+          "key": "woodstock"
+        },
+        {
+          "code": "PD199026",
+          "name": "Wynberg",
+          "key": "wynberg"
+        }
+      ]
+    },
+    "JHB": {
+      "municipality": "JHB",
+      "station_count": 44,
+      "population_census_2022": 4146985,
+      "stations": [
+        {
+          "code": "PD798035",
+          "name": "Alexandra",
+          "key": "alexandra"
+        },
+        {
+          "code": "PD798012",
+          "name": "Booysens",
+          "key": "booysens"
+        },
+        {
+          "code": "PD798034",
+          "name": "Bramley",
+          "key": "bramley"
+        },
+        {
+          "code": "PD798022",
+          "name": "Brixton",
+          "key": "brixton"
+        },
+        {
+          "code": "PD798019",
+          "name": "Cleveland",
+          "key": "cleveland"
+        },
+        {
+          "code": "PD798041",
+          "name": "Cosmo City",
+          "key": "cosmo city"
+        },
+        {
+          "code": "PD798010",
+          "name": "Diepkloof",
+          "key": "diepkloof"
+        },
+        {
+          "code": "PD798044",
+          "name": "Diepsloot",
+          "key": "diepsloot"
+        },
+        {
+          "code": "PD798020",
+          "name": "Dobsonville",
+          "key": "dobsonville"
+        },
+        {
+          "code": "PD798015",
+          "name": "Doornkop",
+          "key": "doornkop"
+        },
+        {
+          "code": "PD798042",
+          "name": "Douglasdale",
+          "key": "douglasdale"
+        },
+        {
+          "code": "PD798004",
+          "name": "Eldorado Park",
+          "key": "eldorado park"
+        },
+        {
+          "code": "PD798001",
+          "name": "Ennerdale",
+          "key": "ennerdale"
+        },
+        {
+          "code": "PD798031",
+          "name": "Fairland",
+          "key": "fairland"
+        },
+        {
+          "code": "PD798025",
+          "name": "Florida",
+          "key": "florida"
+        },
+        {
+          "code": "PD798023",
+          "name": "Hillbrow",
+          "key": "hillbrow"
+        },
+        {
+          "code": "PD798036",
+          "name": "Honeydew",
+          "key": "honeydew"
+        },
+        {
+          "code": "PD798013",
+          "name": "Jabulani",
+          "key": "jabulani"
+        },
+        {
+          "code": "PD798021",
+          "name": "Jeppe",
+          "key": "jeppe"
+        },
+        {
+          "code": "PD798018",
+          "name": "Johannesburg Central",
+          "key": "johannesburg central"
+        },
+        {
+          "code": "PD798006",
+          "name": "Kliptown",
+          "key": "kliptown"
+        },
+        {
+          "code": "PD798017",
+          "name": "Langlaagte",
+          "key": "langlaagte"
+        },
+        {
+          "code": "PD798003",
+          "name": "Lenasia",
+          "key": "lenasia"
+        },
+        {
+          "code": "PD798002",
+          "name": "Lenasia South",
+          "key": "lenasia south"
+        },
+        {
+          "code": "PD798032",
+          "name": "Linden",
+          "key": "linden"
+        },
+        {
+          "code": "PD798016",
+          "name": "Meadowlands",
+          "key": "meadowlands"
+        },
+        {
+          "code": "PD798043",
+          "name": "Midrand",
+          "key": "midrand"
+        },
+        {
+          "code": "PD798011",
+          "name": "Moffatview",
+          "key": "moffatview"
+        },
+        {
+          "code": "PD798005",
+          "name": "Mondeor",
+          "key": "mondeor"
+        },
+        {
+          "code": "PD798008",
+          "name": "Moroka",
+          "key": "moroka"
+        },
+        {
+          "code": "PD798009",
+          "name": "Naledi",
+          "key": "naledi"
+        },
+        {
+          "code": "PD798030",
+          "name": "Norwood",
+          "key": "norwood"
+        },
+        {
+          "code": "PD798014",
+          "name": "Orlando",
+          "key": "orlando"
+        },
+        {
+          "code": "PD798029",
+          "name": "Parkview",
+          "key": "parkview"
+        },
+        {
+          "code": "PD798007",
+          "name": "Protea",
+          "key": "protea"
+        },
+        {
+          "code": "PD798040",
+          "name": "Rabie Ridge",
+          "key": "rabie ridge"
+        },
+        {
+          "code": "PD798038",
+          "name": "Randburg",
+          "key": "randburg"
+        },
+        {
+          "code": "PD798027",
+          "name": "Roodepoort",
+          "key": "roodepoort"
+        },
+        {
+          "code": "PD798028",
+          "name": "Rosebank",
+          "key": "rosebank"
+        },
+        {
+          "code": "PD798033",
+          "name": "Sandringham",
+          "key": "sandringham"
+        },
+        {
+          "code": "PD798039",
+          "name": "Sandton",
+          "key": "sandton"
+        },
+        {
+          "code": "PD798037",
+          "name": "Sebenza",
+          "key": "sebenza"
+        },
+        {
+          "code": "PD798026",
+          "name": "Sophia Town",
+          "key": "sophia town"
+        },
+        {
+          "code": "PD798024",
+          "name": "Yeoville",
+          "key": "yeoville"
+        }
+      ]
+    },
+    "ETH": {
+      "municipality": "ETH",
+      "station_count": 43,
+      "population_census_2022": 4204594,
+      "stations": [
+        {
+          "code": "PD599002",
+          "name": "Amanzimtoti",
+          "key": "amanzimtoti"
+        },
+        {
+          "code": "PD599011",
+          "name": "Bayview",
+          "key": "bayview"
+        },
+        {
+          "code": "PD599015",
+          "name": "Bellair",
+          "key": "bellair"
+        },
+        {
+          "code": "PD599024",
+          "name": "Berea",
+          "key": "berea"
+        },
+        {
+          "code": "PD599008",
+          "name": "Bhekithemba",
+          "key": "bhekithemba"
+        },
+        {
+          "code": "PD599013",
+          "name": "Brighton Beach",
+          "key": "brighton beach"
+        },
+        {
+          "code": "PD599022",
+          "name": "Cato Manor",
+          "key": "cato manor"
+        },
+        {
+          "code": "PD599014",
+          "name": "Chatsworth",
+          "key": "chatsworth"
+        },
+        {
+          "code": "PD599026",
+          "name": "Durban Central",
+          "key": "durban central"
+        },
+        {
+          "code": "PD599037",
+          "name": "Durban North",
+          "key": "durban north"
+        },
+        {
+          "code": "PD599005",
+          "name": "Folweni",
+          "key": "folweni"
+        },
+        {
+          "code": "PD599033",
+          "name": "Greenwood Park",
+          "key": "greenwood park"
+        },
+        {
+          "code": "PD599031",
+          "name": "Hammarsdale",
+          "key": "hammarsdale"
+        },
+        {
+          "code": "PD599034",
+          "name": "Hillcrest",
+          "key": "hillcrest"
+        },
+        {
+          "code": "PD599040",
+          "name": "Inanda",
+          "key": "inanda"
+        },
+        {
+          "code": "PD599039",
+          "name": "Inchanga",
+          "key": "inchanga"
+        },
+        {
+          "code": "PD599006",
+          "name": "Isipingo",
+          "key": "isipingo"
+        },
+        {
+          "code": "PD599042",
+          "name": "King Shaka Intl Airport",
+          "key": "king shaka intl airport"
+        },
+        {
+          "code": "PD599032",
+          "name": "Kwadabeka",
+          "key": "kwadabeka"
+        },
+        {
+          "code": "PD599003",
+          "name": "Kwamakhutha",
+          "key": "kwamakhutha"
+        },
+        {
+          "code": "PD599035",
+          "name": "Kwamashu E",
+          "key": "kwamashu e"
+        },
+        {
+          "code": "PD599016",
+          "name": "Kwandengezi",
+          "key": "kwandengezi"
+        },
+        {
+          "code": "PD599010",
+          "name": "Lamontville",
+          "key": "lamontville"
+        },
+        {
+          "code": "PD599019",
+          "name": "Malvern",
+          "key": "malvern"
+        },
+        {
+          "code": "PD599021",
+          "name": "Mariannhill",
+          "key": "mariannhill"
+        },
+        {
+          "code": "PD599017",
+          "name": "Maydon Wharf",
+          "key": "maydon wharf"
+        },
+        {
+          "code": "PD599025",
+          "name": "Mayville",
+          "key": "mayville"
+        },
+        {
+          "code": "PD599012",
+          "name": "Montclair",
+          "key": "montclair"
+        },
+        {
+          "code": "PD599023",
+          "name": "Mpumalanga KZN",
+          "key": "mpumalanga kzn"
+        },
+        {
+          "code": "PD599030",
+          "name": "Newlands East",
+          "key": "newlands east"
+        },
+        {
+          "code": "PD599036",
+          "name": "Ntuzuma",
+          "key": "ntuzuma"
+        },
+        {
+          "code": "PD599038",
+          "name": "Phoenix",
+          "key": "phoenix"
+        },
+        {
+          "code": "PD599029",
+          "name": "Pinetown",
+          "key": "pinetown"
+        },
+        {
+          "code": "PD599020",
+          "name": "Point",
+          "key": "point"
+        },
+        {
+          "code": "PD599028",
+          "name": "Sydenham",
+          "key": "sydenham"
+        },
+        {
+          "code": "PD599043",
+          "name": "Tongaat",
+          "key": "tongaat"
+        },
+        {
+          "code": "PD599018",
+          "name": "Umbilo",
+          "key": "umbilo"
+        },
+        {
+          "code": "PD599004",
+          "name": "Umbumbulu",
+          "key": "umbumbulu"
+        },
+        {
+          "code": "PD599001",
+          "name": "Umkomaas",
+          "key": "umkomaas"
+        },
+        {
+          "code": "PD599007",
+          "name": "Umlazi",
+          "key": "umlazi"
+        },
+        {
+          "code": "PD599041",
+          "name": "Verulam",
+          "key": "verulam"
+        },
+        {
+          "code": "PD599009",
+          "name": "Wentworth",
+          "key": "wentworth"
+        },
+        {
+          "code": "PD599027",
+          "name": "Westville",
+          "key": "westville"
+        }
+      ]
+    },
+    "TSH": {
+      "municipality": "TSH",
+      "station_count": 36,
+      "population_census_2022": 4040826,
+      "stations": [
+        {
+          "code": "PD799025",
+          "name": "Akasia",
+          "key": "akasia"
+        },
+        {
+          "code": "PD799012",
+          "name": "Atteridgeville",
+          "key": "atteridgeville"
+        },
+        {
+          "code": "PD799006",
+          "name": "Boschkop",
+          "key": "boschkop"
+        },
+        {
+          "code": "PD799010",
+          "name": "Bronkhorstspruit",
+          "key": "bronkhorstspruit"
+        },
+        {
+          "code": "PD799009",
+          "name": "Brooklyn",
+          "key": "brooklyn"
+        },
+        {
+          "code": "PD799031",
+          "name": "Cullinan",
+          "key": "cullinan"
+        },
+        {
+          "code": "PD799035",
+          "name": "Dube",
+          "key": "dube"
+        },
+        {
+          "code": "PD799022",
+          "name": "Eersterust",
+          "key": "eersterust"
+        },
+        {
+          "code": "PD799023",
+          "name": "Ekangala",
+          "key": "ekangala"
+        },
+        {
+          "code": "PD799004",
+          "name": "Erasmia",
+          "key": "erasmia"
+        },
+        {
+          "code": "PD799028",
+          "name": "Ga-Rankuwa",
+          "key": "ga rankuwa"
+        },
+        {
+          "code": "PD799007",
+          "name": "Garsfontein",
+          "key": "garsfontein"
+        },
+        {
+          "code": "PD799033",
+          "name": "Hammanskraal",
+          "key": "hammanskraal"
+        },
+        {
+          "code": "PD799019",
+          "name": "Hercules",
+          "key": "hercules"
+        },
+        {
+          "code": "PD799026",
+          "name": "Kameeldrift",
+          "key": "kameeldrift"
+        },
+        {
+          "code": "PD799008",
+          "name": "Laudium",
+          "key": "laudium"
+        },
+        {
+          "code": "PD799032",
+          "name": "Loate",
+          "key": "loate"
+        },
+        {
+          "code": "PD799003",
+          "name": "Lyttelton",
+          "key": "lyttelton"
+        },
+        {
+          "code": "PD799030",
+          "name": "Mabopane",
+          "key": "mabopane"
+        },
+        {
+          "code": "PD799021",
+          "name": "Mamelodi",
+          "key": "mamelodi"
+        },
+        {
+          "code": "PD799017",
+          "name": "Mamelodi East",
+          "key": "mamelodi east"
+        },
+        {
+          "code": "PD799002",
+          "name": "Olievenhoutbosch",
+          "key": "olievenhoutbosch"
+        },
+        {
+          "code": "PD799011",
+          "name": "Pretoria Central",
+          "key": "pretoria central"
+        },
+        {
+          "code": "PD799016",
+          "name": "Pretoria Moot",
+          "key": "pretoria moot"
+        },
+        {
+          "code": "PD799027",
+          "name": "Pretoria North",
+          "key": "pretoria north"
+        },
+        {
+          "code": "PD799014",
+          "name": "Pretoria West",
+          "key": "pretoria west"
+        },
+        {
+          "code": "PD799034",
+          "name": "Rietgat",
+          "key": "rietgat"
+        },
+        {
+          "code": "PD799015",
+          "name": "Silverton",
+          "key": "silverton"
+        },
+        {
+          "code": "PD799024",
+          "name": "Sinoville",
+          "key": "sinoville"
+        },
+        {
+          "code": "PD799029",
+          "name": "Soshanguve",
+          "key": "soshanguve"
+        },
+        {
+          "code": "PD799013",
+          "name": "Sunnyside",
+          "key": "sunnyside"
+        },
+        {
+          "code": "PD799036",
+          "name": "Temba",
+          "key": "temba"
+        },
+        {
+          "code": "PD799020",
+          "name": "Villieria",
+          "key": "villieria"
+        },
+        {
+          "code": "PD799001",
+          "name": "Welbekend",
+          "key": "welbekend"
+        },
+        {
+          "code": "PD799005",
+          "name": "Wierdabrug",
+          "key": "wierdabrug"
+        },
+        {
+          "code": "PD799018",
+          "name": "Wonderboompoort",
+          "key": "wonderboompoort"
+        }
+      ]
+    },
+    "EKU": {
+      "municipality": "EKU",
+      "station_count": 36,
+      "population_census_2022": 4294880,
+      "stations": [
+        {
+          "code": "PD797020",
+          "name": "Actonville",
+          "key": "actonville"
+        },
+        {
+          "code": "PD797014",
+          "name": "Alberton",
+          "key": "alberton"
+        },
+        {
+          "code": "PD797024",
+          "name": "Bedfordview",
+          "key": "bedfordview"
+        },
+        {
+          "code": "PD797023",
+          "name": "Benoni",
+          "key": "benoni"
+        },
+        {
+          "code": "PD797017",
+          "name": "Boksburg",
+          "key": "boksburg"
+        },
+        {
+          "code": "PD797022",
+          "name": "Boksburg North",
+          "key": "boksburg north"
+        },
+        {
+          "code": "PD797010",
+          "name": "Brackendowns",
+          "key": "brackendowns"
+        },
+        {
+          "code": "PD797013",
+          "name": "Brakpan",
+          "key": "brakpan"
+        },
+        {
+          "code": "PD797029",
+          "name": "Crystalpark",
+          "key": "crystalpark"
+        },
+        {
+          "code": "PD797025",
+          "name": "Daveyton",
+          "key": "daveyton"
+        },
+        {
+          "code": "PD797011",
+          "name": "Dawn Park",
+          "key": "dawn park"
+        },
+        {
+          "code": "PD797003",
+          "name": "Duduza",
+          "key": "duduza"
+        },
+        {
+          "code": "PD797008",
+          "name": "Dunnottar",
+          "key": "dunnottar"
+        },
+        {
+          "code": "PD797002",
+          "name": "Edenpark",
+          "key": "edenpark"
+        },
+        {
+          "code": "PD797027",
+          "name": "Edenvale",
+          "key": "edenvale"
+        },
+        {
+          "code": "PD797015",
+          "name": "Elsburg",
+          "key": "elsburg"
+        },
+        {
+          "code": "PD797028",
+          "name": "Etwatwa",
+          "key": "etwatwa"
+        },
+        {
+          "code": "PD797018",
+          "name": "Germiston",
+          "key": "germiston"
+        },
+        {
+          "code": "PD797035",
+          "name": "Ivory Park",
+          "key": "ivory park"
+        },
+        {
+          "code": "PD797004",
+          "name": "Katlehong",
+          "key": "katlehong"
+        },
+        {
+          "code": "PD797009",
+          "name": "Katlehong North",
+          "key": "katlehong north"
+        },
+        {
+          "code": "PD797030",
+          "name": "Kempton Park",
+          "key": "kempton park"
+        },
+        {
+          "code": "PD797012",
+          "name": "Kwa Thema",
+          "key": "kwa thema"
+        },
+        {
+          "code": "PD797032",
+          "name": "Norkempark",
+          "key": "norkempark"
+        },
+        {
+          "code": "PD797026",
+          "name": "OR Tambo Intl Airport",
+          "key": "or tambo intl airport"
+        },
+        {
+          "code": "PD797036",
+          "name": "Olifantsfontein",
+          "key": "olifantsfontein"
+        },
+        {
+          "code": "PD797021",
+          "name": "Primrose",
+          "key": "primrose"
+        },
+        {
+          "code": "PD797031",
+          "name": "Putfontein",
+          "key": "putfontein"
+        },
+        {
+          "code": "PD797019",
+          "name": "Reigerpark",
+          "key": "reigerpark"
+        },
+        {
+          "code": "PD797016",
+          "name": "Springs",
+          "key": "springs"
+        },
+        {
+          "code": "PD797034",
+          "name": "Tembisa",
+          "key": "tembisa"
+        },
+        {
+          "code": "PD797033",
+          "name": "Tembisa South",
+          "key": "tembisa south"
+        },
+        {
+          "code": "PD797006",
+          "name": "Tokoza",
+          "key": "tokoza"
+        },
+        {
+          "code": "PD797007",
+          "name": "Tsakane",
+          "key": "tsakane"
+        },
+        {
+          "code": "PD797005",
+          "name": "Vosloorus",
+          "key": "vosloorus"
+        },
+        {
+          "code": "PD797001",
+          "name": "Zonkizizwe",
+          "key": "zonkizizwe"
+        }
+      ]
+    },
+    "NMA": {
+      "municipality": "NMA",
+      "station_count": 17,
+      "population_census_2022": 1150966,
+      "stations": [
+        {
+          "code": "PD299006",
+          "name": "Algoapark",
+          "key": "algoapark"
+        },
+        {
+          "code": "PD299008",
+          "name": "Bethelsdorp",
+          "key": "bethelsdorp"
+        },
+        {
+          "code": "PD299010",
+          "name": "Chatty",
+          "key": "chatty"
+        },
+        {
+          "code": "PD299013",
+          "name": "Despatch",
+          "key": "despatch"
+        },
+        {
+          "code": "PD299005",
+          "name": "Gelvandale",
+          "key": "gelvandale"
+        },
+        {
+          "code": "PD299001",
+          "name": "Humewood",
+          "key": "humewood"
+        },
+        {
+          "code": "PD299014",
+          "name": "Ikamvelihle",
+          "key": "ikamvelihle"
+        },
+        {
+          "code": "PD299004",
+          "name": "Kabega Park",
+          "key": "kabega park"
+        },
+        {
+          "code": "PD299016",
+          "name": "Kamesh",
+          "key": "kamesh"
+        },
+        {
+          "code": "PD299011",
+          "name": "Kwadwesi",
+          "key": "kwadwesi"
+        },
+        {
+          "code": "PD299012",
+          "name": "Kwanobuhle",
+          "key": "kwanobuhle"
+        },
+        {
+          "code": "PD299009",
+          "name": "Kwazakele",
+          "key": "kwazakele"
+        },
+        {
+          "code": "PD299015",
+          "name": "Motherwell",
+          "key": "motherwell"
+        },
+        {
+          "code": "PD299003",
+          "name": "Mount Road",
+          "key": "mount road"
+        },
+        {
+          "code": "PD299007",
+          "name": "New Brighton",
+          "key": "new brighton"
+        },
+        {
+          "code": "PD299017",
+          "name": "Swartkops",
+          "key": "swartkops"
+        },
+        {
+          "code": "PD299002",
+          "name": "Walmer",
+          "key": "walmer"
+        }
+      ]
+    },
+    "BUF": {
+      "municipality": "BUF",
+      "station_count": 22,
+      "population_census_2022": 996945,
+      "stations": [
+        {
+          "code": "PD260015",
+          "name": "Beacon Bay",
+          "key": "beacon bay"
+        },
+        {
+          "code": "PD260020",
+          "name": "Bhisho",
+          "key": "bhisho"
+        },
+        {
+          "code": "PD260005",
+          "name": "Buffalo Flats",
+          "key": "buffalo flats"
+        },
+        {
+          "code": "PD260011",
+          "name": "Cambridge",
+          "key": "cambridge"
+        },
+        {
+          "code": "PD260001",
+          "name": "Chalumna",
+          "key": "chalumna"
+        },
+        {
+          "code": "PD260019",
+          "name": "Dimbaza",
+          "key": "dimbaza"
+        },
+        {
+          "code": "PD260006",
+          "name": "Duncan Village",
+          "key": "duncan village"
+        },
+        {
+          "code": "PD260004",
+          "name": "East London",
+          "key": "east london"
+        },
+        {
+          "code": "PD260017",
+          "name": "Gonubie",
+          "key": "gonubie"
+        },
+        {
+          "code": "PD260009",
+          "name": "Inyibiba",
+          "key": "inyibiba"
+        },
+        {
+          "code": "PD260002",
+          "name": "Kidds Beach",
+          "key": "kidds beach"
+        },
+        {
+          "code": "PD260021",
+          "name": "Macleantown",
+          "key": "macleantown"
+        },
+        {
+          "code": "PD260010",
+          "name": "Mdantsane",
+          "key": "mdantsane"
+        },
+        {
+          "code": "PD260012",
+          "name": "Ndevana",
+          "key": "ndevana"
+        },
+        {
+          "code": "PD260016",
+          "name": "Ntabozuko",
+          "key": "ntabozuko"
+        },
+        {
+          "code": "PD260003",
+          "name": "Punzana",
+          "key": "punzana"
+        },
+        {
+          "code": "PD260018",
+          "name": "Qonce",
+          "key": "qonce"
+        },
+        {
+          "code": "PD260008",
+          "name": "Scenery Park",
+          "key": "scenery park"
+        },
+        {
+          "code": "PD260007",
+          "name": "Tamara",
+          "key": "tamara"
+        },
+        {
+          "code": "PD260014",
+          "name": "Vulindlela",
+          "key": "vulindlela"
+        },
+        {
+          "code": "PD260022",
+          "name": "Zele",
+          "key": "zele"
+        },
+        {
+          "code": "PD260013",
+          "name": "Zwelitsha",
+          "key": "zwelitsha"
+        }
+      ]
+    },
+    "MAN": {
+      "municipality": "MAN",
+      "station_count": 18,
+      "population_census_2022": 811005,
+      "stations": [
+        {
+          "code": "PD499016",
+          "name": "Bainsvlei",
+          "key": "bainsvlei"
+        },
+        {
+          "code": "PD499012",
+          "name": "Batho",
+          "key": "batho"
+        },
+        {
+          "code": "PD499017",
+          "name": "Bayswater",
+          "key": "bayswater"
+        },
+        {
+          "code": "PD499006",
+          "name": "Bloemspruit",
+          "key": "bloemspruit"
+        },
+        {
+          "code": "PD499007",
+          "name": "Boithuso",
+          "key": "boithuso"
+        },
+        {
+          "code": "PD499008",
+          "name": "Botshabelo",
+          "key": "botshabelo"
+        },
+        {
+          "code": "PD499003",
+          "name": "Dewetsdorp",
+          "key": "dewetsdorp"
+        },
+        {
+          "code": "PD499013",
+          "name": "Heidedal",
+          "key": "heidedal"
+        },
+        {
+          "code": "PD499005",
+          "name": "Kagisanong",
+          "key": "kagisanong"
+        },
+        {
+          "code": "PD499010",
+          "name": "Kopanong",
+          "key": "kopanong"
+        },
+        {
+          "code": "PD499011",
+          "name": "Mangaung",
+          "key": "mangaung"
+        },
+        {
+          "code": "PD499014",
+          "name": "Navalsig",
+          "key": "navalsig"
+        },
+        {
+          "code": "PD499009",
+          "name": "Park Road",
+          "key": "park road"
+        },
+        {
+          "code": "PD499015",
+          "name": "Selosesha",
+          "key": "selosesha"
+        },
+        {
+          "code": "PD499018",
+          "name": "Soutpan",
+          "key": "soutpan"
+        },
+        {
+          "code": "PD499004",
+          "name": "Thaba-Nchu",
+          "key": "thaba nchu"
+        },
+        {
+          "code": "PD499001",
+          "name": "Van Stadensrus",
+          "key": "van stadensrus"
+        },
+        {
+          "code": "PD499002",
+          "name": "Wepener",
+          "key": "wepener"
+        }
+      ]
+    }
+  }
+}

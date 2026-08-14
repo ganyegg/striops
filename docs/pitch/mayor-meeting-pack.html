@@ -221,25 +221,30 @@
       </tr>
       <tr>
         <td>Murders</td>
-        <td class="num">324 / month</td>
-        <td class="nowrap">Sep 2025</td>
-        <td>SAPS quarterly releases</td>
-        <td><span class="tag t-flat">Live, lagging</span></td>
+        <td class="num">274 / month</td>
+        <td class="nowrap">Mar 2026</td>
+        <td>SAPS quarterly release, station level</td>
+        <td><span class="tag t-live">Live</span></td>
       </tr>
       <tr>
         <td>Contact crime</td>
-        <td class="num">6,260 / month</td>
-        <td class="nowrap">Sep 2025</td>
-        <td>SAPS quarterly releases</td>
-        <td><span class="tag t-flat">Live, lagging</span></td>
+        <td class="num">6,128 / month</td>
+        <td class="nowrap">Mar 2026</td>
+        <td>SAPS quarterly release, station level</td>
+        <td><span class="tag t-live">Live</span></td>
       </tr>
     </tbody>
     <caption>Source: Striops <span class="mono">/pulse</span> and <span class="mono">/themes</span>, 14 Aug 2026. &ldquo;Live&rdquo; means fetched from the publisher, not curated by hand.</caption>
   </table>
 
+  <div class="band">
+    <h3>Crime is now as current as SAPS allows</h3>
+    <p class="why">The extract runs to <b>March 2026</b> &mdash; the last quarter SAPS has released. It is read directly from the station-level sheet inside each SAPS quarterly workbook and summed across Cape Town's 62 precincts, so the remaining lag is the national publication cycle and nothing else. The honest line if asked: &ldquo;SAPS publishes a quarter at a time, so March is the newest official month in the country. Striops reads their station sheet directly and labels the lag rather than hiding it. Wire the City's own precinct extract in the pilot and it becomes monthly.&rdquo;</p>
+  </div>
+
   <div class="band warn">
-    <h3>Say the crime lag out loud before anyone finds it</h3>
-    <p class="why">SAPS crime is real and it is sourced, but the latest published month in the feed is <b>September 2025</b>. If you present it beside an August 2026 dam level without saying so, it looks like you did not check. The honest line: &ldquo;Crime is on a national quarterly release cycle &mdash; this is the most recent published month, and Striops labels the lag instead of hiding it. Wire the City's own precinct extract in the pilot and this becomes monthly.&rdquo;</p>
+    <h3>One caveat before you quote the crime movement</h3>
+    <p class="why">Pulse reads &ldquo;murders up 18.6%, February to March 2026&rdquo; (231 to 274). That is the published monthly count, but February is a 28-day month &mdash; on a per-day basis the rise is closer to 7%. Quote the levels rather than the month-on-month percentage, or say &ldquo;on a per-day basis&rdquo; out loud. Over the quarter the direction is genuinely down: 781 murders in January&ndash;March 2026 against 864 in the same quarter of 2025.</p>
   </div>
 
   <!-- ============================================================= -->
@@ -326,6 +331,7 @@
 
   <h3>Already done, pending deployment</h3>
   <ul>
+    <li><b>Crime is current to March 2026.</b> The previous extract came from a volunteer GitHub project that stopped updating in December 2025, freezing Cape Town crime at September 2025. Striops now reads the station-level sheet inside each SAPS quarterly workbook directly. The new parser reproduces the old extract exactly across all 69 overlapping months, and adds six.</li>
     <li><b>Outlier screening.</b> Refuse and lighting are flagged as awaiting verification instead of being reported as month-on-month findings, and excluded from the headline counts.</li>
     <li><b>The streetlight self-contradiction is resolved.</b> The Wins page claimed &ldquo;faults falling about 2.7% per period&rdquo; from a stale seed series while the Pulse read &ldquo;up 116.3%&rdquo;. Curated wins that cite a metric are now re-tested against that live series on every read; one whose own data no longer supports it is marked <span class="mono">Under review</span> and pushed down the page rather than left asserting the headline.</li>
     <li><b>Dam storage is current.</b> The DWS weekly reading now reaches the Pulse, moving it from January to August 2026.</li>
@@ -402,7 +408,7 @@
       <tr><td>&ldquo;What about POPIA?&rdquo;</td><td>Aggregates only. No citizen personal information in scope, and the MOU forbids it.</td></tr>
       <tr><td>&ldquo;Where does it sit?&rdquo;</td><td>Pilot in South African region or hybrid; production target inside the City tenancy with single sign-on.</td></tr>
       <tr><td>&ldquo;What if you disappear?&rdquo;</td><td>Data in the City tenancy, open exports, continuity clauses, and no proprietary formats holding your facts hostage.</td></tr>
-      <tr><td>&ldquo;Your crime data is a year old.&rdquo;</td><td>Correct, and the product says so on the row. That is the national release cycle. Wire the City's precinct extract and it becomes monthly &mdash; which is precisely what the pilot is for.</td></tr>
+      <tr><td>&ldquo;How current is the crime data?&rdquo;</td><td>March 2026 &mdash; the last quarter SAPS has released nationally, read directly from their station-level sheet across all 62 Cape Town precincts. The remaining lag is the national publication cycle. The City's own precinct extract would make it monthly.</td></tr>
       <tr><td>&ldquo;Refuse complaints did not double.&rdquo;</td><td>Correct, and the system already says so &mdash; that row is flagged awaiting verification and excluded from the counts, because the reading is 2.5 times the median of its own previous six months. That is an extract artefact, not a service collapse, and catching it is the argument for the whole provenance layer.</td></tr>
       <tr><td>&ldquo;So your data is wrong.&rdquo;</td><td>The City's extract changed shape; every consumer of that feed has the same problem. The difference is that we detect it and label it rather than printing it in a report. A number that can flag itself is worth more than one that cannot.</td></tr>
     </tbody>
@@ -497,7 +503,7 @@
     <tbody>
       <tr><td>Water and sanitation</td><td><span class="tag t-live">Live</span></td><td>Live non-revenue water and project-level wastewater treatment spend, from the Water departmental extract</td></tr>
       <tr><td>Energy and grid load</td><td><span class="tag t-live">Live</span></td><td>Own-generation MWh and Steenbras / IPP plant KPIs</td></tr>
-      <tr><td>Safety and policing</td><td><span class="tag t-live">Live</span></td><td>Monthly LEAP and Metro Police deployment counts</td></tr>
+      <tr><td>Safety and policing</td><td><span class="tag t-live">Live</span></td><td>Crime is current to the last SAPS release; still needs monthly LEAP and Metro Police deployment counts, and the City's own precinct extract to beat the quarterly cycle</td></tr>
       <tr><td>Waste and public realm</td><td><span class="tag t-live">Live</span></td><td>Nothing outstanding &mdash; but the June artefact must be resolved first</td></tr>
       <tr><td>Fiscal health and revenue</td><td><span class="tag t-demo">Partial</span></td><td>S52 year-to-date operating and capital tables, plus SAP Finance aggregates, so underspend becomes official mid-year FY2025/26</td></tr>
       <tr><td>Housing and human settlements</td><td><span class="tag t-demo">Partial</span></td><td>Monthly units delivered against target, aggregate only</td></tr>

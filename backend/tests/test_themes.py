@@ -25,6 +25,7 @@ def test_themes_cover_mayoral_spine():
 
 def test_themes_api(client=None):
     from fastapi.testclient import TestClient
+
     from striops.api.main import app
 
     c = client or TestClient(app)

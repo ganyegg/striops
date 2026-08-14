@@ -99,12 +99,6 @@ def write_census_overlay(municipality: str = "CPT") -> bool:
                 "confidence": 0.9,
             }
         )
-    overlay = {
-        "housing_population": {
-            "indicators": indicators,
-            "sources": [SOURCE],
-        }
-    }
     path = cache_dir() / f"domain_overlay_{municipality.upper()}.json"
     existing: dict = {}
     if path.exists():

@@ -175,11 +175,14 @@ def build_feeds_report(
         FeedStatus(
             id="saps",
             name="Crime statistics (SAPS)",
-            publisher="SAPS quarterly stats (afrith/crime-stats municipal aggregate)",
+            publisher="South African Police Service",
             status="cached" if saps_path.exists() else "seed",
             status_label=_STATUS_LABELS["cached" if saps_path.exists() else "seed"],
-            cadence="Monthly (from quarterly SAPS releases)",
-            description="Murder and contact-crime counts for the metro, rolled up from police stations.",
+            cadence="Monthly counts, published quarterly (one quarter in arrears)",
+            description=(
+                "Murder and contact-crime counts for the metro, summed from the station-level "
+                "sheet of each SAPS quarterly release."
+            ),
             unlocks="Safety theme moves from budget headlines to measured crime trend.",
             last_refreshed=saps_refreshed,
             last_refreshed_label=saps_label,

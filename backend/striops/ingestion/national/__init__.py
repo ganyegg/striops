@@ -6,10 +6,10 @@ and never raises out of ``fetch_national_series``.
 from __future__ import annotations
 
 from striops.core.models import MetricSeries
+from striops.ingestion.national.audit_opinions import fetch_audit_overlay
 from striops.ingestion.national.census_baselines import fetch_census_series, write_census_overlay
 from striops.ingestion.national.dws_dams import fetch_dws_dam_series
 from striops.ingestion.national.saps_crime import fetch_crime_series, write_crime_overlay
-from striops.ingestion.national.audit_opinions import fetch_audit_overlay
 
 __all__ = [
     "fetch_national_series",

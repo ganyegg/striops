@@ -1,7 +1,7 @@
 {
   "municipality": "CPT",
-  "source": "afrith/crime-stats (SAPS quarterly extracts)",
-  "source_url": "https://github.com/afrith/crime-stats",
+  "source": "SAPS quarterly crime statistics (RAW Data sheet, station level)",
+  "source_url": "https://www.saps.gov.za/services/crimestats.php",
   "saps_portal": "https://www.saps.gov.za/services/crimestats.php",
   "stations": 62,
   "population_census_2022_stations": 4695766,
@@ -350,6 +350,36 @@
       "year": 2025,
       "month": 9,
       "count": 324
+    },
+    {
+      "year": 2025,
+      "month": 10,
+      "count": 329
+    },
+    {
+      "year": 2025,
+      "month": 11,
+      "count": 332
+    },
+    {
+      "year": 2025,
+      "month": 12,
+      "count": 277
+    },
+    {
+      "year": 2026,
+      "month": 1,
+      "count": 276
+    },
+    {
+      "year": 2026,
+      "month": 2,
+      "count": 231
+    },
+    {
+      "year": 2026,
+      "month": 3,
+      "count": 274
     }
   ],
   "contact_crime_monthly": [
@@ -697,6 +727,36 @@
       "year": 2025,
       "month": 9,
       "count": 6260
+    },
+    {
+      "year": 2025,
+      "month": 10,
+      "count": 6311
+    },
+    {
+      "year": 2025,
+      "month": 11,
+      "count": 6576
+    },
+    {
+      "year": 2025,
+      "month": 12,
+      "count": 6797
+    },
+    {
+      "year": 2026,
+      "month": 1,
+      "count": 5778
+    },
+    {
+      "year": 2026,
+      "month": 2,
+      "count": 5679
+    },
+    {
+      "year": 2026,
+      "month": 3,
+      "count": 6128
     }
   ],
   "community_reported_serious_monthly": [
@@ -1044,6 +1104,43 @@
       "year": 2025,
       "month": 9,
       "count": 14527
+    },
+    {
+      "year": 2025,
+      "month": 10,
+      "count": 15108
+    },
+    {
+      "year": 2025,
+      "month": 11,
+      "count": 15036
+    },
+    {
+      "year": 2025,
+      "month": 12,
+      "count": 15034
+    },
+    {
+      "year": 2026,
+      "month": 1,
+      "count": 14547
+    },
+    {
+      "year": 2026,
+      "month": 2,
+      "count": 13597
+    },
+    {
+      "year": 2026,
+      "month": 3,
+      "count": 14571
     }
-  ]
+  ],
+  "quarters_ingested": [
+    "2025/2026 Q1",
+    "2025/2026 Q2",
+    "2025/2026 Q3",
+    "2025/2026 Q4"
+  ],
+  "source_note": "History to Sep 2025 originally extracted by afrith/crime-stats; Oct 2025 onward read directly from the hidden RAW Data sheet of the SAPS quarterly workbooks. The two agree exactly across all 69 overlapping months. Refresh with: python -m striops.ingestion.national.saps_crime CPT"
 }

@@ -49,7 +49,7 @@ Striops now pulls **real, live public data** from the **City of Cape Town Open D
 
 **National (multi-muni ready — keyed by demarcation code):**
 - **National Treasury Municipal Money** — Section 71 / mSCOA budget vs actual by function (`incexp_v2`).
-- **SAPS crime** — murder + contact crime monthly, stations rolled up to the metro (via [afrith/crime-stats](https://github.com/afrith/crime-stats)).
+- **SAPS crime** — murder + contact crime monthly, the 62 Cape Town police stations rolled up to the metro. Read straight from the hidden `RAW Data` sheet of each [SAPS quarterly release](https://www.saps.gov.za/services/crimestats.php); refresh with `python -m striops.ingestion.national.saps_crime CPT`.
 - **DWS weekly dams** — Cape Town water-supply-system storage % (`RiverSystems.aspx?river=CT`).
 - **Stats SA Census 2022** — metro population / household baselines.
 - **AGSA audit opinions** — latest MFMA outcome via Treasury `audit_opinions` cube.

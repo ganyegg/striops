@@ -11,6 +11,11 @@ google-genai==1.75.0
 google-generativeai==0.8.3
 numpy==2.1.3
 pandas==2.2.3
+# SAPS publishes station-level crime only inside a hidden sheet of an .xlsx
+openpyxl==3.1.5
+# Verify TLS against the OS trust store so ingest also works behind an
+# inspecting proxy (Netskope/Zscaler) without disabling verification
+truststore==0.10.1
 
 # --- dev / test ---
 pytest==8.3.4

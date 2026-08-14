@@ -1,34 +1,82 @@
 """SAPS crime statistics aggregated to municipality.
 
-Primary extract: https://github.com/afrith/crime-stats (SAPS quarterly sheets).
-Full CSV is ~200MB (Git LFS); we ship a CPT seed extract and optionally refresh
-by streaming the LFS media URL when ``STRIOPS_REFRESH_CRIME=1``.
+History (Jan 2020 – Sep 2025) came from https://github.com/afrith/crime-stats,
+which stopped being updated in December 2025. Current quarters are read
+straight from the SAPS releases instead — see ``saps_quarterly`` — so the
+series no longer depends on a third party keeping pace with SAPS.
+
+Refresh (adds any newly-published quarters to the cached extract):
+
+    python -m striops.ingestion.national.saps_crime CPT
+
+Crime codes used, as published in the SAPS workbooks:
+
+===========  ==========================================
+``1``        Murder
+``Cat 01``   Contact crime (crimes against the person)
+``Full 17``  17 community-reported serious crimes
+===========  ==========================================
 """
 from __future__ import annotations
 
-import csv
 import json
 import os
-import urllib.request
-from collections import defaultdict
 from datetime import date
 from pathlib import Path
 
 from striops.core.logging import get_logger
 from striops.core.models import MetricPoint, MetricSeries
 from striops.core.paths import cache_dir, seed_dir
+from striops.ingestion.national.saps_quarterly import (
+    fetch_workbook,
+    normalise_station,
+    parse_station_counts,
+)
 
 log = get_logger("striops.ingestion.national.saps_crime")
 
 SOURCE = {
     "id": "src-saps",
-    "publisher": "South African Police Service (via afrith/crime-stats)",
+    "publisher": "South African Police Service",
     "title": "Quarterly crime statistics — station → municipality",
     "url": "https://www.saps.gov.za/services/crimestats.php",
 }
 
-_STATIONS_URL = "https://raw.githubusercontent.com/afrith/crime-stats/main/police_stations.csv"
-_CRIME_URL = "https://media.githubusercontent.com/media/afrith/crime-stats/main/crime-stats.csv"
+# SAPS crime code -> key in the cached payload.
+_SERIES_BY_CODE = {
+    "1": "murder_monthly",
+    "Cat 01": "contact_crime_monthly",
+    "Full 17": "community_reported_serious_monthly",
+}
+
+
+def _stations_path() -> Path:
+    return seed_dir() / "national" / "saps_stations.json"
+
+
+def station_keys(municipality: str) -> set[str]:
+    """Normalised station names for a municipality, from the shipped register."""
+    path = _stations_path()
+    if not path.exists():
+        return set()
+    payload = json.loads(path.read_text())
+    entry = (payload.get("municipalities") or {}).get(municipality.upper())
+    if not entry:
+        return set()
+    return {
+        s.get("key") or normalise_station(s.get("name")) for s in entry.get("stations") or []
+    }
+
+
+def station_population(municipality: str) -> float | None:
+    path = _stations_path()
+    if not path.exists():
+        return None
+    payload = json.loads(path.read_text())
+    entry = (payload.get("municipalities") or {}).get(municipality.upper())
+    if not entry:
+        return None
+    return float(entry.get("population_census_2022") or 0) or None
 
 
 def _seed_path(municipality: str) -> Path:
@@ -49,54 +97,86 @@ def _load_payload(municipality: str) -> dict | None:
     return None
 
 
-def _stream_refresh(municipality: str) -> dict | None:
-    """Stream the full crime CSV and aggregate for one municipality (slow)."""
+def _merge_monthly(rows: list[dict], counts: dict[date, float]) -> list[dict]:
+    """Merge SAPS counts into a monthly list, letting SAPS win on overlap."""
+    by_period = {(int(r["year"]), int(r["month"])): int(r["count"]) for r in rows}
+    for period, value in counts.items():
+        by_period[(period.year, period.month)] = int(value)
+    return [
+        {"year": y, "month": m, "count": c} for (y, m), c in sorted(by_period.items())
+    ]
+
+
+def refresh_from_saps(
+    municipality: str = "CPT",
+    quarters: list[tuple[int, int]] | None = None,
+) -> dict | None:
+    """Add published SAPS quarters to the cached extract.
+
+    ``quarters`` is a list of ``(financial_year_start, quarter)`` pairs; SAPS
+    financial years run 1 April to 31 March, so ``(2025, 4)`` is January to
+    March 2026. Existing months are overwritten because SAPS is the publisher
+    of record and does revise counts between releases.
+    """
     muni = municipality.upper()
-    req = urllib.request.Request(_STATIONS_URL, headers={"User-Agent": "striops-ingest/1.0"})
-    with urllib.request.urlopen(req, timeout=60) as resp:
-        stations = list(csv.DictReader(resp.read().decode().splitlines()))
-    codes = {r["code"] for r in stations if r.get("muni_code") == muni}
-    if not codes:
+    keys = station_keys(muni)
+    if not keys:
+        log.warning("no station register for municipality", extra={"context": {"muni": muni}})
         return None
-    pop = sum(int(float(r.get("population") or 0)) for r in stations if r.get("muni_code") == muni)
 
-    murder: dict[tuple[int, int], int] = defaultdict(int)
-    contact: dict[tuple[int, int], int] = defaultdict(int)
-    crs: dict[tuple[int, int], int] = defaultdict(int)
+    payload = _load_payload(muni) or {"municipality": muni}
+    quarters = quarters or _default_quarters()
+    added: list[str] = []
 
-    req = urllib.request.Request(_CRIME_URL, headers={"User-Agent": "striops-ingest/1.0"})
-    with urllib.request.urlopen(req, timeout=600) as resp:
-        reader = csv.DictReader((line.decode("utf-8") for line in resp))
-        for row in reader:
-            if row.get("station_code") not in codes:
+    for fy_start, quarter in quarters:
+        try:
+            counts = parse_station_counts(fetch_workbook(fy_start, quarter), keys)
+        except Exception as exc:
+            log.warning(
+                "saps quarter skipped",
+                extra={"context": {"fy": fy_start, "quarter": quarter, "error": str(exc)}},
+            )
+            continue
+        for code, series_key in _SERIES_BY_CODE.items():
+            if code not in counts:
                 continue
-            key = (int(row["year"]), int(row["month"]))
-            cnt = int(float(row.get("crime_count") or 0))
-            code = row.get("crime_code")
-            if code == "1":
-                murder[key] += cnt
-            elif code == "Cat 01":
-                contact[key] += cnt
-            elif code == "Full 17":
-                crs[key] += cnt
+            payload[series_key] = _merge_monthly(payload.get(series_key) or [], counts[code])
+        added.append(f"{fy_start}/{fy_start + 1} Q{quarter}")
 
-    payload = {
-        "municipality": muni,
-        "source": "afrith/crime-stats (SAPS quarterly extracts)",
-        "source_url": "https://github.com/afrith/crime-stats",
-        "saps_portal": SOURCE["url"],
-        "stations": len(codes),
-        "population_census_2022_stations": pop,
-        "murder_monthly": [{"year": y, "month": m, "count": c} for (y, m), c in sorted(murder.items())],
-        "contact_crime_monthly": [
-            {"year": y, "month": m, "count": c} for (y, m), c in sorted(contact.items())
-        ],
-        "community_reported_serious_monthly": [
-            {"year": y, "month": m, "count": c} for (y, m), c in sorted(crs.items())
-        ],
-    }
-    _cache_path(muni).write_text(json.dumps(payload, indent=2))
+    if not added:
+        return None
+
+    pop = station_population(muni)
+    payload.update(
+        {
+            "municipality": muni,
+            "source": "SAPS quarterly crime statistics (RAW Data sheet, station level)",
+            "source_url": SOURCE["url"],
+            "saps_portal": SOURCE["url"],
+            "stations": len(keys),
+            "quarters_ingested": added,
+        }
+    )
+    if pop:
+        payload["population_census_2022_stations"] = int(pop)
+
+    _cache_path(muni).write_text(json.dumps(payload, indent=2) + "\n")
+    log.info(
+        "saps crime refreshed from SAPS",
+        extra={"context": {"muni": muni, "quarters": added}},
+    )
     return payload
+
+
+def _default_quarters() -> list[tuple[int, int]]:
+    """Every quarter of the current and previous SAPS financial year.
+
+    Unpublished quarters simply fail to download and are skipped, so this needs
+    no knowledge of the release calendar.
+    """
+    today = date.today()
+    fy_start = today.year if today.month >= 4 else today.year - 1
+    return [(fy, q) for fy in (fy_start - 1, fy_start) for q in (1, 2, 3, 4)]
 
 
 def _monthly_to_points(rows: list[dict]) -> list[MetricPoint]:
@@ -116,8 +196,7 @@ def fetch_crime_series(municipality: str = "CPT") -> list[MetricSeries]:
     payload = None
     if os.environ.get("STRIOPS_REFRESH_CRIME") == "1":
         try:
-            payload = _stream_refresh(muni)
-            log.info("saps crime refreshed from LFS", extra={"context": {"muni": muni}})
+            payload = refresh_from_saps(muni)
         except Exception as exc:
             log.warning("saps crime refresh failed", extra={"context": {"error": str(exc)}})
     if payload is None:
@@ -185,7 +264,10 @@ def write_crime_overlay(municipality: str = "CPT") -> bool:
             "verification": "verified",
             "source_id": "src-saps",
             "confidence": 0.8,
-            "method": "Sum of SAPS station counts mapped to the municipality from afrith/crime-stats.",
+            "method": (
+                "Sum of SAPS station-level counts (RAW Data sheet of the quarterly release) "
+                "for the 62 police stations mapped to the municipality."
+            ),
         },
         {
             "key": "contact_crime_monthly",
@@ -235,3 +317,18 @@ def write_crime_overlay(municipality: str = "CPT") -> bool:
     existing["safety_policing"] = safety
     path.write_text(json.dumps(existing, indent=2))
     return True
+
+
+if __name__ == "__main__":  # pragma: no cover
+    import sys
+
+    muni = sys.argv[1] if len(sys.argv) > 1 else "CPT"
+    result = refresh_from_saps(muni)
+    if not result:
+        print(f"No SAPS quarters ingested for {muni}.")
+        raise SystemExit(1)
+    murders = result.get("murder_monthly") or []
+    latest = murders[-1] if murders else None
+    print(f"{muni}: quarters {', '.join(result['quarters_ingested'])}")
+    if latest:
+        print(f"latest month {latest['year']}-{latest['month']:02d}, {latest['count']} murders")
