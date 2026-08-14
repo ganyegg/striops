@@ -1,152 +1,252 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Striops — Mayoral Meeting Pack · City of Cape Town</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
 <style>
+  /* Theme shared with striops-pitch.html — same palette, type and components,
+     re-laid out for a document that reads top to bottom instead of slide by slide. */
   :root {
-    --ink: #14181f;
-    --ink-2: #414a58;
-    --ink-3: #6b7480;
-    --rule: #d9dee5;
-    --rule-soft: #eceff3;
-    --paper: #ffffff;
-    --wash: #f6f8fa;
-    --accent: #0b5c8a;
-    --good: #1c6b47;
-    --warn: #8a5a08;
-    --bad: #9a2a2a;
+    --ink-950: #060d17;
+    --ink-900: #0a1524;
+    --ink-800: #101f33;
+    --teal: #14b8a6;
+    --teal-soft: rgba(20, 184, 166, 0.14);
+    --sky: #38bdf8;
+    --sunrise: #f59e0b;
+    --bad: #f87171;
+    --good: #34d399;
+    --text: #e7edf5;
+    --muted: rgba(231, 237, 245, 0.62);
+    --faint: rgba(231, 237, 245, 0.38);
+    --line: rgba(231, 237, 245, 0.12);
+    --display: "Space Grotesk", system-ui, sans-serif;
+    --sans: "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
   }
-  * { box-sizing: border-box; }
-  html { -webkit-text-size-adjust: 100%; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body {
+    background: var(--ink-950);
+    color: var(--text);
+    font-family: var(--sans);
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
   body {
-    margin: 0;
-    background: var(--wash);
-    color: var(--ink);
-    font: 400 15px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Helvetica, Arial, sans-serif;
+    background:
+      radial-gradient(1200px 600px at 85% 0%, rgba(56, 189, 248, 0.07), transparent 60%),
+      radial-gradient(900px 500px at -10% 40%, rgba(20, 184, 166, 0.08), transparent 55%),
+      var(--ink-950);
+    background-attachment: fixed;
   }
-  .sheet {
-    max-width: 950px;
-    margin: 32px auto 64px;
-    background: var(--paper);
-    padding: 56px 64px 72px;
-    border: 1px solid var(--rule);
+  .doc { max-width: 1000px; margin: 0 auto; padding: 5vh 6vw 8vh; position: relative; }
+
+  /* ─────────────── cover ─────────────── */
+  .doc-top { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 6vh; }
+  .coct-plate {
+    display: inline-flex; align-items: center; background: #fff; border-radius: 10px;
+    padding: 8px 14px; box-shadow: 0 1px 0 rgba(0,0,0,0.08);
   }
+  .coct-plate img { height: 40px; width: auto; display: block; }
+  .prepared { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--faint); text-align: right; }
 
-  /* ---------- masthead ---------- */
-  .masthead { display: flex; align-items: flex-start; gap: 24px; border-bottom: 3px solid var(--ink); padding-bottom: 20px; }
-  .masthead img { width: 76px; height: 76px; flex: 0 0 auto; object-fit: contain; }
-  .masthead .titles { flex: 1 1 auto; min-width: 0; }
-  .kicker { font: 600 11px/1 inherit; letter-spacing: .13em; text-transform: uppercase; color: var(--accent); margin: 0 0 10px; }
-  h1 { font-size: 31px; line-height: 1.15; margin: 0 0 8px; letter-spacing: -.01em; }
-  .standfirst { margin: 0; color: var(--ink-2); font-size: 15.5px; max-width: 62ch; }
-  .stamp { margin-top: 16px; font: 400 12px/1.5 var(--mono); color: var(--ink-3); }
-  .stamp b { color: var(--ink-2); font-weight: 600; }
+  .hero-mark { display: flex; align-items: center; gap: 14px; margin-bottom: 3vh; }
+  .hero-mark .mark { filter: drop-shadow(0 0 18px rgba(20,184,166,0.45)); }
+  .hero-mark span { font-size: 14px; letter-spacing: 0.42em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
 
-  /* ---------- structure ---------- */
+  .cover { position: relative; padding-bottom: 8vh; border-bottom: 1px solid var(--line); }
+  .mountain { position: absolute; bottom: 0; left: -6vw; right: -6vw; height: 16vh; pointer-events: none; opacity: 0.5; }
+
+  .eyebrow {
+    font-size: 12px; letter-spacing: 0.32em; text-transform: uppercase;
+    color: var(--teal); font-weight: 600; margin-bottom: 2vh;
+  }
+  h1 { font-family: var(--display); font-size: clamp(32px, 5vw, 54px); font-weight: 600; letter-spacing: -0.03em; line-height: 1.06; }
+  .lede { font-size: clamp(15px, 1.5vw, 19px); color: var(--muted); line-height: 1.6; max-width: 64ch; }
+  .lede strong, .lede b, p strong, p b, li strong, li b, td strong, td b { color: var(--text); font-weight: 600; }
+  .stamp { margin-top: 3.5vh; font-family: var(--mono); font-size: 12px; line-height: 1.8; color: var(--faint); }
+  .stamp b { color: var(--muted); font-weight: 500; }
+
+  /* ─────────────── structure ─────────────── */
   h2 {
-    font-size: 12px; letter-spacing: .13em; text-transform: uppercase; color: var(--accent);
-    margin: 44px 0 14px; padding-bottom: 7px; border-bottom: 1px solid var(--rule);
+    font-family: var(--display); font-size: clamp(22px, 2.8vw, 33px); font-weight: 600;
+    letter-spacing: -0.025em; line-height: 1.15; margin: 8vh 0 2.5vh;
+    display: flex; align-items: baseline; gap: 18px;
   }
-  h2 .n { color: var(--ink-3); margin-right: 10px; font-variant-numeric: tabular-nums; }
-  h3 { font-size: 16px; margin: 26px 0 8px; }
-  p { margin: 0 0 12px; max-width: 76ch; }
-  .lede { font-size: 16.5px; color: var(--ink); max-width: 70ch; }
-  small, .fine { font-size: 12.5px; color: var(--ink-3); }
-  a { color: var(--accent); }
-  .mono { font-family: var(--mono); font-size: 13px; }
+  h2 .n {
+    font-size: 13px; letter-spacing: 0.2em; color: var(--teal); font-weight: 700;
+    font-variant-numeric: tabular-nums; flex: 0 0 auto;
+  }
+  h3 { font-family: var(--display); font-size: clamp(15px, 1.6vw, 19px); font-weight: 600; margin-bottom: 1.2vh; }
+  p { font-size: clamp(14px, 1.35vw, 16px); color: var(--muted); line-height: 1.62; max-width: 74ch; margin-bottom: 1.8vh; }
+  a { color: var(--sky); text-decoration: none; border-bottom: 1px solid rgba(56,189,248,0.35); }
+  .mono { font-family: var(--mono); font-size: 0.9em; color: var(--text); }
+  .fine { font-size: 12.5px; color: var(--faint); }
 
-  /* ---------- tables ---------- */
-  table { width: 100%; border-collapse: collapse; margin: 6px 0 14px; font-size: 13.5px; }
-  caption { caption-side: bottom; text-align: left; padding-top: 8px; font-size: 12px; color: var(--ink-3); }
-  th { text-align: left; font-weight: 600; font-size: 11px; letter-spacing: .07em; text-transform: uppercase; color: var(--ink-3);
-       border-bottom: 1px solid var(--ink); padding: 0 10px 6px 0; vertical-align: bottom; }
-  td { padding: 8px 10px 8px 0; border-bottom: 1px solid var(--rule-soft); vertical-align: top; }
-  tr:last-child td { border-bottom: 1px solid var(--rule); }
-  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; padding-right: 0; }
+  /* ─────────────── cards ─────────────── */
+  .cols { display: grid; gap: 1.4vw; margin: 2.5vh 0 3vh; }
+  .cols-2 { grid-template-columns: 1fr 1fr; }
+  .cols-3 { grid-template-columns: repeat(3, 1fr); }
+  .cols-4 { grid-template-columns: repeat(4, 1fr); }
+
+  .card {
+    border: 1px solid var(--line); border-radius: 14px; padding: 2.2vh 1.5vw;
+    background: rgba(255, 255, 255, 0.025);
+  }
+  .card > *:last-child { margin-bottom: 0; }
+  .card p, .card li { font-size: clamp(13px, 1.3vw, 15px); color: var(--muted); line-height: 1.6; }
+  .card .kicker { font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--teal); font-weight: 600; margin-bottom: 1vh; }
+  .card.accent { border-color: rgba(20, 184, 166, 0.4); background: var(--teal-soft); }
+  .card.accent h3 { color: var(--teal); }
+  .card.amber { border-color: rgba(245, 158, 11, 0.32); background: rgba(245, 158, 11, 0.07); }
+  .card.amber h3 { color: var(--sunrise); }
+  .card.red { border-color: rgba(248, 113, 113, 0.3); background: rgba(248, 113, 113, 0.06); }
+  .card.red h3 { color: var(--bad); }
+
+  .stat { border: 1px solid var(--line); border-radius: 14px; padding: 2vh 1.2vw; background: rgba(255,255,255,0.025); }
+  .stat .v { font-family: var(--display); font-size: clamp(24px, 2.8vw, 34px); font-weight: 600; color: var(--teal); letter-spacing: -0.02em; }
+  .stat .k { font-size: 12px; color: var(--faint); margin-top: 0.6vh; line-height: 1.45; }
+
+  /* ─────────────── quotes / scripts ─────────────── */
+  .say { border-left: 3px solid var(--teal); padding-left: 1.8vw; margin: 3vh 0; }
+  .say .label { font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--teal); font-weight: 600; margin-bottom: 1.4vh; }
+  .say q {
+    font-family: var(--display); font-size: clamp(17px, 1.9vw, 23px); line-height: 1.42; font-weight: 500;
+    color: var(--text); quotes: "\201C" "\201D"; display: block; max-width: 34em;
+  }
+
+  /* ─────────────── badges ─────────────── */
+  .badge { display: inline-block; border-radius: 999px; padding: 3px 12px; font-size: 11.5px; font-weight: 600; white-space: nowrap; }
+  .badge.teal { background: var(--teal-soft); color: var(--teal); border: 1px solid rgba(20, 184, 166, 0.35); }
+  .badge.amber { background: rgba(245, 158, 11, 0.12); color: var(--sunrise); border: 1px solid rgba(245, 158, 11, 0.3); }
+  .badge.red { background: rgba(248, 113, 113, 0.12); color: var(--bad); border: 1px solid rgba(248, 113, 113, 0.3); }
+  .badge.green { background: rgba(52, 211, 153, 0.12); color: var(--good); border: 1px solid rgba(52, 211, 153, 0.3); }
+
+  /* ─────────────── tables ─────────────── */
+  table { width: 100%; border-collapse: collapse; margin: 2.5vh 0 1.5vh; }
+  th, td { text-align: left; padding: 1.5vh 1.1vw 1.5vh 0; border-bottom: 1px solid var(--line); font-size: clamp(13px, 1.3vw, 15px); vertical-align: top; line-height: 1.5; }
+  th { color: var(--faint); font-weight: 600; font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; }
+  td { color: var(--muted); }
+  td.amount { font-family: var(--display); color: var(--teal); white-space: nowrap; font-size: clamp(14px, 1.5vw, 17px); font-weight: 600; }
+  td.amount.plain { font-family: var(--sans); font-weight: 500; white-space: normal; }
   .nowrap { white-space: nowrap; }
+  caption { caption-side: bottom; text-align: left; padding-top: 1.4vh; font-size: 12.5px; color: var(--faint); line-height: 1.55; }
 
-  /* ---------- tags ---------- */
-  .tag { display: inline-block; font: 600 10.5px/1.5 inherit; letter-spacing: .06em; text-transform: uppercase;
-         padding: 1px 7px; border: 1px solid currentColor; white-space: nowrap; }
-  .t-live { color: var(--good); }
-  .t-demo { color: var(--warn); }
-  .t-stop { color: var(--bad); }
-  .t-flat { color: var(--ink-3); }
+  /* ─────────────── lists ─────────────── */
+  ul.clean { list-style: none; margin: 2vh 0 2.5vh; }
+  ul.clean li { padding-left: 1.6em; position: relative; margin-bottom: 1.3vh; font-size: clamp(13.5px, 1.35vw, 16px); color: var(--muted); line-height: 1.58; max-width: 74ch; }
+  ul.clean li::before { content: "—"; position: absolute; left: 0; color: var(--teal); }
 
-  /* ---------- callouts ---------- */
-  .band { border-left: 3px solid var(--accent); background: var(--wash); padding: 16px 20px; margin: 16px 0 22px; }
-  .band.stop { border-left-color: var(--bad); }
-  .band.warn { border-left-color: var(--warn); }
-  .band h3 { margin-top: 0; }
-  .band p:last-child { margin-bottom: 0; }
-  .band .why { font-size: 13.5px; color: var(--ink-2); }
-
-  /* ---------- script blocks ---------- */
-  .say { border: 1px solid var(--rule); padding: 18px 22px; margin: 14px 0 20px; }
-  .say .label { font: 600 10.5px/1 inherit; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 10px; }
-  .say q { font-size: 16px; line-height: 1.55; quotes: "\201C" "\201D"; display: block; max-width: 70ch; }
-
-  /* ---------- grids ---------- */
-  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 0 40px; }
-  .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--rule); border: 1px solid var(--rule); margin: 8px 0 20px; }
-  .stat { background: var(--paper); padding: 14px 16px; }
-  .stat .v { font-size: 23px; font-weight: 600; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
-  .stat .k { font-size: 11.5px; color: var(--ink-3); margin-top: 3px; }
-
-  ol, ul { margin: 0 0 14px; padding-left: 22px; max-width: 76ch; }
-  li { margin-bottom: 7px; }
-  ol.steps { counter-reset: s; list-style: none; padding-left: 0; }
-  ol.steps > li { counter-increment: s; position: relative; padding-left: 34px; margin-bottom: 12px; }
-  ol.steps > li::before {
-    content: counter(s); position: absolute; left: 0; top: 0;
-    width: 22px; height: 22px; border: 1px solid var(--ink); border-radius: 50%;
-    font: 600 12px/21px var(--mono); text-align: center;
+  ol.steps { list-style: none; counter-reset: s; margin: 2.5vh 0 3vh; }
+  ol.steps > li {
+    counter-increment: s; position: relative; padding-left: 3.2em; margin-bottom: 2vh;
+    font-size: clamp(13.5px, 1.35vw, 16px); color: var(--muted); line-height: 1.6; max-width: 74ch;
   }
-  .foot { margin-top: 48px; padding-top: 16px; border-top: 1px solid var(--rule); font-size: 12px; color: var(--ink-3); }
+  ol.steps > li::before {
+    content: counter(s); position: absolute; left: 0; top: -1px;
+    width: 2em; height: 2em; border: 1px solid rgba(20,184,166,0.45); border-radius: 50%;
+    color: var(--teal); font-family: var(--display); font-size: 0.85em; font-weight: 600;
+    display: flex; align-items: center; justify-content: center;
+  }
+  ol.plain { margin: 1.5vh 0 1.5vh 1.4em; }
+  ol.plain li { font-size: clamp(13px, 1.3vw, 15px); color: var(--muted); line-height: 1.6; margin-bottom: 0.9vh; }
+
+  /* ─────────────── footer ─────────────── */
+  .footer-tag {
+    margin-top: 8vh; padding-top: 2.5vh; border-top: 1px solid var(--line);
+    font-size: 12px; color: var(--faint); line-height: 1.7;
+  }
+  .footer-tag .brand { display: flex; align-items: center; gap: 8px; margin-bottom: 1.4vh; color: var(--muted); font-weight: 600; }
+  .footer-tag .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--teal); box-shadow: 0 0 10px rgba(20,184,166,0.8); }
+
+  /* Scoped to screen — an A4 page is ~794px wide, so an unscoped max-width
+     query would collapse every grid in the PDF. */
+  @media screen and (max-width: 820px) {
+    .cols-2, .cols-3, .cols-4 { grid-template-columns: 1fr; }
+    .doc { padding: 4vh 6vw 6vh; }
+  }
 
   @media print {
-    body { background: #fff; }
-    .sheet { margin: 0; border: 0; padding: 0 0 12mm; max-width: none; }
-    h2 { break-after: avoid; }
-    table, .band, .say, .stats { break-inside: avoid; }
-    .page-break { break-before: page; }
-    a { color: inherit; text-decoration: none; }
+    body { background: var(--ink-950); }
+    .doc { max-width: none; padding: 14mm 13mm; }
+    h2 { break-after: avoid; margin-top: 11mm; }
+    h3 { break-after: avoid; }
+    /* let sections flow rather than forcing breaks — the type scale here fills
+       pages unevenly, and forced breaks left half-empty pages. Long tables may
+       split, but only between rows, and the header repeats. */
+    .card, .say, .stat, tr, thead, caption { break-inside: avoid; }
+    thead { display: table-header-group; }
+    caption { break-before: avoid; }
+    p, ul.clean li, ol.steps > li { orphans: 3; widows: 3; }
+    a { color: var(--sky); border: 0; }
+    /* vh units collapse oddly in paged media — pin the rhythm in mm */
+    p, ul.clean, ol.steps { margin-bottom: 3.5mm; }
+    .cols { gap: 4mm; margin: 4mm 0 5mm; }
+    .card { padding: 4mm 5mm; }
+    .say { margin: 6mm 0; padding-left: 6mm; }
+    .footer-tag { margin-top: 10mm; }
+    .cover { padding-bottom: 10mm; }
+    .doc-top { margin-bottom: 10mm; }
   }
-  @page { size: A4; margin: 16mm 14mm; }
+  @page { size: A4; margin: 0; }
 </style>
 </head>
 <body>
-<div class="sheet">
+<div class="doc">
 
-  <header class="masthead">
-    <img id="crest" alt="City of Cape Town" src="assets/coct-logo.svg" />
-    <div class="titles">
-      <p class="kicker">Confidential · Meeting Pack</p>
-      <h1>Striops &mdash; meeting with the Executive Mayor</h1>
-      <p class="standfirst">A Strategic Intelligence Operating System for the City of Cape Town. What to say, the numbers that hold up, the numbers that do not, and who to contact.</p>
-      <p class="stamp">
-        Prepared <b>14 August 2026</b> &nbsp;·&nbsp; Municipality <b>CPT</b> &nbsp;·&nbsp; Striops data through <b>August 2026</b><br />
-        Repository <b>ganyegg/striops</b> &nbsp;·&nbsp; commit <b>3acab92</b>
-      </p>
+  <!-- ═══════════════════════ COVER ═══════════════════════ -->
+  <div class="doc-top">
+    <div class="coct-plate"><img id="crest" src="assets/coct-logo.svg" alt="City of Cape Town" /></div>
+    <div class="prepared">Prepared for the City of Cape Town<br />Confidential &mdash; working draft</div>
+  </div>
+
+  <section class="cover">
+    <div class="hero-mark">
+      <svg class="mark" width="40" height="40" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+        <path d="M14 18 L30 32 L14 46" stroke="#14b8a6" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="45" cy="32" r="6" fill="#f59e0b"/>
+      </svg>
+      <span>Striops</span>
     </div>
-  </header>
+    <p class="eyebrow">Meeting pack</p>
+    <h1>Meeting with the<br />Executive Mayor</h1>
+    <p class="lede" style="margin-top:3vh;">
+      What to say, the numbers that hold up, the numbers that do not, and who to contact.
+      Companion to the pitch deck &mdash; the deck makes the argument, this pack gets you
+      through the room.
+    </p>
+    <div style="margin-top:4vh;">
+      <span class="badge teal">Production live &amp; current</span>
+      <span class="badge amber">2 rows awaiting verification</span>
+      <span class="badge green">10 live feeds</span>
+    </div>
+    <p class="stamp">
+      Prepared <b>14 August 2026</b> &nbsp;·&nbsp; Municipality <b>CPT</b> &nbsp;·&nbsp; Data through <b>August 2026</b><br />
+      Repository <b>ganyegg/striops</b> &nbsp;·&nbsp; commit <b>c192b8f</b> &nbsp;·&nbsp; deployed and verified
+    </p>
+    <svg class="mountain" viewBox="0 0 1440 240" preserveAspectRatio="none">
+      <path d="M0,240 L0,170 L180,150 L340,90 L520,80 L620,78 L780,76 L900,82 L1060,120 L1240,150 L1440,175 L1440,240 Z" fill="rgba(20,184,166,0.10)"/>
+      <path d="M0,240 L0,195 L220,180 L420,120 L560,105 L720,100 L880,108 L1080,150 L1300,180 L1440,195 L1440,240 Z" fill="rgba(56,189,248,0.07)"/>
+    </svg>
+  </section>
 
-  <!-- ============================================================= -->
+  <!-- ═══════════════════════ 01 ═══════════════════════ -->
   <h2><span class="n">01</span>Read this first</h2>
 
-  <p class="lede">The product is in good shape and one real risk remains. The two artefact-driven claims that were headlining the Pulse &mdash; refuse complaints and streetlight faults apparently doubling in a month &mdash; are <b>now screened and labelled by the system itself</b>, and the Wins page no longer contradicts the Pulse on streetlights. What is still outstanding is deployment: the public URL serves <b>code from 22 July</b>, so none of it is live yet. Section 06 is the list. Do that, and the rest of this pack is the meeting.</p>
+  <p class="lede">The system is live, current and defensible. Production spent three weeks serving stale code and now runs today's build with data through August 2026. Three faults that would have cost you the room were found and fixed this week: two service series that appeared to double in a month, a Wins page that contradicted the Pulse, and crime that was eleven months out of date. <b>What remains is preparation, not engineering</b> &mdash; sections 06 and 10.</p>
 
-  <div class="stats">
+  <div class="cols cols-4">
     <div class="stat"><div class="v">15</div><div class="k">metrics on the Pulse</div></div>
     <div class="stat"><div class="v">10</div><div class="k">carrying live provenance</div></div>
     <div class="stat"><div class="v">2</div><div class="k">flagged awaiting verification</div></div>
     <div class="stat"><div class="v">R180k</div><div class="k">90-day pilot, fixed</div></div>
   </div>
 
-  <!-- ============================================================= -->
+  <!-- ═══════════════════════ 02 ═══════════════════════ -->
   <h2><span class="n">02</span>The sixty-second answer</h2>
 
   <div class="say">
@@ -161,7 +261,7 @@
 
   <p class="fine">Both answers are drawn from <span class="mono">docs/STRIOPS.md</span> &sect;0 and &sect;7 and are consistent with the pitch deck.</p>
 
-  <!-- ============================================================= -->
+  <!-- ═══════════════════════ 03 ═══════════════════════ -->
   <h2><span class="n">03</span>Numbers you can defend in the room</h2>
 
   <p>Every row below is live or official in the running system today, with its own period label and source. If challenged, each has a click-through in the app to the series and the publisher.</p>
@@ -170,7 +270,7 @@
     <thead>
       <tr>
         <th>Indicator</th>
-        <th class="num">Latest</th>
+        <th>Latest</th>
         <th class="nowrap">Period</th>
         <th>Source</th>
         <th>Standing</th>
@@ -179,311 +279,325 @@
     <tbody>
       <tr>
         <td>Dam storage &mdash; Cape Town system</td>
-        <td class="num">78.2%</td>
+        <td class="amount">78.2%</td>
         <td class="nowrap">Week of 10 Aug 2026</td>
         <td>DWS weekly State of Dams</td>
-        <td><span class="tag t-live">Live</span></td>
+        <td><span class="badge green">Live</span></td>
       </tr>
       <tr>
         <td>Dam storage &mdash; same week last year</td>
-        <td class="num">88.1%</td>
+        <td class="amount">88.1%</td>
         <td class="nowrap">Aug 2025</td>
         <td>DWS weekly State of Dams</td>
-        <td><span class="tag t-live">Live</span></td>
+        <td><span class="badge green">Live</span></td>
       </tr>
       <tr>
         <td>Municipal arrears (consumer debt)</td>
-        <td class="num">R8.95bn</td>
+        <td class="amount">R8.95bn</td>
         <td class="nowrap">Mar 2026</td>
         <td>CoCT Open Data</td>
-        <td><span class="tag t-live">Live</span></td>
+        <td><span class="badge green">Live</span></td>
       </tr>
       <tr>
         <td>System energy sent out</td>
-        <td class="num">795,084,908 kWh</td>
-        <td class="nowrap">May 2026</td>
+        <td class="amount">808,016,255 kWh</td>
+        <td class="nowrap">Aug 2026</td>
         <td>CoCT Open Data</td>
-        <td><span class="tag t-live">Live</span></td>
+        <td><span class="badge green">Live</span></td>
       </tr>
       <tr>
         <td>Electricity billed</td>
-        <td class="num">4,182,671,921 kWh</td>
-        <td class="nowrap">May 2026</td>
+        <td class="amount">4,038,548,576 kWh</td>
+        <td class="nowrap">Jun 2026</td>
         <td>CoCT Open Data</td>
-        <td><span class="tag t-live">Live</span></td>
-      </tr>
-      <tr>
-        <td>Audit outcome</td>
-        <td class="num">Unqualified &mdash; no findings</td>
-        <td class="nowrap">Latest</td>
-        <td>AGSA via National Treasury</td>
-        <td><span class="tag t-live">Official</span></td>
-      </tr>
-      <tr>
-        <td>Population</td>
-        <td class="num">4,772,846</td>
-        <td class="nowrap">Census 2022</td>
-        <td>Stats SA</td>
-        <td><span class="tag t-live">Official</span></td>
+        <td><span class="badge green">Live</span></td>
       </tr>
       <tr>
         <td>Murders</td>
-        <td class="num">274 / month</td>
+        <td class="amount">274 / month</td>
         <td class="nowrap">Mar 2026</td>
         <td>SAPS quarterly release, station level</td>
-        <td><span class="tag t-live">Live</span></td>
+        <td><span class="badge green">Live</span></td>
       </tr>
       <tr>
         <td>Contact crime</td>
-        <td class="num">6,128 / month</td>
+        <td class="amount">6,128 / month</td>
         <td class="nowrap">Mar 2026</td>
         <td>SAPS quarterly release, station level</td>
-        <td><span class="tag t-live">Live</span></td>
+        <td><span class="badge green">Live</span></td>
+      </tr>
+      <tr>
+        <td>Audit outcome</td>
+        <td class="amount plain">Unqualified &mdash; no findings</td>
+        <td class="nowrap">Latest</td>
+        <td>AGSA via National Treasury</td>
+        <td><span class="badge teal">Official</span></td>
+      </tr>
+      <tr>
+        <td>Population</td>
+        <td class="amount">4,772,846</td>
+        <td class="nowrap">Census 2022</td>
+        <td>Stats SA</td>
+        <td><span class="badge teal">Official</span></td>
       </tr>
     </tbody>
-    <caption>Source: Striops <span class="mono">/pulse</span> and <span class="mono">/themes</span>, 14 Aug 2026. &ldquo;Live&rdquo; means fetched from the publisher, not curated by hand.</caption>
+    <caption>Source: Striops <span class="mono">/pulse</span> and <span class="mono">/themes</span> in production, 14 Aug 2026. &ldquo;Live&rdquo; means fetched from the publisher, not curated by hand.</caption>
   </table>
 
-  <div class="band">
-    <h3>Crime is now as current as SAPS allows</h3>
-    <p class="why">The extract runs to <b>March 2026</b> &mdash; the last quarter SAPS has released. It is read directly from the station-level sheet inside each SAPS quarterly workbook and summed across Cape Town's 62 precincts, so the remaining lag is the national publication cycle and nothing else. The honest line if asked: &ldquo;SAPS publishes a quarter at a time, so March is the newest official month in the country. Striops reads their station sheet directly and labels the lag rather than hiding it. Wire the City's own precinct extract in the pilot and it becomes monthly.&rdquo;</p>
+  <div class="cols cols-2">
+    <div class="card accent">
+      <h3>Crime is now as current as SAPS allows</h3>
+      <p>The extract runs to <b>March 2026</b> &mdash; the last quarter SAPS has released. It is read directly from the station-level sheet inside each SAPS quarterly workbook and summed across Cape Town's 62 precincts, so the remaining lag is the national publication cycle and nothing else.</p>
+      <p>If asked: &ldquo;SAPS publishes a quarter at a time, so March is the newest official month in the country. Striops reads their station sheet directly and labels the lag rather than hiding it. Wire the City's own precinct extract in the pilot and it becomes monthly.&rdquo;</p>
+    </div>
+    <div class="card amber">
+      <h3>One caveat before you quote the crime movement</h3>
+      <p>Pulse reads &ldquo;murders up 18.6%, February to March 2026&rdquo; (231 to 274). That is the published monthly count, but February is a 28-day month &mdash; per day the rise is nearer 7%.</p>
+      <p>Quote the levels, not the month-on-month percentage. Over the quarter the direction is genuinely <b>down</b>: 781 murders in January&ndash;March 2026 against 864 in the same quarter of 2025.</p>
+    </div>
   </div>
 
-  <div class="band warn">
-    <h3>One caveat before you quote the crime movement</h3>
-    <p class="why">Pulse reads &ldquo;murders up 18.6%, February to March 2026&rdquo; (231 to 274). That is the published monthly count, but February is a 28-day month &mdash; on a per-day basis the rise is closer to 7%. Quote the levels rather than the month-on-month percentage, or say &ldquo;on a per-day basis&rdquo; out loud. Over the quarter the direction is genuinely down: 781 murders in January&ndash;March 2026 against 864 in the same quarter of 2025.</p>
-  </div>
-
-  <!-- ============================================================= -->
-  <div class="page-break"></div>
+  <!-- ═══════════════════════ 04 ═══════════════════════ -->
   <h2><span class="n">04</span>The money case</h2>
 
   <p>This is the argument that survives a CFO. It rests on stated unit economics, not on a claim about the software.</p>
 
   <table>
-    <thead><tr><th>Quantity</th><th class="num">Value</th><th>Basis</th></tr></thead>
+    <thead><tr><th>Quantity</th><th>Value</th><th>Basis</th></tr></thead>
     <tbody>
-      <tr><td>Illustrative bulk system input</td><td class="num">370 million kl/yr</td><td>~1 GL/day order of magnitude</td></tr>
-      <tr><td>Blended production and pumping cost</td><td class="num">R5.00 / kl</td><td>Conservative; excludes retail tariff and scarcity premium</td></tr>
-      <tr><td>Cost of 1.0 percentage point of non-revenue water</td><td class="num">R185m / yr</td><td>370m kl &times; R5 &times; 1%</td></tr>
-      <tr><td>Annual cost of non-revenue water at the current level</td><td class="num">R5.14bn / yr</td><td>Striops risk valuation, confidence 0.72</td></tr>
-      <tr><td>Pilot fee</td><td class="num">R180,000</td><td>Fixed, 90 days, once-off</td></tr>
-      <tr><td><b>Break-even recovery</b></td><td class="num"><b>0.001 pp</b></td><td>Held for one year, on water alone</td></tr>
+      <tr><td>Illustrative bulk system input</td><td class="amount">370 million kl/yr</td><td>~1 GL/day order of magnitude</td></tr>
+      <tr><td>Blended production and pumping cost</td><td class="amount">R5.00 / kl</td><td>Conservative; excludes retail tariff and scarcity premium</td></tr>
+      <tr><td>Cost of 1.0 percentage point of non-revenue water</td><td class="amount">R185m / yr</td><td>370m kl &times; R5 &times; 1%</td></tr>
+      <tr><td>Annual cost of non-revenue water at the current level</td><td class="amount">R5.14bn / yr</td><td>Striops risk valuation, confidence 0.72</td></tr>
+      <tr><td>Pilot fee</td><td class="amount">R180,000</td><td>Fixed, 90 days, once-off</td></tr>
+      <tr><td><b>Break-even recovery</b></td><td class="amount">0.001 pp</td><td>Held for one year, on water alone</td></tr>
     </tbody>
     <caption>Assumptions are published in <span class="mono">datasets/seed/valuation/CPT.json</span> and surfaced through the API at <span class="mono">/valuation</span> so the City can challenge each one.</caption>
   </table>
 
   <p>The seeded action <span class="mono">act-nrw-leak-crews</span> targets 0.5 pp of recovery, or roughly R92.5m a year. Even at one-fiftieth of that &mdash; 0.01 pp, from earlier visibility and a named owner &mdash; the return is about R1.85m a year, roughly ten times the pilot fee, every year the gain holds.</p>
 
-  <h3>Price ladder</h3>
+  <h3 style="margin-top:5vh;">Price ladder</h3>
   <table>
-    <thead><tr><th>Tier</th><th class="num">Price</th><th>Scope</th></tr></thead>
+    <thead><tr><th>Tier</th><th>Price</th><th>Scope</th></tr></thead>
     <tbody>
-      <tr><td>90-day pilot</td><td class="num">R180,000 once-off</td><td>Two live integrations, daily brief, provenance audit, action tracker, value ledger, decision register, success test</td></tr>
-      <tr><td>Striops Core</td><td class="num">R95,000 / month</td><td>Daily brief, monitored feeds, re-verification, Pulse, actions, ledger, unlimited executive seats</td></tr>
-      <tr><td>Striops Command</td><td class="num">R160,000 / month</td><td>Core plus simulation, all domains, ward-level twin, priority integrations, quarterly reviews</td></tr>
+      <tr><td>90-day pilot</td><td class="amount">R180,000<span style="display:block;color:var(--faint);font-family:var(--sans);font-size:12px;font-weight:400;margin-top:4px;">once-off</span></td><td>Two live integrations, daily brief, provenance audit, action tracker, value ledger, decision register, success test</td></tr>
+      <tr><td>Striops Core</td><td class="amount">R95,000<span style="display:block;color:var(--faint);font-family:var(--sans);font-size:12px;font-weight:400;margin-top:4px;">per month</span></td><td>Daily brief, monitored feeds, re-verification, Pulse, actions, ledger, unlimited executive seats</td></tr>
+      <tr><td>Striops Command</td><td class="amount">R160,000<span style="display:block;color:var(--faint);font-family:var(--sans);font-size:12px;font-weight:400;margin-top:4px;">per month</span></td><td>Core plus simulation, all domains, ward-level twin, priority integrations, quarterly reviews</td></tr>
     </tbody>
   </table>
 
   <p>The pilot is deliberately set under the roughly R200,000 competitive-bid threshold under MFMA supply-chain practice, so it can proceed on written quotations where City policy allows. Speed is part of the offer.</p>
 
-  <!-- ============================================================= -->
-  <h2><span class="n">05</span>The artefacts, and how the system now handles them</h2>
+  <!-- ═══════════════════════ 05 ═══════════════════════ -->
+  <h2><span class="n">05</span>The artefacts, and how the system handles them</h2>
 
-  <p>Two City service series broke range in June 2026. Until this week the Pulse asserted them as month-on-month findings, which would not have survived contact with the relevant director. The system now screens them and says so. <b>The demo is stronger because of this, not weaker &mdash; lead with it rather than hoping nobody clicks.</b></p>
+  <p>Two City service series broke range in June 2026. The Pulse used to assert them as month-on-month findings, which would not have survived contact with the relevant director. The system now screens them and says so. <b>The demo is stronger because of this, not weaker &mdash; lead with it rather than hoping nobody clicks.</b></p>
 
-  <div class="band">
-    <h3>What the screen does</h3>
-    <p class="why">A reading more than twice &mdash; or less than half &mdash; the median of its own previous six periods is marked <b>awaiting verification</b> instead of being reported as a change. Those rows are dropped from the worsening and improving counts and sorted below the metrics that can defend themselves. The rule is deliberately blunt so you can restate it in one sentence in the room.</p>
+  <div class="card accent">
+    <div class="kicker">How the screen works</div>
+    <p>A reading more than twice &mdash; or less than half &mdash; the median of its own previous six periods is marked <b>awaiting verification</b> instead of being reported as a change. Those rows are dropped from the worsening and improving counts and sorted below the metrics that can defend themselves. The rule is deliberately blunt so you can restate it in one sentence in the room.</p>
   </div>
 
   <table>
-    <thead><tr><th>Series</th><th class="num">June 2026</th><th class="num">Median, prior 6</th><th class="num">Break</th><th>Now shown as</th></tr></thead>
+    <thead><tr><th>Series</th><th>June 2026</th><th>Median, prior 6</th><th>Break</th><th>Now shown as</th></tr></thead>
     <tbody>
       <tr>
-        <td>Refuse service requests</td><td class="num">28,604</td><td class="num">11,529</td><td class="num">2.5x</td>
-        <td><span class="tag t-demo">Awaiting verification</span></td>
+        <td>Refuse service requests</td><td class="amount">28,604</td><td class="amount">11,529</td><td class="amount">2.5&times;</td>
+        <td><span class="badge amber">Awaiting verification</span></td>
       </tr>
       <tr>
-        <td>Public lighting outages</td><td class="num">43,588</td><td class="num">9,357</td><td class="num">4.7x</td>
-        <td><span class="tag t-demo">Awaiting verification</span></td>
+        <td>Public lighting outages</td><td class="amount">43,588</td><td class="amount">9,357</td><td class="amount">4.7&times;</td>
+        <td><span class="badge amber">Awaiting verification</span></td>
       </tr>
     </tbody>
     <caption>Both break in the same month, which points at one shared cause &mdash; most likely a change in how C3 service requests are categorised or de-duplicated. The refuse extract also records 336 for September 2025, which is plainly broken and is screened on the same rule.</caption>
   </table>
 
+  <div class="card" style="margin-bottom:3vh;">
+    <div class="kicker">And July proves the point</div>
+    <p>July 2026 came back to baseline &mdash; <b>10,205</b> refuse requests and <b>9,719</b> lighting faults, both squarely in the historical range. So June was a transient extract fault, not a service collapse. The rows stay flagged because June is the comparison month, and any June-to-July percentage would be just as false in the opposite direction.</p>
+  </div>
+
   <div class="say">
     <div class="label">Say this when the flag appears on screen</div>
-    <q>That row is the product refusing to lie to you. Refuse complaints did not treble in June &mdash; the extract changed. A quarterly report would have printed the spike as a service collapse and someone would have spent a month responding to it. Striops flags it, keeps it out of the headline counts, and tells you who to ask.</q>
+    <q>That row is the product refusing to lie to you. Refuse complaints did not treble in June &mdash; the extract changed, and July came back to normal. A quarterly report would have printed the spike as a service collapse and someone would have spent a month responding to it.</q>
   </div>
 
-  <div class="band stop">
+  <div class="card red">
     <h3>Still do not present these two as findings</h3>
-    <p class="why"><b>Two different dam levels, both live.</b> The City series shows 61.35% for January 2026 and stops there; the DWS system reading is 78.2% for the week of 10 August 2026. They are seventeen points apart because they measure different things over different periods. Present the DWS figure as the current position and the City series as the City's own historical record &mdash; never side by side without that sentence. The comparison worth making is year-on-year: <b>78.2% now against 88.1% the same week last year</b>, roughly ten percentage points down.</p>
-    <p class="why"><b>The underspend amounts.</b> The R1.21bn on Water and Sanitation and R0.88bn on Roads and Transport come from demonstration full-year function totals, not the City's official mid-year position for FY2025/26. The system labels them and so must you. Sell the method, not the amount: &ldquo;this is the shape of the analysis &mdash; wire the S52 tables in the pilot and it becomes your number.&rdquo;</p>
+    <p><b>Two different dam levels, both live.</b> The City series shows 61.35% for January 2026 and stops there; the DWS system reading is 78.2% for the week of 10 August 2026. They are seventeen points apart because they measure different things over different periods. Present the DWS figure as the current position and the City series as the City's own historical record &mdash; never side by side without that sentence. The comparison worth making is year-on-year: <b>78.2% now against 88.1% the same week last year</b>, roughly ten percentage points down.</p>
+    <p><b>The underspend amounts.</b> The R1.21bn on Water and Sanitation and R0.88bn on Roads and Transport come from demonstration full-year function totals, not the City's official mid-year position for FY2025/26. The system labels them and so must you. Sell the method, not the amount: &ldquo;this is the shape of the analysis &mdash; wire the S52 tables in the pilot and it becomes your number.&rdquo;</p>
   </div>
 
-  <!-- ============================================================= -->
-  <div class="page-break"></div>
-  <h2><span class="n">06</span>Fix before you walk in</h2>
+  <!-- ═══════════════════════ 06 ═══════════════════════ -->
+  <h2><span class="n">06</span>Before you walk in</h2>
 
-  <p><b>One blocker is outstanding, and it is the important one.</b> The code changes below it are done, tested and pushed &mdash; but none of them reach the Mayor until the site deploys.</p>
+  <p>The engineering blockers are cleared. What is left is sequencing and rehearsal.</p>
 
   <ol class="steps">
-    <li><b>Get the live site current. This is the whole list.</b> <span class="mono">striops-web.onrender.com</span> and <span class="mono">striops-api.onrender.com</span> are both serving the build from <b>22 July</b>. Everything since is on GitHub but was never deployed. Consequences today: <span class="mono">/themes</span>, <span class="mono">/pulse</span>, <span class="mono">/sectors</span>, <span class="mono">/risks</span>, <span class="mono">/act</span>, <span class="mono">/sources</span>, <span class="mono">/simulate</span>, <span class="mono">/briefing</span> and <span class="mono">/opportunities</span> all return <b>404</b> in production, the crime and census feeds are absent, the feed register shows five sources instead of nine, and the outlier screen is not running. Open the Render dashboard, find why auto-deploy stopped for both services, and redeploy from <span class="mono">main</span>. Both services build clean locally, so this is a platform question, not a code question.</li>
-    <li><b>Run an ingest once production is current,</b> so the deployed database holds the Treasury, SAPS, DWS, Census and AGSA series rather than falling back to seed. The scheduled workflow will do it, or trigger <span class="mono">POST /refresh?run_ingest=true</span> directly.</li>
-    <li><b>Have a fallback demo ready regardless.</b> If Render cannot be fixed in time, run the current build locally and present that. Do not open the public URL as a demo while it is stale.</li>
+    <li><b>Brief the officials before you request the meeting.</b> The City's published process asks you to list who you have already consulted &mdash; so this is not optional courtesy, it is a requirement of the request. Start with <b>Gareth Morgan</b> (ED: Future Planning and Resilience) and <b>Kevin Jacoby</b> (CFO). Brief <b>Jason Mc Neil</b> (Urban Waste Management) too, so the refuse artefact reaches him from you rather than from the Mayor.</li>
+    <li><b>Rehearse the two flagged rows out loud.</b> You should be the one who introduces them. The script is in section 05 and it takes fifteen seconds.</li>
     <li><b>Clear the two overdue actions or restate their dates.</b> <span class="mono">act-refuse-capacity</span> was due 30 June and <span class="mono">act-pipe-programme-report</span> 31 July. An accountability product showing its own overdue items is either an honesty asset or an unforced error, depending entirely on whether you raise it first.</li>
+    <li><b>Open the live site once, the morning of.</b> It is current and all routes serve, but a cold free-tier instance takes about sixty seconds to wake. Load it before you walk in so the first click in front of the Mayor is instant.</li>
   </ol>
 
-  <h3>Already done, pending deployment</h3>
-  <ul>
-    <li><b>Crime is current to March 2026.</b> The previous extract came from a volunteer GitHub project that stopped updating in December 2025, freezing Cape Town crime at September 2025. Striops now reads the station-level sheet inside each SAPS quarterly workbook directly. The new parser reproduces the old extract exactly across all 69 overlapping months, and adds six.</li>
-    <li><b>Outlier screening.</b> Refuse and lighting are flagged as awaiting verification instead of being reported as month-on-month findings, and excluded from the headline counts.</li>
-    <li><b>The streetlight self-contradiction is resolved.</b> The Wins page claimed &ldquo;faults falling about 2.7% per period&rdquo; from a stale seed series while the Pulse read &ldquo;up 116.3%&rdquo;. Curated wins that cite a metric are now re-tested against that live series on every read; one whose own data no longer supports it is marked <span class="mono">Under review</span> and pushed down the page rather than left asserting the headline.</li>
-    <li><b>Dam storage is current and comparative.</b> The DWS weekly reading now reaches the Pulse, moving it from January to August 2026, and carries the published year-ago figure so the movement means something.</li>
-    <li><b>No more future-dated numbers.</b> The City's energy dataset carries rows for the rest of the financial year alongside actuals, so the site was reporting &ldquo;system energy down 9.5%, November to December 2026&rdquo; &mdash; in August. Points beyond the current month are now dropped at ingest and again when the Pulse is built.</li>
-  </ul>
-
-  <div class="band">
-    <h3>Turn item 5 into an asset</h3>
-    <p class="why">&ldquo;Two of the five actions in here are overdue, and the system says so on its own front page. That is the point. A report cannot embarrass you in nine months' time. This can, which is why it changes behaviour.&rdquo;</p>
+  <div class="card accent">
+    <div class="kicker">Turn the overdue actions into the argument</div>
+    <p>&ldquo;Two of the five actions in here are overdue, and the system says so on its own front page. That is the point. A report cannot embarrass you in nine months' time. This can, which is why it changes behaviour.&rdquo;</p>
   </div>
 
-  <!-- ============================================================= -->
+  <h3 style="margin-top:5vh;">Fixed this week</h3>
+  <ul class="clean">
+    <li><b>Production is current.</b> Three weeks of work had never reached GitHub, so Render had nothing to deploy. All routes now serve today's build, verified end to end.</li>
+    <li><b>Crime is current to March 2026.</b> The previous extract came from a volunteer project that stopped updating in December 2025, freezing Cape Town at September 2025. Striops now reads the station-level sheet inside each SAPS quarterly workbook directly. The new parser reproduces the old extract exactly across all 69 overlapping months, and adds six.</li>
+    <li><b>Outlier screening.</b> Refuse and lighting are flagged rather than reported as findings, and excluded from the headline counts.</li>
+    <li><b>The Wins page no longer contradicts the Pulse.</b> It claimed streetlight faults were falling 2.7% per period, from a stale seed series, while the Pulse read up 116%. Curated wins that cite a metric are now re-tested against that live series on every read; anything unsupported renders as <span class="mono">Under review</span>.</li>
+    <li><b>No more future-dated numbers.</b> The City's energy dataset carries rows for the rest of the financial year alongside actuals, so the site was reporting &ldquo;system energy down 9.5%, November to December 2026&rdquo; &mdash; in August. Points beyond the current month are now dropped at ingest and again when the Pulse is built.</li>
+    <li><b>Dam storage is current and comparative.</b> The DWS weekly reading reaches the Pulse and carries the published year-ago figure, so the movement means something.</li>
+  </ul>
+
+  <!-- ═══════════════════════ 07 ═══════════════════════ -->
   <h2><span class="n">07</span>What the system is genuinely finding</h2>
 
   <p>Lead with these. They are the reason to keep talking, and each has a named owner and a rand figure already attached.</p>
 
   <table>
-    <thead><tr><th>Finding</th><th class="num">Score / value</th><th>Owner</th><th>Standing</th></tr></thead>
+    <thead><tr><th>Finding</th><th>Score / value</th><th>Owner</th><th>Standing</th></tr></thead>
     <tbody>
       <tr>
         <td>Escalating non-revenue water losses, projected past 28% next period</td>
-        <td class="num">106 &middot; R5.14bn/yr</td>
+        <td class="amount">106<span style="display:block;color:var(--faint);font-family:var(--sans);font-size:12px;font-weight:400;margin-top:4px;">R5.14bn/yr</span></td>
         <td>Director: Water and Sanitation</td>
-        <td><span class="tag t-demo">Critical</span></td>
+        <td><span class="badge red">Critical</span></td>
       </tr>
       <tr>
         <td>Growing road maintenance backlog, projected to 1,715 km</td>
-        <td class="num">95.7 &middot; R68m avoided</td>
+        <td class="amount">95.7<span style="display:block;color:var(--faint);font-family:var(--sans);font-size:12px;font-weight:400;margin-top:4px;">R68m avoided</span></td>
         <td>Director: Urban Mobility</td>
-        <td><span class="tag t-demo">Critical</span></td>
+        <td><span class="badge red">Critical</span></td>
       </tr>
       <tr>
         <td>Lengthening clinic waiting times</td>
-        <td class="num">92.3</td>
+        <td class="amount">92.3</td>
         <td>Community Services and Health</td>
-        <td><span class="tag t-demo">Critical</span></td>
+        <td><span class="badge red">Critical</span></td>
       </tr>
       <tr>
         <td>Slower EMS response times</td>
-        <td class="num">90.8</td>
+        <td class="amount">90.8</td>
         <td>Community Services and Health</td>
-        <td><span class="tag t-demo">Critical</span></td>
+        <td><span class="badge red">Critical</span></td>
       </tr>
     </tbody>
-    <caption>Source: Striops <span class="mono">/risks</span> and <span class="mono">/health-breakdown</span>. Clinic, EMS, non-revenue water and roads currently run on demonstration series &mdash; the mechanism is real, the inputs need the departmental extracts named in section 08.</caption>
+    <caption>Source: Striops <span class="mono">/risks</span> and <span class="mono">/health-breakdown</span>. Clinic, EMS, non-revenue water and roads currently run on demonstration series &mdash; the mechanism is real, the inputs need the departmental extracts named in section 11.</caption>
   </table>
 
   <p>The value ledger carries R68m on roads and R92.5m on non-revenue water, both marked <span class="mono">projected</span> and <span class="mono">needs_verification</span>. Say that plainly. Nothing is claimed as realised until a decision is taken and delivery starts, and that discipline is a selling point rather than a weakness.</p>
 
-  <!-- ============================================================= -->
+  <!-- ═══════════════════════ 08 ═══════════════════════ -->
   <h2><span class="n">08</span>The ask</h2>
 
   <p>Do not ask for a budget decision in the room. Ask for the two things that make the next conversation inevitable.</p>
 
-  <ol class="steps">
-    <li><b>A data-sharing MOU covering aggregates only.</b> No citizen personal information in scope. The specific extracts that unlock the most value: Finance S52 year-to-date operating and capital tables, and Water and Sanitation's official annual system input and zone-level non-revenue water. Those two turn the largest demonstration numbers in this pack into official ones.</li>
-    <li><b>A named executive sponsor and a 90-day pilot at R180,000,</b> measured against a written success test agreed up front.</li>
-  </ol>
+  <div class="cols cols-2">
+    <div class="card accent">
+      <div class="kicker">One</div>
+      <h3>A data-sharing MOU, aggregates only</h3>
+      <p>No citizen personal information in scope. The two extracts that unlock the most value: Finance <b>S52 year-to-date</b> operating and capital tables, and Water and Sanitation's official annual <b>system input and zone-level non-revenue water</b>. Those turn the largest demonstration numbers in this pack into official ones.</p>
+    </div>
+    <div class="card accent">
+      <div class="kicker">Two</div>
+      <h3>A named sponsor and a 90-day pilot</h3>
+      <p><b>R180,000</b>, measured against a written success test agreed up front. A named executive sponsor matters more than the money &mdash; without one, the feeds never arrive.</p>
+    </div>
+  </div>
 
   <div class="say">
     <div class="label">The close</div>
     <q>Give me two feeds and ninety days. If at the end of it the daily brief has not changed a single decision, do not renew &mdash; and you keep the data, the exports and the schema regardless. There is no proprietary lock on your own facts.</q>
   </div>
 
-  <!-- ============================================================= -->
-  <div class="page-break"></div>
+  <!-- ═══════════════════════ 09 ═══════════════════════ -->
   <h2><span class="n">09</span>Objections, and the answers</h2>
 
   <table>
-    <thead><tr><th style="width:34%">If they say</th><th>You say</th></tr></thead>
+    <thead><tr><th style="width:32%">If they say</th><th>You say</th></tr></thead>
     <tbody>
       <tr><td>&ldquo;My team can produce this report.&rdquo;</td><td>Once. Striops produces it every morning from live systems, every number able to defend itself, and it never forgets why a decision was made.</td></tr>
-      <tr><td>&ldquo;Is this live City data?&rdquo;</td><td>Today: curated seed plus cached public feeds &mdash; Treasury, SAPS, DWS, Stats SA and AGSA. In the pilot: Finance and Water live. The feed panel in the product always states which, per source.</td></tr>
+      <tr><td>&ldquo;Is this live City data?&rdquo;</td><td>Today: curated seed plus live public feeds &mdash; Treasury, SAPS, DWS, Stats SA and AGSA. In the pilot: Finance and Water live. The feed panel in the product always states which, per source.</td></tr>
       <tr><td>&ldquo;AI makes things up.&rdquo;</td><td>The AI writes prose only. Scores, forecasts and rand figures are deterministic and assumption-linked. Remove the API key and every number still stands.</td></tr>
       <tr><td>&ldquo;What about POPIA?&rdquo;</td><td>Aggregates only. No citizen personal information in scope, and the MOU forbids it.</td></tr>
       <tr><td>&ldquo;Where does it sit?&rdquo;</td><td>Pilot in South African region or hybrid; production target inside the City tenancy with single sign-on.</td></tr>
       <tr><td>&ldquo;What if you disappear?&rdquo;</td><td>Data in the City tenancy, open exports, continuity clauses, and no proprietary formats holding your facts hostage.</td></tr>
       <tr><td>&ldquo;How current is the crime data?&rdquo;</td><td>March 2026 &mdash; the last quarter SAPS has released nationally, read directly from their station-level sheet across all 62 Cape Town precincts. The remaining lag is the national publication cycle. The City's own precinct extract would make it monthly.</td></tr>
-      <tr><td>&ldquo;Refuse complaints did not double.&rdquo;</td><td>Correct, and the system already says so &mdash; that row is flagged awaiting verification and excluded from the counts, because the reading is 2.5 times the median of its own previous six months. That is an extract artefact, not a service collapse, and catching it is the argument for the whole provenance layer.</td></tr>
+      <tr><td>&ldquo;Refuse complaints did not double.&rdquo;</td><td>Correct, and the system already says so &mdash; that row is flagged awaiting verification and excluded from the counts, because the reading is 2.5 times the median of its own previous six months. July came back to baseline, which confirms it.</td></tr>
       <tr><td>&ldquo;So your data is wrong.&rdquo;</td><td>The City's extract changed shape; every consumer of that feed has the same problem. The difference is that we detect it and label it rather than printing it in a report. A number that can flag itself is worth more than one that cannot.</td></tr>
     </tbody>
   </table>
 
-  <!-- ============================================================= -->
+  <!-- ═══════════════════════ 10 ═══════════════════════ -->
   <h2><span class="n">10</span>Contacts</h2>
 
   <h3>Office of the Executive Mayor</h3>
   <table>
-    <thead><tr><th style="width:26%">Channel</th><th>Detail</th></tr></thead>
+    <thead><tr><th style="width:24%">Channel</th><th>Detail</th></tr></thead>
     <tbody>
       <tr><td>Executive Mayor</td><td>Ald Geordin Hill-Lewis</td></tr>
-      <tr><td>Office email</td><td class="mono"><a href="mailto:mayor.mayor@capetown.gov.za">mayor.mayor@capetown.gov.za</a></td></tr>
-      <tr><td>Office telephone</td><td class="mono">021 400 1301 &nbsp;/&nbsp; 021 400 1300</td></tr>
-      <tr><td>Direct (gov.za directory)</td><td class="mono"><a href="mailto:Geordin.hilllewis@capetown.gov.za">Geordin.hilllewis@capetown.gov.za</a></td></tr>
+      <tr><td>Office email</td><td><span class="mono">mayor.mayor@capetown.gov.za</span></td></tr>
+      <tr><td>Office telephone</td><td><span class="mono">021 400 1301 &nbsp;/&nbsp; 021 400 1300</span></td></tr>
+      <tr><td>Direct (gov.za directory)</td><td><span class="mono">Geordin.hilllewis@capetown.gov.za</span></td></tr>
       <tr><td>Physical</td><td>Civic Centre, Podium Block, Fifth Floor, 12 Hertzog Boulevard, Cape Town 8001</td></tr>
       <tr><td>Postal</td><td>Private Bag X9181, Cape Town 8000</td></tr>
-      <tr><td>City switchboard</td><td class="mono">021 400 1111</td></tr>
-      <tr><td>Supply chain / tenders</td><td class="mono">tenders@capetown.gov.za &nbsp;·&nbsp; 021 400 2405 / 021 400 2505</td></tr>
+      <tr><td>City switchboard</td><td><span class="mono">021 400 1111</span></td></tr>
+      <tr><td>Supply chain / tenders</td><td><span class="mono">tenders@capetown.gov.za</span> &nbsp;·&nbsp; <span class="mono">021 400 2405 / 021 400 2505</span></td></tr>
     </tbody>
   </table>
 
-  <div class="band">
+  <div class="card amber">
     <h3>How the City requires the meeting to be requested</h3>
-    <p class="why">All meetings are scheduled at the Executive Mayor's discretion, and the published process asks for four things in writing:</p>
-    <ol>
+    <p>All meetings are scheduled at the Executive Mayor's discretion, and the published process asks for four things in writing:</p>
+    <ol class="plain">
       <li>A clear statement of your reason for wanting to meet.</li>
-      <li>A list of all officials you have consulted <em>before</em> requesting the meeting.</li>
+      <li>A list of all officials you have consulted <i>before</i> requesting the meeting.</li>
       <li>A proposed agenda.</li>
       <li>A list of proposed attendees and their designations.</li>
     </ol>
-    <p class="why">Submit by email to <span class="mono">mayor.mayor@capetown.gov.za</span>, or hand-deliver into the Mayor's internal post box at the Podium Block information desk, Civic Centre.</p>
-    <p class="why"><b>Act on point 2 first.</b> An approach that lists Gareth Morgan and Kevin Jacoby as already consulted is materially stronger than a cold request, and it is the cheapest thing in this pack to fix.</p>
+    <p>Submit by email to <span class="mono">mayor.mayor@capetown.gov.za</span>, or hand-deliver into the Mayor's internal post box at the Podium Block information desk, Civic Centre.</p>
+    <p><b>Act on point 2 first.</b> A request that lists Gareth Morgan and Kevin Jacoby as already consulted is materially stronger than a cold one, and it is the cheapest thing in this pack to fix.</p>
   </div>
 
-  <h3>Consult these before the Mayor</h3>
+  <h3 style="margin-top:5vh;">Consult these before the Mayor</h3>
   <p>For a strategic intelligence product, the Executive Director for Future Planning and Resilience is the natural first call, and the Chief Financial Officer is the one who will interrogate the valuation method.</p>
   <table>
     <thead><tr><th>Role</th><th>Name</th><th>Why they matter here</th></tr></thead>
     <tbody>
-      <tr><td>ED: Future Planning and Resilience</td><td>Gareth Morgan</td><td>Closest institutional owner of exactly this capability &mdash; start here</td></tr>
-      <tr><td>City Manager</td><td>Lungelo Mbandazayo</td><td>Administrative head; any cross-directorate MOU runs through this office</td></tr>
-      <tr><td>CFO / ED: Finance</td><td>Kevin Jacoby</td><td>Owns the S52 tables the fiscal case needs, and will test the unit economics</td></tr>
-      <tr><td>ED: Water and Sanitation</td><td>Leonardo Manus</td><td>Owns system input and zone-level non-revenue water &mdash; the largest single number in the pack</td></tr>
-      <tr><td>ED: Urban Waste Management</td><td>Jason Mc Neil</td><td>Will immediately recognise the refuse artefact; brief before, not after</td></tr>
-      <tr><td>ED: Energy</td><td>Kadri Nassiep</td><td>Own-generation and plant KPIs, plus the streetlight fault series</td></tr>
-      <tr><td>ED: Safety and Security</td><td>Vincent Botto</td><td>LEAP and Metro Police deployment counts, still unwired</td></tr>
-      <tr><td>Director: Communication</td><td>Priya Reddy</td><td>Any public framing of City numbers</td></tr>
+      <tr><td>ED: Future Planning and Resilience</td><td class="amount plain">Gareth Morgan</td><td>Closest institutional owner of exactly this capability &mdash; start here</td></tr>
+      <tr><td>City Manager</td><td class="amount plain">Lungelo Mbandazayo</td><td>Administrative head; any cross-directorate MOU runs through this office</td></tr>
+      <tr><td>CFO / ED: Finance</td><td class="amount plain">Kevin Jacoby</td><td>Owns the S52 tables the fiscal case needs, and will test the unit economics</td></tr>
+      <tr><td>ED: Water and Sanitation</td><td class="amount plain">Leonardo Manus</td><td>Owns system input and zone-level non-revenue water &mdash; the largest single number in the pack</td></tr>
+      <tr><td>ED: Urban Waste Management</td><td class="amount plain">Jason Mc Neil</td><td>Will immediately recognise the refuse artefact; brief before, not after</td></tr>
+      <tr><td>ED: Energy</td><td class="amount plain">Kadri Nassiep</td><td>Own-generation and plant KPIs, plus the streetlight fault series</td></tr>
+      <tr><td>ED: Safety and Security</td><td class="amount plain">Vincent Botto</td><td>LEAP and Metro Police deployment counts, still unwired</td></tr>
+      <tr><td>Director: Communication</td><td class="amount plain">Priya Reddy</td><td>Any public framing of City numbers</td></tr>
     </tbody>
   </table>
 
-  <h3>Mayoral Committee &mdash; portfolios that touch Striops</h3>
+  <h3 style="margin-top:5vh;">Mayoral Committee &mdash; portfolios that touch Striops</h3>
   <table>
     <thead><tr><th>Portfolio</th><th>Member</th><th>Contact</th></tr></thead>
     <tbody>
       <tr>
         <td>Finance</td><td>Cllr Siseko Mbandezi</td>
-        <td class="mono">021 444 0958 &middot; Siseko.Mbandezi@capetown.gov.za</td>
+        <td><span class="mono">021 444 0958</span><br /><span class="mono">Siseko.Mbandezi@capetown.gov.za</span></td>
       </tr>
       <tr>
         <td>Water and Sanitation</td><td>Cllr Dr Zahid Badroodien</td>
-        <td class="mono">021 444 7666 / 8448 &middot; Zahid.Badroodien@capetown.gov.za</td>
+        <td><span class="mono">021 444 7666 / 8448</span><br /><span class="mono">Zahid.Badroodien@capetown.gov.za</span></td>
       </tr>
       <tr>
         <td>Urban Waste Management</td><td>Ald Grant Twigg</td>
-        <td class="mono">021 400 1218 / 072 171 1033 &middot; grant.twigg@capetown.gov.za</td>
+        <td><span class="mono">021 400 1218 / 072 171 1033</span><br /><span class="mono">grant.twigg@capetown.gov.za</span></td>
       </tr>
       <tr><td>Safety and Security</td><td>Cllr JP Smith</td><td class="fine">Via switchboard &mdash; email not verified</td></tr>
       <tr><td>Energy</td><td>Cllr Xanthea Limberg</td><td class="fine">Via switchboard &mdash; email not verified</td></tr>
@@ -501,7 +615,7 @@
     </caption>
   </table>
 
-  <!-- ============================================================= -->
+  <!-- ═══════════════════════ 11 ═══════════════════════ -->
   <h2><span class="n">11</span>What is still missing, and say it first</h2>
 
   <p>Naming the gaps yourself is worth more than being caught by them. Each of these is a specific extract, not a vague aspiration &mdash; which is what makes the pilot scope credible.</p>
@@ -509,24 +623,26 @@
   <table>
     <thead><tr><th>Theme</th><th>Standing</th><th>What is needed</th></tr></thead>
     <tbody>
-      <tr><td>Water and sanitation</td><td><span class="tag t-live">Live</span></td><td>Live non-revenue water and project-level wastewater treatment spend, from the Water departmental extract</td></tr>
-      <tr><td>Energy and grid load</td><td><span class="tag t-live">Live</span></td><td>Own-generation MWh and Steenbras / IPP plant KPIs</td></tr>
-      <tr><td>Safety and policing</td><td><span class="tag t-live">Live</span></td><td>Crime is current to the last SAPS release; still needs monthly LEAP and Metro Police deployment counts, and the City's own precinct extract to beat the quarterly cycle</td></tr>
-      <tr><td>Waste and public realm</td><td><span class="tag t-live">Live</span></td><td>Nothing outstanding &mdash; but the June artefact must be resolved first</td></tr>
-      <tr><td>Fiscal health and revenue</td><td><span class="tag t-demo">Partial</span></td><td>S52 year-to-date operating and capital tables, plus SAP Finance aggregates, so underspend becomes official mid-year FY2025/26</td></tr>
-      <tr><td>Housing and human settlements</td><td><span class="tag t-demo">Partial</span></td><td>Monthly units delivered against target, aggregate only</td></tr>
-      <tr><td>Infrastructure and capital delivery</td><td><span class="tag t-demo">Partial</span></td><td>Project-level capital year-to-date by vote and project</td></tr>
-      <tr><td>Roads and mobility</td><td><span class="tag t-stop">Awaiting extract</span></td><td>Live road-condition and backlog extract from Urban Mobility</td></tr>
+      <tr><td>Water and sanitation</td><td><span class="badge green">Live</span></td><td>Live non-revenue water and project-level wastewater treatment spend, from the Water departmental extract</td></tr>
+      <tr><td>Energy and grid load</td><td><span class="badge green">Live</span></td><td>Own-generation MWh and Steenbras / IPP plant KPIs</td></tr>
+      <tr><td>Safety and policing</td><td><span class="badge green">Live</span></td><td>Crime is current to the last SAPS release; still needs monthly LEAP and Metro Police deployment counts, and the City's own precinct extract to beat the quarterly cycle</td></tr>
+      <tr><td>Waste and public realm</td><td><span class="badge green">Live</span></td><td>Nothing outstanding &mdash; but confirm the June extract fault with Urban Waste Management</td></tr>
+      <tr><td>Fiscal health and revenue</td><td><span class="badge amber">Partial</span></td><td>S52 year-to-date operating and capital tables, plus SAP Finance aggregates, so underspend becomes official mid-year FY2025/26</td></tr>
+      <tr><td>Housing and human settlements</td><td><span class="badge amber">Partial</span></td><td>Monthly units delivered against target, aggregate only</td></tr>
+      <tr><td>Infrastructure and capital delivery</td><td><span class="badge amber">Partial</span></td><td>Project-level capital year-to-date by vote and project</td></tr>
+      <tr><td>Roads and mobility</td><td><span class="badge red">Awaiting extract</span></td><td>Live road-condition and backlog extract from Urban Mobility</td></tr>
     </tbody>
     <caption>Source: Striops <span class="mono">/themes</span>, 14 Aug 2026. Themes are synthesised from the Mayoral Minute 2025, the S52 report to 31 December 2025, and the 2025/26 Adjustments Budget, mapped to live feeds.</caption>
   </table>
 
   <p class="fine">Official fiscal anchor: municipal FY2025/26, 1 July 2025 to 30 June 2026, with the S52 mid-year report to 31 December 2025 as the in-year reference. Any fiscal chart in the product that is not on that basis is labelled as demonstration inside the product itself.</p>
 
-  <footer class="foot">
+  <!-- ═══════════════════════ footer ═══════════════════════ -->
+  <footer class="footer-tag">
+    <div class="brand"><div class="dot"></div>Striops · Trusted with foresight</div>
     Generated from the running Striops instance on 14 August 2026 &mdash; endpoints <span class="mono">/pulse</span>, <span class="mono">/themes</span>, <span class="mono">/risks</span>, <span class="mono">/opportunities</span>, <span class="mono">/valuation</span>, <span class="mono">/value-ledger</span>, <span class="mono">/actions</span>, <span class="mono">/feeds</span>, <span class="mono">/health-breakdown</span>.
-    Narrative and pricing per <span class="mono">docs/STRIOPS.md</span>. Contact details read from capetown.gov.za and the gov.za contact directory on 14 August 2026 &mdash; verify before sending.
-    Companion documents: <span class="mono">docs/pitch/striops-pitch.html</span>, <span class="mono">docs/STRIOPS.md</span>.
+    Narrative and pricing per <span class="mono">docs/STRIOPS.md</span>. Contact details read from capetown.gov.za and the gov.za contact directory on 14 August 2026 &mdash; verify before sending.<br />
+    In this pack: <a href="index.html">cover</a> &nbsp;·&nbsp; <a href="striops-pitch.html">pitch deck</a> &nbsp;·&nbsp; this meeting pack &nbsp;·&nbsp; <span class="mono">docs/STRIOPS.md</span>
   </footer>
 
 </div>
@@ -538,7 +654,8 @@
     var img = document.getElementById("crest");
     if (!img) return;
     img.addEventListener("error", function () {
-      img.remove();
+      var plate = img.closest(".coct-plate");
+      (plate || img).remove();
     }, { once: true });
   })();
 </script>

@@ -131,9 +131,13 @@
 
   @media print {
     .deck { height: auto; overflow: visible; }
-    .slide { display: flex !important; position: relative; height: 100vh; page-break-after: always; }
+    .slide { display: flex !important; position: relative; height: 100vh; break-after: page; }
+    .slide:last-child { break-after: auto; }
     .progress, .nav-hint, .counter { display: none; }
+    html, body { background: var(--ink-950); }
   }
+  /* Pinned so the exported deck does not depend on print-dialog settings. */
+  @page { size: A4 landscape; margin: 0; }
 </style>
 </head>
 <body>

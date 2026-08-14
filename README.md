@@ -11,7 +11,7 @@ The Strategic Intelligence Operating System — an executive twin that continuou
 > Version **0.4** — Place-aware Ask, critical sectors, health-score provenance, and a command-first UI. First customer: **City of Cape Town**.
 
 **Internal reference (product, data, pilot, pricing, security):** [`docs/STRIOPS.md`](docs/STRIOPS.md).  
-**Pitch deck:** [`docs/pitch/striops-pitch.html`](docs/pitch/striops-pitch.html)
+**Cape Town pack (deck + mayoral meeting pack):** [`docs/pitch/index.html`](docs/pitch/index.html)
 
 Striops is not a chatbot and not a dashboard. It is a continuously-reasoning layer that sits above ERP / CRM / HR / Accounting / BI and answers the questions leadership actually cares about:
 

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Striops — Cape Town Pack</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+<style>
+  /* Theme shared with striops-pitch.html and mayor-meeting-pack.html. */
+  :root {
+    --ink-950: #060d17;
+    --teal: #14b8a6;
+    --teal-soft: rgba(20, 184, 166, 0.14);
+    --sky: #38bdf8;
+    --sunrise: #f59e0b;
+    --good: #34d399;
+    --text: #e7edf5;
+    --muted: rgba(231, 237, 245, 0.62);
+    --faint: rgba(231, 237, 245, 0.38);
+    --line: rgba(231, 237, 245, 0.12);
+    --display: "Space Grotesk", system-ui, sans-serif;
+    --sans: "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { min-height: 100%; background: var(--ink-950); color: var(--text); font-family: var(--sans); }
+  body {
+    background:
+      radial-gradient(1200px 600px at 85% -10%, rgba(56, 189, 248, 0.07), transparent 60%),
+      radial-gradient(900px 500px at -10% 110%, rgba(20, 184, 166, 0.08), transparent 55%),
+      var(--ink-950);
+    display: flex; flex-direction: column;
+  }
+  .wrap { flex: 1; max-width: 1040px; margin: 0 auto; padding: 6vh 6vw 8vh; width: 100%; position: relative; }
+
+  .top { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 8vh; }
+  .coct-plate {
+    display: inline-flex; align-items: center; background: #fff; border-radius: 10px;
+    padding: 8px 14px; box-shadow: 0 1px 0 rgba(0,0,0,0.08);
+  }
+  .coct-plate img { height: 40px; width: auto; display: block; }
+  .prepared { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--faint); text-align: right; }
+
+  .hero-mark { display: flex; align-items: center; gap: 14px; margin-bottom: 3.5vh; }
+  .hero-mark .mark { filter: drop-shadow(0 0 18px rgba(20,184,166,0.45)); }
+  .hero-mark span { font-size: 14px; letter-spacing: 0.42em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+
+  .eyebrow { font-size: 12px; letter-spacing: 0.32em; text-transform: uppercase; color: var(--teal); font-weight: 600; margin-bottom: 2vh; }
+  h1 { font-family: var(--display); font-size: clamp(34px, 5.4vw, 60px); font-weight: 600; letter-spacing: -0.03em; line-height: 1.04; }
+  .lede { font-size: clamp(15px, 1.6vw, 20px); color: var(--muted); line-height: 1.6; max-width: 60ch; margin-top: 3vh; }
+  .lede b { color: var(--text); font-weight: 600; }
+
+  .badge { display: inline-block; border-radius: 999px; padding: 4px 14px; font-size: 12px; font-weight: 600; margin-right: 8px; margin-bottom: 8px; }
+  .badge.teal { background: var(--teal-soft); color: var(--teal); border: 1px solid rgba(20, 184, 166, 0.35); }
+  .badge.amber { background: rgba(245, 158, 11, 0.12); color: var(--sunrise); border: 1px solid rgba(245, 158, 11, 0.3); }
+  .badge.green { background: rgba(52, 211, 153, 0.12); color: var(--good); border: 1px solid rgba(52, 211, 153, 0.3); }
+
+  .docs { display: grid; grid-template-columns: 1fr 1fr; gap: 1.6vw; margin-top: 7vh; }
+  a.doc-card {
+    display: flex; flex-direction: column; text-decoration: none; color: inherit;
+    border: 1px solid var(--line); border-radius: 14px; padding: 3vh 1.8vw;
+    background: rgba(255, 255, 255, 0.025); transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+  }
+  a.doc-card:hover { border-color: rgba(20, 184, 166, 0.45); background: var(--teal-soft); transform: translateY(-2px); }
+  a.doc-card .kicker { font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--teal); font-weight: 600; margin-bottom: 1.4vh; }
+  a.doc-card h2 { font-family: var(--display); font-size: clamp(19px, 2.1vw, 26px); font-weight: 600; letter-spacing: -0.02em; line-height: 1.2; }
+  a.doc-card p { font-size: clamp(13px, 1.35vw, 15.5px); color: var(--muted); line-height: 1.6; margin-top: 1.4vh; flex: 1; }
+  a.doc-card .go { margin-top: 2.4vh; font-size: 13px; color: var(--teal); font-weight: 600; }
+  a.doc-card .go .alt { color: var(--faint); font-weight: 400; }
+
+  .aside { margin-top: 6vh; border-top: 1px solid var(--line); padding-top: 3vh; }
+  .aside h3 { font-family: var(--display); font-size: 15px; font-weight: 600; margin-bottom: 1.4vh; }
+  .aside p { font-size: 13.5px; color: var(--muted); line-height: 1.65; max-width: 74ch; }
+  .aside .mono { font-family: var(--mono); font-size: 0.92em; color: var(--text); }
+
+  .footer-tag {
+    max-width: 1040px; margin: 0 auto; padding: 0 6vw 4vh; width: 100%;
+    display: flex; justify-content: space-between; gap: 16px; font-size: 12px; color: var(--faint);
+  }
+  .footer-tag .brand { display: flex; align-items: center; gap: 8px; }
+  .footer-tag .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--teal); box-shadow: 0 0 10px rgba(20,184,166,0.8); }
+
+  .mountain { position: absolute; bottom: 0; left: 0; right: 0; height: 22vh; pointer-events: none; opacity: 0.45; z-index: -1; }
+
+  @media (max-width: 820px) { .docs { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="top">
+    <div class="coct-plate"><img id="crest" src="assets/coct-logo.svg" alt="City of Cape Town" /></div>
+    <div class="prepared">Prepared for the City of Cape Town<br />Confidential &mdash; working draft</div>
+  </div>
+
+  <div class="hero-mark">
+    <svg class="mark" width="44" height="44" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+      <path d="M14 18 L30 32 L14 46" stroke="#14b8a6" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="45" cy="32" r="6" fill="#f59e0b"/>
+    </svg>
+    <span>Striops</span>
+  </div>
+
+  <p class="eyebrow">Cape Town pack</p>
+  <h1>Trusted with foresight.</h1>
+  <p class="lede">
+    Two documents. The <b>deck</b> makes the argument for a Strategic Intelligence Operating
+    System. The <b>meeting pack</b> gets you through the room with the Executive Mayor &mdash;
+    defensible numbers, the ones to avoid, and who to brief first.
+  </p>
+
+  <div style="margin-top:4vh;">
+    <span class="badge teal">14 August 2026</span>
+    <span class="badge green">Production live &amp; current</span>
+    <span class="badge amber">Data through August 2026</span>
+  </div>
+
+  <div class="docs">
+    <a class="doc-card" href="striops-pitch.html">
+      <div class="kicker">Document one</div>
+      <h2>The pitch deck</h2>
+      <p>Fifteen slides: why quarterly reporting fails an executive, what Striops is, how the engines work, the price ladder, and the 90-day pilot. Use arrow keys to advance.</p>
+      <div class="go">Open the deck &rarr; <span class="alt">&nbsp;·&nbsp; <span style="text-decoration:underline">PDF</span></span></div>
+    </a>
+
+    <a class="doc-card" href="mayor-meeting-pack.html">
+      <div class="kicker">Document two</div>
+      <h2>Mayoral meeting pack</h2>
+      <p>The sixty-second answer, nine numbers that hold up with periods and sources, the two data artefacts and how to talk about them, the money case, objection handling, and verified City contacts.</p>
+      <div class="go">Open the pack &rarr; <span class="alt">&nbsp;·&nbsp; <span style="text-decoration:underline">PDF</span></span></div>
+    </a>
+  </div>
+
+  <div class="aside">
+    <h3>Also in the repository</h3>
+    <p>
+      <span class="mono">docs/STRIOPS.md</span> is the internal reference and the single source of truth for
+      what Striops is, which data it touches, how the pilot succeeds and why R180,000 is justified.
+      <span class="mono">docs/architecture.md</span> covers the engines and the data model.
+      Both are markdown, for the team rather than the meeting.
+    </p>
+  </div>
+
+  <svg class="mountain" viewBox="0 0 1440 240" preserveAspectRatio="none">
+    <path d="M0,240 L0,170 L180,150 L340,90 L520,80 L620,78 L780,76 L900,82 L1060,120 L1240,150 L1440,175 L1440,240 Z" fill="rgba(20,184,166,0.10)"/>
+    <path d="M0,240 L0,195 L220,180 L420,120 L560,105 L720,100 L880,108 L1080,150 L1300,180 L1440,195 L1440,240 Z" fill="rgba(56,189,248,0.07)"/>
+  </svg>
+</div>
+
+<div class="footer-tag">
+  <div class="brand"><div class="dot"></div>Striops · Trusted with foresight</div>
+  <div>striops.city — 2026</div>
+</div>
+
+<script>
+  // The PDF affordance on each card should open the PDF, not the HTML.
+  document.querySelectorAll("a.doc-card").forEach(function (card) {
+    var alt = card.querySelector(".go .alt span");
+    if (!alt) return;
+    alt.style.cursor = "pointer";
+    alt.addEventListener("click", function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      window.open(card.getAttribute("href").replace(/\.html$/, ".pdf"), "_blank");
+    });
+  });
+
+  // Drop the crest rather than showing a broken-image glyph when this page is
+  // copied somewhere without its sibling assets/ directory.
+  (function () {
+    var img = document.getElementById("crest");
+    if (!img) return;
+    img.addEventListener("error", function () {
+      var plate = img.closest(".coct-plate");
+      (plate || img).remove();
+    }, { once: true });
+  })();
+</script>
+</body>
+</html>

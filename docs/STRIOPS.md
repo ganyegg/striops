@@ -8,9 +8,14 @@
 Version covered: **v0.4** (place-aware Ask, critical sectors, command-first UI)  
 Primary municipality: **City of Cape Town (CPT)**  
 Canonical repo: [https://github.com/ganyegg/striops](https://github.com/ganyegg/striops)  
-Pitch deck: [`docs/pitch/striops-pitch.html`](pitch/striops-pitch.html)  
-Mayoral meeting pack: [`docs/pitch/mayor-meeting-pack.html`](pitch/mayor-meeting-pack.html) — what to say, which numbers hold up, which do not, and City contacts  
+Cape Town pack: [`docs/pitch/index.html`](pitch/index.html) — cover linking both meeting documents  
+&nbsp;&nbsp;· Pitch deck: [`docs/pitch/striops-pitch.html`](pitch/striops-pitch.html)  
+&nbsp;&nbsp;· Mayoral meeting pack: [`docs/pitch/mayor-meeting-pack.html`](pitch/mayor-meeting-pack.html) — what to say, which numbers hold up, which do not, and City contacts  
 Architecture notes: [`docs/architecture.md`](architecture.md)
+
+Both pack documents share one theme. Regenerate their PDFs with `scripts/render-pack-pdf.sh`
+after editing either HTML file — do not export from the browser print dialog, since the page
+geometry is pinned in CSS.
 
 This document is the single source of truth for what Striops is, how it works, what data it touches, how the 90-day pilot succeeds, why R180,000 is justified, where it sits in the City, and how to answer every hard question in the room.
 
