@@ -26,7 +26,9 @@ function BackendDown({ message }: { message: string }) {
     <main className="mx-auto max-w-3xl px-6 py-24">
       <h1 className="font-display text-2xl font-semibold text-white">Striops is waking up</h1>
       <p className="mt-3 text-white/60">
-        The reasoning core is not reachable yet. Start the backend and refresh.
+        The reasoning core did not answer in time. On the free tier the API sleeps
+        after inactivity and takes about a minute to wake — wait a moment and
+        refresh. Running locally, start the backend first.
       </p>
       <pre className="mt-4 rounded-lg bg-white/5 p-4 text-xs text-white/50">{message}</pre>
     </main>

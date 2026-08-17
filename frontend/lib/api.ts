@@ -143,43 +143,78 @@ export const CLIENT_BASE =
   process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000";
 
 // On Render's free tier the API spins down after inactivity and takes ~50–70s
-// to wake (502/503 meanwhile). Retry briefly so a human page load can succeed,
-// but keep the budget short — long SSR waits made the web *health check*
-// (previously "/") time out and blocked deploys from going live.
-const WAKE_STATUSES = new Set([502, 503, 504]);
-const SSR_RETRIES = Number(process.env.STRIOPS_SSR_RETRIES ?? 4);
-const SSR_DELAY_MS = Number(process.env.STRIOPS_SSR_DELAY_MS ?? 4000);
+// to wake. While it wakes, Render's edge answers with 502/503/504 — and with
+// 429 when several requests arrive at once, which is exactly what a page doing
+// Promise.all over four endpoints does. 429 used to fall straight through as a
+// hard failure, so a cold load showed "Striops is waking up: snapshot failed:
+// 429" instead of waiting the minute out.
+//
+// A long SSR budget is safe now that the web health check is a static asset
+// (/icon.svg). When it was "/", SSR waits timed out the check and blocked
+// deploys — see render.yaml.
+export const RETRY_STATUSES = new Set([429, 502, 503, 504]);
+const SSR_RETRIES = Number(process.env.STRIOPS_SSR_RETRIES ?? 6);
+const SSR_DELAY_MS = Number(process.env.STRIOPS_SSR_DELAY_MS ?? 2000);
+const SSR_MAX_DELAY_MS = Number(process.env.STRIOPS_SSR_MAX_DELAY_MS ?? 20000);
 const SSR_TIMEOUT_MS = Number(process.env.STRIOPS_SSR_TIMEOUT_MS ?? 15000);
+// Cap total wall time so a page load fails honestly rather than hanging.
+const SSR_BUDGET_MS = Number(process.env.STRIOPS_SSR_BUDGET_MS ?? 75000);
+
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
+/** Exponential backoff, honouring Retry-After, with jitter. */
+export function retryDelayMs(
+  attempt: number,
+  retryAfterSeconds?: number | null,
+  rand: () => number = Math.random,
+): number {
+  if (retryAfterSeconds != null && Number.isFinite(retryAfterSeconds) && retryAfterSeconds > 0) {
+    return Math.min(retryAfterSeconds * 1000, SSR_MAX_DELAY_MS);
+  }
+  const exp = Math.min(SSR_DELAY_MS * 2 ** attempt, SSR_MAX_DELAY_MS);
+  // Jitter matters more than the curve here: four SSR calls that back off in
+  // lockstep just rebuild the burst that tripped the rate limit.
+  return Math.round(exp / 2 + rand() * (exp / 2));
+}
+
+function retryAfterOf(res: Response): number | null {
+  const raw = res.headers.get("retry-after");
+  if (!raw) return null;
+  const seconds = Number(raw);
+  return Number.isFinite(seconds) ? seconds : null;
+}
 
 async function serverFetch(
   url: string,
   init: RequestInit = {},
   {
     retries = SSR_RETRIES,
-    delayMs = SSR_DELAY_MS,
     perRequestTimeoutMs = SSR_TIMEOUT_MS,
+    budgetMs = SSR_BUDGET_MS,
   } = {},
 ): Promise<Response> {
+  const deadline = Date.now() + budgetMs;
   let lastErr: unknown;
+
   for (let attempt = 0; attempt <= retries; attempt++) {
+    let wait: number;
     try {
       const ctrl = new AbortController();
       const t = setTimeout(() => ctrl.abort(), perRequestTimeoutMs);
       const res = await fetch(url, { cache: "no-store", ...init, signal: ctrl.signal });
       clearTimeout(t);
-      if (WAKE_STATUSES.has(res.status) && attempt < retries) {
-        await new Promise((r) => setTimeout(r, delayMs));
-        continue;
-      }
-      return res;
+      if (!RETRY_STATUSES.has(res.status)) return res;
+      // Out of attempts or budget: hand the status back so the caller can name it.
+      wait = retryDelayMs(attempt, retryAfterOf(res));
+      if (attempt >= retries || Date.now() + wait > deadline) return res;
     } catch (err) {
       lastErr = err; // network error / timeout while the service wakes
-      if (attempt < retries) {
-        await new Promise((r) => setTimeout(r, delayMs));
-        continue;
-      }
+      wait = retryDelayMs(attempt);
+      if (attempt >= retries || Date.now() + wait > deadline) break;
     }
+    await sleep(wait);
   }
+
   throw lastErr instanceof Error ? lastErr : new Error(`request failed: ${url}`);
 }
 

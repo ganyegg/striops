@@ -84,6 +84,7 @@ Facts live in **Postgres** (`entities`, `metrics`, `budget_lines`); the reasonin
 - **Ingestion** (`striops.ingestion.pipeline`) pulls public feeds and **upserts** into Postgres on the composite key `(entity_id, metric, period)` — re-runs are idempotent.
 - **Schema** bootstraps itself (`striops.persistence.schema.ensure_schema`) on API startup and before every ingest, so a freshly-provisioned managed Postgres is immediately usable (pgvector enabled when the plan supports it).
 - **Deployment** (`render.yaml`) provisions a managed `striops-db` (Postgres, Frankfurt region, private — not exposed to the internet). The API reads it; a scheduled GitHub Action (`.github/workflows/ingest.yml`) triggers `POST /refresh?run_ingest=true` daily to keep it current (free; no paid cron needed).
+- **Cold starts** — both Render services are free tier, so they sleep after ~15 minutes idle and take ~50–70s to wake. While waking, Render's edge returns 502/503/504, and **429 when several requests land at once** — which is what a page loading four endpoints in parallel does. `serverFetch` in `frontend/lib/api.ts` treats all four as wake signals and backs off with jitter inside a ~75s budget, so a cold page load waits rather than erroring. Run `scripts/warm-render.sh` before a demo to make the first click instant, or `--watch 25` to hold both services up through a meeting.
 
 ### 0.3 City themes vs quarterly reports (value over PDFs)
 

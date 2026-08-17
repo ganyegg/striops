@@ -27,7 +27,7 @@ while [ $# -gt 0 ]; do
   case "$1" in
     --theme) WANT_THEME="${2:-}"; shift 2 ;;
     --theme=*) WANT_THEME="${1#*=}"; shift ;;
-    -h|--help) sed -n '2,16p' "$0" | sed 's/^# \{0,1\}//'; exit 0 ;;
+    -h|--help) sed -n '2,15p' "$0" | sed 's/^# \{0,1\}//'; exit 0 ;;
     *) NAMES="$NAMES ${1%.html}"; shift ;;
   esac
 done
