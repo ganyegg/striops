@@ -144,7 +144,18 @@ def build_city_pulse(
             (i for i in (len(values) - 1, len(values) - 2) if is_suspect(values, i)),
             None,
         )
-        verification_note = describe_break(values, broken) if broken is not None else None
+        # Name the month when the break is in the baseline rather than the
+        # latest reading, so the note cannot contradict the figure beside it.
+        broken_label = (
+            format_month(points[broken].period)
+            if broken is not None and broken != len(values) - 1
+            else None
+        )
+        verification_note = (
+            describe_break(values, broken, period_label=broken_label)
+            if broken is not None
+            else None
+        )
         needs_verification = verification_note is not None
 
         if needs_verification:
@@ -156,9 +167,11 @@ def build_city_pulse(
             direction = "worsening" if got_worse else "improving"
 
         if needs_verification:
+            # Full stop, not a dash: the note is a standalone sentence and may
+            # name a different month than the reading quoted here.
             sentence = (
-                f"{label}: {_fmt(last, series.unit)} in {format_month_short(last_pt.period)} "
-                f"— {verification_note}"
+                f"{label}: {_fmt(last, series.unit)} in {format_month_short(last_pt.period)}. "
+                f"{verification_note}"
             )
         else:
             verb = {

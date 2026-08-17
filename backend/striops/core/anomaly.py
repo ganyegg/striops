@@ -69,8 +69,18 @@ def describe_break(
     values: list[float],
     index: int,
     window: int = MIN_HISTORY,
+    period_label: str | None = None,
 ) -> str | None:
-    """One sentence naming the break, for use in place of a change claim."""
+    """One sentence naming the break, for use in place of a change claim.
+
+    ``period_label`` names the month that broke, and must be passed whenever the
+    break is *not* in the latest reading. The Pulse screens the comparison
+    baseline as well as the latest point, so a note hardcoded to "Latest
+    reading" ended up quoting the previous month's ratio next to the current
+    month's figure: "10,205 requests/month in Jul 2026 — Latest reading is 2.5x
+    above the median (11,529)", which is both wrong and self-evidently wrong to
+    anyone doing the division.
+    """
     ratio = suspect_ratio(values, index, window)
     if ratio is None:
         return None
@@ -81,8 +91,14 @@ def describe_break(
         shape = f"{ratio:.1f}x above"
     else:
         shape = f"{1 / ratio:.1f}x below"
-    return (
-        f"Latest reading is {shape} the median of the previous {window} periods "
-        f"({baseline:,.0f}) — likely an extract change rather than a service change. "
-        f"Verify with the publisher before acting on it."
+    tail = (
+        f"the median of the previous {window} periods ({baseline:,.0f}) — likely an "
+        f"extract change rather than a service change. "
     )
+    if period_label:
+        return (
+            f"The {period_label} reading it is measured against is {shape} {tail}"
+            f"No month-on-month change can be read from it. "
+            f"Verify with the publisher before acting on it."
+        )
+    return f"Latest reading is {shape} {tail}Verify with the publisher before acting on it."
