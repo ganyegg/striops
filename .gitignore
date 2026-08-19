@@ -1,6 +1,9 @@
 # Secrets
 .env
 *.env.local
+.neon/
+.neon.toml
+.branch.json
 
 # Python
 __pycache__/

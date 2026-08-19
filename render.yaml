@@ -1,8 +1,9 @@
 # Striops on Render — https://render.com/docs/blueprint-spec
 # Deploy: Render Dashboard → New → Blueprint → connect ganyegg/striops
 #
-# Two web services: API (FastAPI) + UI (Next.js). Default posture uses seed
-# facts (no managed Postgres/Neo4j). Set GEMINI_API_KEY in the dashboard for live Ask.
+# Two web services: API (FastAPI) + UI (Next.js). Facts live in Neon Postgres
+# (Render's free database expires after 90 days). Set DATABASE_URL and
+# GEMINI_API_KEY in the dashboard — never commit them.
 services:
   - type: web
     name: striops-api
@@ -24,27 +25,10 @@ services:
         value: CPT
       - key: GEMINI_MODEL
         value: gemini-2.5-flash
-      # Managed Postgres — facts store Striops reads from (schema auto-bootstraps).
-      - key: POSTGRES_HOST
-        fromDatabase:
-          name: striops-db
-          property: host
-      - key: POSTGRES_PORT
-        fromDatabase:
-          name: striops-db
-          property: port
-      - key: POSTGRES_DB
-        fromDatabase:
-          name: striops-db
-          property: database
-      - key: POSTGRES_USER
-        fromDatabase:
-          name: striops-db
-          property: user
-      - key: POSTGRES_PASSWORD
-        fromDatabase:
-          name: striops-db
-          property: password
+      # Neon — paste the direct URI (sslmode=require) in the dashboard.
+      # Do not use Render's free Postgres; it is a 90-day trial.
+      - key: DATABASE_URL
+        sync: false
       # No managed Neo4j in this blueprint — graph uses the in-memory twin.
       - key: NEO4J_URI
         value: bolt://127.0.0.1:1
@@ -86,13 +70,3 @@ services:
           type: web
           name: striops-api
           envVarKey: RENDER_EXTERNAL_URL
-
-databases:
-  # Facts store (entities, metrics, budget_lines). Schema is created
-  # automatically by striops.persistence.schema.ensure_schema() on first
-  # ingest/startup. pgvector is enabled when the plan supports it.
-  - name: striops-db
-    plan: free
-    region: frankfurt
-    postgresMajorVersion: "16"
-    ipAllowList: []  # reachable only from Render services, not the public internet

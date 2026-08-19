@@ -1,6 +1,6 @@
 """Idempotent Postgres schema bootstrap.
 
-A freshly-provisioned managed Postgres (e.g. Render) is empty, so the
+A freshly-provisioned managed Postgres (e.g. Neon) is empty, so the
 Repository would fall back to seed forever. Running ``ensure_schema()`` at
 ingest/startup creates the tables (and pgvector when available) so Striops can
 actually read from — and the pipeline can load into — the database.
